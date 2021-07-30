@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -211,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                     return new InkWell(
                       onTap: (){
                       },
-                      child: SizedBox(  
+                      child: SizedBox(
                         child: Container(
                           margin: EdgeInsets.all(10),
                           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
@@ -271,8 +270,6 @@ class _HomePageState extends State<HomePage> {
 class HomePageBody extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    OutlineInputBorder border = OutlineInputBorder(
-    borderSide: BorderSide(color: Constants.cPink, width: 3.0));
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
