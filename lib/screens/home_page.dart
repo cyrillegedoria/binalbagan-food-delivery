@@ -226,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                             children: <Widget> [
                               Container(
                                 alignment: Alignment.centerLeft,
-                                child: Text('${_mapVal.values.toList()[_indexOfStores]['Stores']['StoreName']}',
+                                child: Text('${_mapVal.values.toList()[_indexOfStores]['StoreName']}',
                                   style: TextStyle(
                                     color: Constants.cPink,
                                     fontWeight: FontWeight.bold,
@@ -251,6 +251,7 @@ class _HomePageState extends State<HomePage> {
                                   child: Image.asset("assets/images/pizza.png"),
                                 ),
                               ),
+
                             ],
                           ),
                         ),
