@@ -251,6 +251,7 @@ class _HomePageState extends State<HomePage> {
                                   child: Image.asset("assets/images/pizza.png"),
                                 ),
                               ),
+
                             ],
                           ),
                         ),
