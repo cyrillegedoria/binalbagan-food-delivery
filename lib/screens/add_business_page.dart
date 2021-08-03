@@ -40,14 +40,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
         backgroundColor: Constants.cPrimaryColor,
         title: Row(
           children: [
-            Container(
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(user!.photoURL!),
-                radius: 20,
-              ),
-            ),
-            // Spacer(flex: 100,),
-            SizedBox(width: 10,),
+
             Container(
               child: Text('Add Business'),
             ),
@@ -68,145 +61,152 @@ class _AddBusinessPage extends State <AddBusinessPage>{
         ),
       ),
       backgroundColor: Constants.cPrimaryColor,
-      body: Container(
-        child:  ListView(
-          padding: const EdgeInsets.all(10),
-          shrinkWrap: false,
-          children: <Widget>[
 
-            SizedBox(height: 30,),
-            Container(
-              color: Colors.white,
-              child: TextField(
-                controller:  storeNameTf ,
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding:
-                    EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    hintText: "Store name",
-                    hintStyle: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0,
-                    )
+      body: Center(
+        child: Column(
+          children:<Widget> [
+
+            SizedBox(height: 10,),
+            SizedBox(
+              child: Container(
+                width: size.width*.8,
+                child: TextField(
+                  controller:  storeNameTf ,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding:
+                      EdgeInsets.all(16),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Constants.cPink),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Constants.cPink),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      hintText: "Store Name",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                      )
+                  ),
                 ),
               ),
             ),
 
             SizedBox(height: 10,),
-            Container(
-              height: size.height *.065,
 
-              child: TextButton(
-                onPressed: (){
+            SizedBox(
+              child: Container(
 
-                  if (storeNameTf.text=="")
-                  {
-                    Fluttertoast.showToast(msg: "Please fill the form.",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.TOP,
-                    );
-                  }
-                  else {
-                    storesRef
-                        .child('StoresList')
-                        .push()
-                        .set({'StoreName':storeNameTf.text})
-                        .asStream();
-
-                    Fluttertoast.showToast(msg: "Success!",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.TOP,
-                    );
-                  }
-                  storeNameTf.clear();
-                },
-
-                child: Text(
-                  'SAVE',
-                  style: TextStyle(
-                      fontSize: 25, fontWeight: FontWeight.bold, color: Constants.cPink
-                  ) ,
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
-
+                width: size.width*.5,
+                height: size.height*.05,
+                child: TextButton(
+                  onPressed: (){
+                    if (storeNameTf.text=="")
+                    {
+                      Fluttertoast.showToast(msg: "Please fill the form.",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.TOP,
+                      );
+                    }
+                    else {
+                      storesRef
+                          .child('StoresList')
+                          .push()
+                          .set({'StoreName':storeNameTf.text})
+                          .asStream();
+                      Fluttertoast.showToast(msg: "Success!",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.TOP,
+                      );
+                    }
+                    storeNameTf.clear();
+                  },
+                  child: Text(
+                    'Save',
+                    style: TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold, color: Constants.cPink
+                    ) ,
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          )
+                      )
+                  ),
                 ),
               ),
             ),
+
             SizedBox(height: 10,),
-            FirebaseAnimatedList(
-                shrinkWrap: true,
-                query: referenceDatabase.child('StoresList'),
-                itemBuilder: (BuildContext context,
-                              DataSnapshot snapshot,
-                              Animation<double> animation,
-                              int index)
-                {
-                  return  new ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightOrange),
-                    ),
 
-                    onPressed:() {
-                      
-                      print("button pressed");
+            Container(
+              child: Expanded(
+                child: FirebaseAnimatedList(
+                    shrinkWrap: false,
+                    query: referenceDatabase.child('StoresList'),
+                    itemBuilder: (BuildContext context,
+                        DataSnapshot snapshot,
+                        Animation<double> animation,
+                        int index)
+                    {
+                      return  new ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white70),
+                        ),
 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddMenuPage('${snapshot.key}')));
-                      
-                     // referenceDatabase.child('StoresList').child('${snapshot.key}').update({"Menu":"Burger"});
+                        onPressed:() {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddMenuPage('${snapshot.key}')));
 
-                      /*referenceDatabase
+                          // referenceDatabase.child('StoresList').child('${snapshot.key}').update({"Menu":"Burger"});
+
+                          /*referenceDatabase
                           .child('StoresList')
                           .child('${snapshot.key}')
                           .child("MenuList")
                           .update({'Fries':"50"})
                           .asStream();
                       */
-                    },
-                    
+                        },
 
-                    child: new ListTile(
-                      tileColor: Colors.transparent,
-                      dense: true,
-                      //enabled: true,
-                      //hoverColor: Colors.black,
-                      visualDensity: VisualDensity(horizontal: 0, vertical: -2),
-                      minVerticalPadding: 10,
-                      title: new Text(
-                        '${snapshot.value['StoreName'].toString().toUpperCase()}',
-                        style: TextStyle(  fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Constants.cPink
+                        child: new ListTile(
+                          tileColor: Colors.transparent,
+                          dense: true,
+                          //enabled: true,
+                          //hoverColor: Colors.black,
+                          visualDensity: VisualDensity(horizontal: 0, vertical: -2),
+                          minVerticalPadding:13,
+                          title: new Text(
+                            '${snapshot.value['StoreName'].toString().toUpperCase()}',
+                            style: TextStyle(  fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Constants.cPink
+                            ),
+                          ),
+                          trailing: IconButton(icon: Icon(Icons.delete),
+                            onPressed: () => referenceDatabase.child('StoresList').child('${snapshot.key}').remove(),
+                          ),
                         ),
-                      ),
-                      trailing: IconButton(icon: Icon(Icons.delete),
-                        onPressed: () => referenceDatabase.child('StoresList').child('${snapshot.key}').remove(),
-                      ),
-                    ),
-                  );
-                }
-            ),
+                      );
+                    }
+                ),
+              ),
+            )
 
 
           ],
-        ),
+        )
 
       )
-
     );
 
   }

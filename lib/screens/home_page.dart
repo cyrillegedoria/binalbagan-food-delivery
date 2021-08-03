@@ -1,3 +1,4 @@
+import 'package:eatnywhere/screens/add_business_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -170,8 +171,12 @@ class _HomePageState extends State<HomePage> {
            Spacer(flex: 10,),
            IconButton(
                onPressed: (){
-                 Navigator.pushReplacementNamed(
-                     context, Constants.addBusinessNavigate);
+                // Navigator.push(
+                 //    context, Constants.addBusinessNavigate);
+                 Navigator.push(
+                     context,
+                     MaterialPageRoute(
+                         builder: (context) => AddBusinessPage()));
                },
                icon: Icon(
                  Icons.add_business,
