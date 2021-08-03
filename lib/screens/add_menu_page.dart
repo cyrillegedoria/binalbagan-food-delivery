@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:eatnywhere/utils/constants.dart';
@@ -19,10 +20,13 @@ class AddMenuPage extends StatefulWidget{
 class _AddMenuPage extends State <AddMenuPage>{
 
   User? user = FirebaseAuth.instance.currentUser;
-  final referenceDatabase = FirebaseDatabase.instance.reference();
+  final referenceDatabase = FirebaseDatabase.instance.reference().child('StoresList');
+
   final menuName = TextEditingController();
   final menuPrice = TextEditingController();
 
+  late Map<dynamic, dynamic> _mapVal;
+  late String storeName="";
   final ButtonStyle flatButtonStyle = TextButton.styleFrom(
     primary: Colors.black87,
     minimumSize: Size(88, 36),
@@ -32,9 +36,31 @@ class _AddMenuPage extends State <AddMenuPage>{
     ),
   );
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (storeName==""){
+      returnRef().then(
+              (String i) => setState((){storeName=i;})
+      );
+    }
+  }
+
+  Future<String> returnRef () async => referenceDatabase.child('${widget.storeId}').once().then((snapshot){
+    _mapVal = snapshot.value;
+    //storeName = _mapVal.values.toList()[1];
+    storeName = _mapVal['StoreName'];
+    //print('StoreName: ${storeName}');
+   // print('MapVal: ${_mapVal['MenuList']}');
+    return storeName;
+  });
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
 
     // TODO: implement build
     return Scaffold(
@@ -49,7 +75,7 @@ class _AddMenuPage extends State <AddMenuPage>{
             IconButton(
                 onPressed: (){
                   Navigator.pushReplacementNamed(
-                      context, Constants.addBusinessNavigate);
+                      context, Constants.homeNavigate);
                 },
                 icon: Icon(
                   Icons.home,
@@ -71,7 +97,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                 textAlign: TextAlign.center,
                 text: TextSpan(children: <TextSpan>[
                   TextSpan(
-                      text:"RAINBREW",
+                      text:'${storeName.toUpperCase()}', //change to a StoreName
                       style: TextStyle(
                         color: Constants.cPink,
                         fontWeight: FontWeight.bold,
@@ -97,7 +123,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                           borderRadius: BorderRadius.circular(16),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Constants.cPink),
+                          borderSide: BorderSide(color: Colors.white),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         hintText: "Menu Name",
@@ -115,7 +141,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                 child: Container(
                   width: size.width*.8,
                   child: TextField(
-                    controller:  menuName ,
+                    controller:  menuPrice ,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                         filled: true,
@@ -127,7 +153,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                           borderRadius: BorderRadius.circular(16),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Constants.cPink),
+                          borderSide: BorderSide(color: Colors.white),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         hintText: "Price",
@@ -146,7 +172,18 @@ class _AddMenuPage extends State <AddMenuPage>{
                width: size.width*.5,
                height: size.height*.05,
                 child: TextButton(
-                  onPressed: (){},
+                  onPressed: (){
+
+                    referenceDatabase
+                        .child('${widget.storeId}')
+                       .child('MenuList')
+                       .update({menuName.text:menuPrice.text})
+                       .asStream();
+
+                    menuName.clear();
+                    menuPrice.clear();
+
+                  },
                   child: Text(
                     'Add Menu',
                     style: TextStyle(
@@ -163,7 +200,52 @@ class _AddMenuPage extends State <AddMenuPage>{
                   ),
                 ),
               ),
+            ),
+            SizedBox(height: 10,),
+            Container(
+              child: Expanded(
+                child: FirebaseAnimatedList(
+                    shrinkWrap: false,
+                    query: referenceDatabase.child('${widget.storeId}').child('MenuList'),
+                    itemBuilder: (BuildContext context,
+                        DataSnapshot snapshot,
+                        Animation<double> animation,
+                        int index)
+                    {
+
+
+
+                      return  new ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                        ),
+
+                        onPressed:() {},
+
+                        child: new ListTile(
+                          tileColor: Colors.transparent,
+                          dense: true,
+                          visualDensity: VisualDensity(horizontal: 0, vertical: -2),
+                          minVerticalPadding:12,
+                          title: new Text(
+                            '${snapshot.key}'
+                            ' : '
+                            '${snapshot.value}',
+                            style: TextStyle(  fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Constants.cPink
+                            ),
+                          ),
+                          trailing: IconButton(icon: Icon(Icons.delete),
+                            onPressed: () => referenceDatabase.child('${widget.storeId}').child('MenuList').child('${snapshot.key}').remove(),
+                          ),
+                        ),
+                      );
+                    }
+                ),
+              ),
             )
+
 
           ],
         )

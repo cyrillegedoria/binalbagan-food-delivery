@@ -22,8 +22,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
   User? user = FirebaseAuth.instance.currentUser;
   final referenceDatabase = FirebaseDatabase.instance.reference();
   final storeNameTf = TextEditingController();
-  final menuTf= TextEditingController();
-  final menuPriceTf= TextEditingController();
+
 
 
   @override
@@ -42,7 +41,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
           children: [
 
             Container(
-              child: Text('Add Business'),
+              child: Text('Add Store'),
             ),
             Spacer(flex: 100,),
             IconButton(
@@ -158,7 +157,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                     {
                       return  new ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white70),
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
                         ),
 
                         onPressed:() {
@@ -184,7 +183,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                           //enabled: true,
                           //hoverColor: Colors.black,
                           visualDensity: VisualDensity(horizontal: 0, vertical: -2),
-                          minVerticalPadding:13,
+                          minVerticalPadding:12,
                           title: new Text(
                             '${snapshot.value['StoreName'].toString().toUpperCase()}',
                             style: TextStyle(  fontSize: 20,
