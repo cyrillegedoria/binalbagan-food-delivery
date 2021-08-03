@@ -33,6 +33,7 @@ class Constants {
   static const homeNavigate = '/home';
   static const welcomeNavigate = '/welcome';
   static const addBusinessNavigate = '/add-business';
+  static const addMenuNavigate = '/add-menu';
 
   static const statusBarColor = SystemUiOverlayStyle(
       statusBarColor: Constants.cPrimaryColor,

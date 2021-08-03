@@ -1,3 +1,4 @@
+import 'package:eatnywhere/screens/add_menu_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -48,7 +49,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
             // Spacer(flex: 100,),
             SizedBox(width: 10,),
             Container(
-              child: Text('Add Business and Menus'),
+              child: Text('Add Business'),
             ),
             Spacer(flex: 100,),
             IconButton(
@@ -120,7 +121,6 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                     storesRef
                         .child('StoresList')
                         .push()
-                        .child('Stores')
                         .set({'StoreName':storeNameTf.text})
                         .asStream();
 
@@ -158,7 +158,26 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                       backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightOrange),
                     ),
 
-                    onPressed:() {print("button pressed");},
+                    onPressed:() {
+                      
+                      print("button pressed");
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddMenuPage('${snapshot.key}')));
+                      
+                     // referenceDatabase.child('StoresList').child('${snapshot.key}').update({"Menu":"Burger"});
+
+                      /*referenceDatabase
+                          .child('StoresList')
+                          .child('${snapshot.key}')
+                          .child("MenuList")
+                          .update({'Fries':"50"})
+                          .asStream();
+                      */
+                    },
+                    
 
                     child: new ListTile(
                       tileColor: Colors.transparent,
@@ -168,7 +187,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                       visualDensity: VisualDensity(horizontal: 0, vertical: -2),
                       minVerticalPadding: 10,
                       title: new Text(
-                        '${snapshot.value['Stores']['StoreName'].toString().toUpperCase()}',
+                        '${snapshot.value['StoreName'].toString().toUpperCase()}',
                         style: TextStyle(  fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Constants.cPink
