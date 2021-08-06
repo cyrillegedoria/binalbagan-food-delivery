@@ -63,196 +63,538 @@ class _AddMenuPage extends State <AddMenuPage>{
 
 
     // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Constants.cPrimaryColor,
-        title: Row(
-          children: [
-            Container(
-              child: Text('Add Menu'),
-            ),
-            Spacer(flex: 100,),
-            IconButton(
-                onPressed: (){
-                  Navigator.pushReplacementNamed(
-                      context, Constants.homeNavigate);
-                },
-                icon: Icon(
-                  Icons.home,
-                  color: Constants.cPink,
-                  size: 35,
-                )
-            ),
-            Spacer (flex: 1),
-          ],
-        ),
-      ),
-      backgroundColor: Constants.cPrimaryColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-              child: Column(
-                children: <Widget>[
+    return DefaultTabController(
+        length: 3,
+        initialIndex: 0,
+        child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Constants.cPrimaryColor,
+              title: Row(
+                children: [
+                  Container(
+                    child: Text('Add Menu - ${storeName.toUpperCase()}'),
+                  ),
+                  Spacer(flex: 100,),
+                  IconButton(
+                      onPressed: (){
+                        Navigator.pushReplacementNamed(
+                            context, Constants.homeNavigate);
+                      },
+                      icon: Icon(
+                        Icons.home,
+                        color: Constants.cPink,
+                        size: 35,
+                      )
+                  ),
+                  Spacer (flex: 1),
+                ],
+              ),
+              bottom: TabBar(
+                indicatorColor: Constants.cLightGreen,
+                indicatorWeight: 5.0,
+                labelColor: Constants.cPink,
+                labelPadding: EdgeInsets.only(top: 10.0),
+                unselectedLabelColor: Colors.grey,
+                tabs: [
+                  Tab(
+                    text: 'Main',
+                    icon: Icon(
+                      Icons.restaurant_menu,
+                      color: Constants.cPink,
+                    ),
+                    iconMargin: EdgeInsets.only(bottom: 10.0),
+                  ),
+                  //child: Image.asset('images/android.png'),
 
-                  SizedBox(height: 10,),
-                  RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                            text:'${storeName.toUpperCase()}', //change to a StoreName
-                            style: TextStyle(
-                              color: Constants.cPink,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24.0,
-                            )),
-                      ]
-                      )
+                  Tab(
+                    text: 'Beverages',
+                    icon: Icon(
+                      Icons.emoji_food_beverage_outlined,
+                      color: Constants.cPink,
+                    ),
+                    iconMargin: EdgeInsets.only(bottom: 10.0),
                   ),
-                  SizedBox(height: 10,),
-                  SizedBox(
-                      child: Container(
-                        width: size.width*.8,
-                        child: TextField(
-                          controller:  menuName ,
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              contentPadding:
-                              EdgeInsets.all(16),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Constants.cPink),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              hintText: "Menu Name",
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0,
-                              )
-                          ),
-                        ),
-                      )
+                  Tab(
+                    text: 'Others',
+                    icon: Icon(
+                      Icons.post_add_outlined,
+                      color: Constants.cPink,
+                    ),
+                    iconMargin: EdgeInsets.only(bottom: 10.0),
                   ),
-                  SizedBox(height: 10,),
-                  SizedBox(
-                      child: Container(
-                        width: size.width*.8,
-                        child: TextField(
-                          controller:  menuPrice ,
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              contentPadding:
-                              EdgeInsets.all(16),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Constants.cPink),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              hintText: "Price",
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0,
-                              )
-                          ),
-                        ),
-                      )
-                  ),
-                  SizedBox(height: 10,),
-                  SizedBox(
+                ],
+              ),
+            ),
+            backgroundColor: Constants.cPrimaryColor,
+            body: TabBarView(
+              children: [
+                //Tab 0, Main
+                SafeArea(
+                  child: SingleChildScrollView(
                     child: Container(
-                      width: size.width*.5,
-                      height: size.height*.05,
-                      child: TextButton(
-                        onPressed: (){
+                        child: Column(
+                          children: <Widget>[
 
-                          referenceDatabase
-                              .child('${widget.storeId}')
-                              .child('MenuList')
-                              .update({menuName.text:menuPrice.text})
-                              .asStream();
-
-                          menuName.clear();
-                          menuPrice.clear();
-
-                        },
-                        child: Text(
-                          'Add Menu',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold, color: Constants.cPink
-                          ) ,
-                        ),
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.0),
+                            SizedBox(height: 10,),
+                            SizedBox(
+                                child: Container(
+                                  width: size.width*.8,
+                                  child: TextField(
+                                    controller:  menuName ,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        contentPadding:
+                                        EdgeInsets.all(16),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Constants.cPink),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        hintText: "Menu Name",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0,
+                                        )
+                                    ),
+                                  ),
                                 )
-                            )
-                        ),
-                      ),
+                            ),
+                            SizedBox(height: 10,),
+                            SizedBox(
+                                child: Container(
+                                  width: size.width*.8,
+                                  child: TextField(
+                                    controller:  menuPrice ,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        contentPadding:
+                                        EdgeInsets.all(16),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Constants.cPink),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        hintText: "Price",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0,
+                                        )
+                                    ),
+                                  ),
+                                )
+                            ),
+                            SizedBox(height: 10,),
+                            SizedBox(
+                              child: Container(
+                                width: size.width*.5,
+                               //height: size.height*.05,
+                                child: TextButton(
+                                  onPressed: (){
+
+                                    referenceDatabase
+                                        .child('${widget.storeId}')
+                                        .child('MenuList')
+                                        .update({menuName.text:menuPrice.text})
+                                        .asStream();
+
+                                    menuName.clear();
+                                    menuPrice.clear();
+
+                                  },
+                                  child: Text(
+                                    'Add Menu',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Constants.cPink
+                                    ) ,
+                                  ),
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(16.0),
+                                          )
+                                      )
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            FirebaseAnimatedList(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                query: referenceDatabase.child('${widget.storeId}').child('MenuList'),
+                                itemBuilder: (BuildContext context,
+                                    DataSnapshot snapshot,
+                                    Animation<double> animation,
+                                    int index)
+                                {
+
+
+
+                                  return  new ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                    ),
+
+                                    onPressed:() {},
+
+                                    child: new ListTile(
+                                      tileColor: Colors.transparent,
+                                      dense: true,
+                                      visualDensity: VisualDensity(horizontal: 0, vertical: -2),
+                                      minVerticalPadding:12,
+                                      title: new Text(
+                                        '${snapshot.key}'
+                                            ' : '
+                                            '${snapshot.value}',
+                                        style: TextStyle(  fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Constants.cPink
+                                        ),
+                                      ),
+                                      trailing: IconButton(icon: Icon(Icons.delete),
+                                        onPressed: () => referenceDatabase.child('${widget.storeId}').child('MenuList').child('${snapshot.key}').remove(),
+                                      ),
+                                    ),
+                                  );
+                                }
+                            ),
+
+
+                          ],
+                        )
                     ),
                   ),
-                  SizedBox(height: 10,),
-                  FirebaseAnimatedList(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      query: referenceDatabase.child('${widget.storeId}').child('MenuList'),
-                      itemBuilder: (BuildContext context,
-                          DataSnapshot snapshot,
-                          Animation<double> animation,
-                          int index)
-                      {
+                ),
+                //end Tab 0, Main
 
+                //Tab 1, Beverages
+                SafeArea(
+                  child: SingleChildScrollView(
+                    child: Container(
+                        child: Column(
+                          children: <Widget>[
 
+                            SizedBox(height: 10,),
+                            SizedBox(
+                                child: Container(
+                                  width: size.width*.8,
+                                  child: TextField(
+                                    controller:  menuName ,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        contentPadding:
+                                        EdgeInsets.all(16),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Constants.cPink),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        hintText: "Menu Name",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0,
+                                        )
+                                    ),
+                                  ),
+                                )
+                            ),
+                            SizedBox(height: 10,),
+                            SizedBox(
+                                child: Container(
+                                  width: size.width*.8,
+                                  child: TextField(
+                                    controller:  menuPrice ,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        contentPadding:
+                                        EdgeInsets.all(16),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Constants.cPink),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        hintText: "Price",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0,
+                                        )
+                                    ),
+                                  ),
+                                )
+                            ),
+                            SizedBox(height: 10,),
+                            SizedBox(
+                              child: Container(
+                                width: size.width*.5,
+                                //height: size.height*.05,
+                                child: TextButton(
+                                  onPressed: (){
 
-                        return  new ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                          ),
+                                    referenceDatabase
+                                        .child('${widget.storeId}')
+                                        .child('BeverageList')
+                                        .update({menuName.text:menuPrice.text})
+                                        .asStream();
 
-                          onPressed:() {},
+                                    menuName.clear();
+                                    menuPrice.clear();
 
-                          child: new ListTile(
-                            tileColor: Colors.transparent,
-                            dense: true,
-                            visualDensity: VisualDensity(horizontal: 0, vertical: -2),
-                            minVerticalPadding:12,
-                            title: new Text(
-                              '${snapshot.key}'
-                                  ' : '
-                                  '${snapshot.value}',
-                              style: TextStyle(  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Constants.cPink
+                                  },
+                                  child: Text(
+                                    'Add Menu',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Constants.cPink
+                                    ) ,
+                                  ),
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(16.0),
+                                          )
+                                      )
+                                  ),
+                                ),
                               ),
                             ),
-                            trailing: IconButton(icon: Icon(Icons.delete),
-                              onPressed: () => referenceDatabase.child('${widget.storeId}').child('MenuList').child('${snapshot.key}').remove(),
+                            SizedBox(height: 10,),
+                            FirebaseAnimatedList(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                query: referenceDatabase.child('${widget.storeId}').child('BeverageList'),
+                                itemBuilder: (BuildContext context,
+                                    DataSnapshot snapshot,
+                                    Animation<double> animation,
+                                    int index)
+                                {
+
+
+
+                                  return  new ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                    ),
+
+                                    onPressed:() {},
+
+                                    child: new ListTile(
+                                      tileColor: Colors.transparent,
+                                      dense: true,
+                                      visualDensity: VisualDensity(horizontal: 0, vertical: -2),
+                                      minVerticalPadding:12,
+                                      title: new Text(
+                                        '${snapshot.key}'
+                                            ' : '
+                                            '${snapshot.value}',
+                                        style: TextStyle(  fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Constants.cPink
+                                        ),
+                                      ),
+                                      trailing: IconButton(icon: Icon(Icons.delete),
+                                        onPressed: () => referenceDatabase.child('${widget.storeId}').child('BeverageList').child('${snapshot.key}').remove(),
+                                      ),
+                                    ),
+                                  );
+                                }
                             ),
-                          ),
-                        );
-                      }
+
+
+                          ],
+                        )
+                    ),
                   ),
+                ),
+                //end Tab 1, Beverages
+
+                //Tab 2, Others/Extras
+                SafeArea(
+                  child: SingleChildScrollView(
+                    child: Container(
+                        child: Column(
+                          children: <Widget>[
+
+                            SizedBox(height: 10,),
+                            SizedBox(
+                                child: Container(
+                                  width: size.width*.8,
+                                  child: TextField(
+                                    controller:  menuName ,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        contentPadding:
+                                        EdgeInsets.all(16),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Constants.cPink),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        hintText: "Menu Name",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0,
+                                        )
+                                    ),
+                                  ),
+                                )
+                            ),
+                            SizedBox(height: 10,),
+                            SizedBox(
+                                child: Container(
+                                  width: size.width*.8,
+                                  child: TextField(
+                                    controller:  menuPrice ,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        contentPadding:
+                                        EdgeInsets.all(16),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Constants.cPink),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        hintText: "Price",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0,
+                                        )
+                                    ),
+                                  ),
+                                )
+                            ),
+                            SizedBox(height: 10,),
+                            SizedBox(
+                              child: Container(
+                                width: size.width*.5,
+                                //height: size.height*.05,
+                                child: TextButton(
+                                  onPressed: (){
+
+                                    referenceDatabase
+                                        .child('${widget.storeId}')
+                                        .child('ExtrasList')
+                                        .update({menuName.text:menuPrice.text})
+                                        .asStream();
+
+                                    menuName.clear();
+                                    menuPrice.clear();
+
+                                  },
+                                  child: Text(
+                                    'Add Menu',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Constants.cPink
+                                    ) ,
+                                  ),
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(16.0),
+                                          )
+                                      )
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            FirebaseAnimatedList(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                query: referenceDatabase.child('${widget.storeId}').child('ExtrasList'),
+                                itemBuilder: (BuildContext context,
+                                    DataSnapshot snapshot,
+                                    Animation<double> animation,
+                                    int index)
+                                {
 
 
-                ],
-              )
-          ),
-        ),
-      )
+
+                                  return  new ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                    ),
+
+                                    onPressed:() {},
+
+                                    child: new ListTile(
+                                      tileColor: Colors.transparent,
+                                      dense: true,
+                                      visualDensity: VisualDensity(horizontal: 0, vertical: -2),
+                                      minVerticalPadding:12,
+                                      title: new Text(
+                                        '${snapshot.key}'
+                                            ' : '
+                                            '${snapshot.value}',
+                                        style: TextStyle(  fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Constants.cPink
+                                        ),
+                                      ),
+                                      trailing: IconButton(icon: Icon(Icons.delete),
+                                        onPressed: () => referenceDatabase.child('${widget.storeId}').child('ExtrasList').child('${snapshot.key}').remove(),
+                                      ),
+                                    ),
+                                  );
+                                }
+                            ),
 
 
+                          ],
+                        )
+                    ),
+                  ),
+                ),
+                //end Tab 2, Others/Extras
+
+              ],
+            )
+
+
+        )
     );
   }
 
