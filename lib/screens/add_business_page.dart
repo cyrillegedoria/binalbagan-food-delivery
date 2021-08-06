@@ -61,150 +61,151 @@ class _AddBusinessPage extends State <AddBusinessPage>{
       ),
       backgroundColor: Constants.cPrimaryColor,
 
-      body: Center(
-        child: Column(
-          children:<Widget> [
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+              child: Column(
+                children:<Widget> [
 
-            SizedBox(height: 10,),
-            SizedBox(
-              child: Container(
-                width: size.width*.8,
-                child: TextField(
-                  controller:  storeNameTf ,
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding:
-                      EdgeInsets.all(16),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Constants.cPink),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Constants.cPink),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      hintText: "Store Name",
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                      )
-                  ),
-                ),
-              ),
-            ),
-
-            SizedBox(height: 10,),
-
-            SizedBox(
-              child: Container(
-
-                width: size.width*.5,
-                height: size.height*.05,
-                child: TextButton(
-                  onPressed: (){
-                    if (storeNameTf.text=="")
-                    {
-                      Fluttertoast.showToast(msg: "Please fill the form.",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.TOP,
-                      );
-                    }
-                    else {
-                      storesRef
-                          .child('StoresList')
-                          .push()
-                          .set({'StoreName':storeNameTf.text})
-                          .asStream();
-                      Fluttertoast.showToast(msg: "Success!",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.TOP,
-                      );
-                    }
-                    storeNameTf.clear();
-                  },
-                  child: Text(
-                    'Save',
-                    style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold, color: Constants.cPink
-                    ) ,
-                  ),
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.0),
-                          )
-                      )
-                  ),
-                ),
-              ),
-            ),
-
-            SizedBox(height: 10,),
-
-            Container(
-              child: Expanded(
-                child: FirebaseAnimatedList(
-                    shrinkWrap: false,
-                    query: referenceDatabase.child('StoresList'),
-                    itemBuilder: (BuildContext context,
-                        DataSnapshot snapshot,
-                        Animation<double> animation,
-                        int index)
-                    {
-                      return  new ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  SizedBox(height: 10,),
+                  SizedBox(
+                    child: Container(
+                      width: size.width*.8,
+                      child: TextField(
+                        controller:  storeNameTf ,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding:
+                            EdgeInsets.all(16),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Constants.cPink),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Constants.cPink),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            hintText: "Store Name",
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                            )
                         ),
+                      ),
+                    ),
+                  ),
 
-                        onPressed:() {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AddMenuPage('${snapshot.key}')));
+                  SizedBox(height: 10,),
 
-                          // referenceDatabase.child('StoresList').child('${snapshot.key}').update({"Menu":"Burger"});
+                  SizedBox(
+                    child: Container(
 
-                          /*referenceDatabase
+                      width: size.width*.5,
+                      height: size.height*.05,
+                      child: TextButton(
+                        onPressed: (){
+                          if (storeNameTf.text=="")
+                          {
+                            Fluttertoast.showToast(msg: "Please fill the form.",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.TOP,
+                            );
+                          }
+                          else {
+                            storesRef
+                                .child('StoresList')
+                                .push()
+                                .set({'StoreName':storeNameTf.text})
+                                .asStream();
+                            Fluttertoast.showToast(msg: "Success!",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.TOP,
+                            );
+                          }
+                          storeNameTf.clear();
+                        },
+                        child: Text(
+                          'Save',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold, color: Constants.cPink
+                          ) ,
+                        ),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                )
+                            )
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 10,),
+
+                  FirebaseAnimatedList(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      query: referenceDatabase.child('StoresList'),
+                      itemBuilder: (BuildContext context,
+                          DataSnapshot snapshot,
+                          Animation<double> animation,
+                          int index)
+                      {
+                        return  new ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                          ),
+
+                          onPressed:() {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AddMenuPage('${snapshot.key}')));
+
+                            // referenceDatabase.child('StoresList').child('${snapshot.key}').update({"Menu":"Burger"});
+
+                            /*referenceDatabase
                           .child('StoresList')
                           .child('${snapshot.key}')
                           .child("MenuList")
                           .update({'Fries':"50"})
                           .asStream();
                       */
-                        },
+                          },
 
-                        child: new ListTile(
-                          tileColor: Colors.transparent,
-                          dense: true,
-                          //enabled: true,
-                          //hoverColor: Colors.black,
-                          visualDensity: VisualDensity(horizontal: 0, vertical: -2),
-                          minVerticalPadding:12,
-                          title: new Text(
-                            '${snapshot.value['StoreName'].toString().toUpperCase()}',
-                            style: TextStyle(  fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Constants.cPink
+                          child: new ListTile(
+                            tileColor: Colors.transparent,
+                            dense: true,
+                            //enabled: true,
+                            //hoverColor: Colors.black,
+                            visualDensity: VisualDensity(horizontal: 0, vertical: -2),
+                            minVerticalPadding:12,
+                            title: new Text(
+                              '${snapshot.value['StoreName'].toString().toUpperCase()}',
+                              style: TextStyle(  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Constants.cPink
+                              ),
+                            ),
+                            trailing: IconButton(icon: Icon(Icons.delete),
+                              onPressed: () => referenceDatabase.child('StoresList').child('${snapshot.key}').remove(),
                             ),
                           ),
-                          trailing: IconButton(icon: Icon(Icons.delete),
-                            onPressed: () => referenceDatabase.child('StoresList').child('${snapshot.key}').remove(),
-                          ),
-                        ),
-                      );
-                    }
-                ),
-              ),
-            )
+                        );
+                      }
+                  ),
 
 
-          ],
-        )
+                ],
+              )
 
+          ),
+        ),
       )
     );
 

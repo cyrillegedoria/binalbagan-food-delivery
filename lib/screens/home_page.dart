@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:eatnywhere/services/firebase_service.dart';
 import 'package:eatnywhere/utils/constants.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -200,74 +201,81 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: Center(
-        child: Column (
-          children: [
-            HomePageBody(),
-            Expanded(
-              child: GridView.count(
-                  shrinkWrap: false,
-                  mainAxisSpacing: 1,
-                  crossAxisSpacing: 0,
-                  crossAxisCount: 2,
-                  children: List.generate(_storeCount, (index){
-                    _indexOfStores = index;
-                    return new InkWell(
-                      onTap: (){
-                      },
-                      child: SizedBox(
-                        child: Container(
-                          margin: EdgeInsets.all(10),
-                          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Constants.cLightGreen,
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(10.0)),
-                            ),
-                          child:  Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget> [
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text('${_mapVal.values.toList()[_indexOfStores]['StoreName']}',
-                                  style: TextStyle(
-                                    color: Constants.cPink,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
-                                  ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+                children: <Widget>[
+                  HomePageBody(),
+                  GridView.count(
+                      //physics: ScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                      //dragStartBehavior: DragStartBehavior.start,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        mainAxisSpacing: 1,
+                        crossAxisSpacing: 0,
+                        crossAxisCount: 2,
+                        children: List.generate(_storeCount, (index){
+                          _indexOfStores = index;
+                          return new InkWell(
+                            onTap: (){
+                            },
+                            child: SizedBox(
+                              child: Container(
+                                margin: EdgeInsets.all(10),
+                                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Constants.cLightGreen,
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(10.0)),
                                 ),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text("San Pedro, Binalbagan",
-                                  style: TextStyle(
-                                    color: Constants.cPink,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12.0,
-                                  ),
-                                ),
-                              ),
-                              Spacer(flex: 1,),
-                              Container(
-                                child: FittedBox(
-                                  fit:BoxFit.fill,
-                                  child: Image.asset("assets/images/pizza.png"),
-                                ),
-                              ),
+                                child:  Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget> [
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text('${_mapVal.values.toList()[_indexOfStores]['StoreName']}',
+                                        style: TextStyle(
+                                          color: Constants.cPink,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text("San Pedro, Binalbagan",
+                                        style: TextStyle(
+                                          color: Constants.cPink,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Spacer(flex: 1,),
+                                    Container(
+                                      child: FittedBox(
+                                        fit:BoxFit.fill,
+                                        child: Image.asset("assets/images/pizza.png"),
+                                      ),
+                                    ),
 
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  })
-              ),
-            )
-          ],
-        )
-      )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        })
+                    ),
+
+                ],
+                )
+            ),
+          ),
+        ),
+
     );
   }
 }// End _HomePageState

@@ -88,168 +88,169 @@ class _AddMenuPage extends State <AddMenuPage>{
         ),
       ),
       backgroundColor: Constants.cPrimaryColor,
-      body: Center(
-        child: Column(
-          children: <Widget>[
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+              child: Column(
+                children: <Widget>[
 
-            SizedBox(height: 10,),
-            RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(children: <TextSpan>[
-                  TextSpan(
-                      text:'${storeName.toUpperCase()}', //change to a StoreName
-                      style: TextStyle(
-                        color: Constants.cPink,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
-                      )),
-                ]
-                )
-            ),
-            SizedBox(height: 10,),
-            SizedBox(
-                child: Container(
-                  width: size.width*.8,
-                  child: TextField(
-                    controller:  menuName ,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding:
-                        EdgeInsets.all(16),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Constants.cPink),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        hintText: "Menu Name",
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                        )
-                    ),
-                  ),
-                )
-            ),
-            SizedBox(height: 10,),
-            SizedBox(
-                child: Container(
-                  width: size.width*.8,
-                  child: TextField(
-                    controller:  menuPrice ,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding:
-                        EdgeInsets.all(16),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Constants.cPink),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        hintText: "Price",
-                        hintStyle: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                        )
-                    ),
-                  ),
-                )
-            ),
-            SizedBox(height: 10,),
-            SizedBox(
-             child: Container(
-               width: size.width*.5,
-               height: size.height*.05,
-                child: TextButton(
-                  onPressed: (){
-
-                    referenceDatabase
-                        .child('${widget.storeId}')
-                       .child('MenuList')
-                       .update({menuName.text:menuPrice.text})
-                       .asStream();
-
-                    menuName.clear();
-                    menuPrice.clear();
-
-                  },
-                  child: Text(
-                    'Add Menu',
-                    style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold, color: Constants.cPink
-                    ) ,
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                           borderRadius: BorderRadius.circular(16.0),
-                          )
+                  SizedBox(height: 10,),
+                  RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                            text:'${storeName.toUpperCase()}', //change to a StoreName
+                            style: TextStyle(
+                              color: Constants.cPink,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24.0,
+                            )),
+                      ]
                       )
                   ),
-                ),
-              ),
-            ),
-            SizedBox(height: 10,),
-            Container(
-              child: Expanded(
-                child: FirebaseAnimatedList(
-                    shrinkWrap: false,
-                    query: referenceDatabase.child('${widget.storeId}').child('MenuList'),
-                    itemBuilder: (BuildContext context,
-                        DataSnapshot snapshot,
-                        Animation<double> animation,
-                        int index)
-                    {
-
-
-
-                      return  new ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                        ),
-
-                        onPressed:() {},
-
-                        child: new ListTile(
-                          tileColor: Colors.transparent,
-                          dense: true,
-                          visualDensity: VisualDensity(horizontal: 0, vertical: -2),
-                          minVerticalPadding:12,
-                          title: new Text(
-                            '${snapshot.key}'
-                            ' : '
-                            '${snapshot.value}',
-                            style: TextStyle(  fontSize: 20,
+                  SizedBox(height: 10,),
+                  SizedBox(
+                      child: Container(
+                        width: size.width*.8,
+                        child: TextField(
+                          controller:  menuName ,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding:
+                              EdgeInsets.all(16),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Constants.cPink),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              hintText: "Menu Name",
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
                                 fontWeight: FontWeight.bold,
-                                color: Constants.cPink
+                                fontSize: 18.0,
+                              )
+                          ),
+                        ),
+                      )
+                  ),
+                  SizedBox(height: 10,),
+                  SizedBox(
+                      child: Container(
+                        width: size.width*.8,
+                        child: TextField(
+                          controller:  menuPrice ,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding:
+                              EdgeInsets.all(16),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Constants.cPink),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              hintText: "Price",
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0,
+                              )
+                          ),
+                        ),
+                      )
+                  ),
+                  SizedBox(height: 10,),
+                  SizedBox(
+                    child: Container(
+                      width: size.width*.5,
+                      height: size.height*.05,
+                      child: TextButton(
+                        onPressed: (){
+
+                          referenceDatabase
+                              .child('${widget.storeId}')
+                              .child('MenuList')
+                              .update({menuName.text:menuPrice.text})
+                              .asStream();
+
+                          menuName.clear();
+                          menuPrice.clear();
+
+                        },
+                        child: Text(
+                          'Add Menu',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold, color: Constants.cPink
+                          ) ,
+                        ),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                )
+                            )
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  FirebaseAnimatedList(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      query: referenceDatabase.child('${widget.storeId}').child('MenuList'),
+                      itemBuilder: (BuildContext context,
+                          DataSnapshot snapshot,
+                          Animation<double> animation,
+                          int index)
+                      {
+
+
+
+                        return  new ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                          ),
+
+                          onPressed:() {},
+
+                          child: new ListTile(
+                            tileColor: Colors.transparent,
+                            dense: true,
+                            visualDensity: VisualDensity(horizontal: 0, vertical: -2),
+                            minVerticalPadding:12,
+                            title: new Text(
+                              '${snapshot.key}'
+                                  ' : '
+                                  '${snapshot.value}',
+                              style: TextStyle(  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Constants.cPink
+                              ),
+                            ),
+                            trailing: IconButton(icon: Icon(Icons.delete),
+                              onPressed: () => referenceDatabase.child('${widget.storeId}').child('MenuList').child('${snapshot.key}').remove(),
                             ),
                           ),
-                          trailing: IconButton(icon: Icon(Icons.delete),
-                            onPressed: () => referenceDatabase.child('${widget.storeId}').child('MenuList').child('${snapshot.key}').remove(),
-                          ),
-                        ),
-                      );
-                    }
-                ),
-              ),
-            )
+                        );
+                      }
+                  ),
 
 
-          ],
-        )
-      ),
+                ],
+              )
+          ),
+        ),
+      )
 
 
     );
