@@ -4,14 +4,25 @@ import 'package:flutter/services.dart';
 class Constants {
   //colors
   static const cPrimaryColor = Color(0xFFc7ceea);
-  static const cMint = Color(0xFFb5ead7);
-  static const cLightGreen = Color(0xFFe2f0cb);
+  static const cMint = Color(0xEEb5ead7);
+  static const cLightGreen = Color(0xAAe2f0cb);
   static const cLightOrange = Color(0xFFffdac1);
-  static const cFontPink = Color(0xFFffb7b2);
-  static const cPink = Color(0xFFff9aa2);
+  static const cFontPink = Color(0xCCffb7b2);
+  static const cPink = Color(0xCCff9aa2);
 
+  //static const cPrimaryColor = Color(0xFF20639b);
+  //static const cMint = Color(0xFF3caea3);
+  //static const cLightGreen = Color(0xFFf6d55c);
+  //static const cLightOrange = Color(0xFFed553b);
+  //static const cFontPink = Color(0xFF173f5f);
+ // static const cPink = Color(0xFFff9aa2);
 
-
+  //static const cPrimaryColor = Color(0xFFeaac8b);
+  //static const cMint = Color(0xFFb56576);
+ // static const cLightGreen = Color(0xFFe56b6f);
+ // static const cLightOrange = Color(0xFF6d597a);
+ // static const cFontPink = Color(0xFF355070);
+  //static const cPink = Color(0xFFae3c60);
 
   //text
   static const title = "Eatnywhere";

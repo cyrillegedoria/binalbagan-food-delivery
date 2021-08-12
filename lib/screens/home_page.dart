@@ -1,4 +1,5 @@
 import 'package:eatnywhere/screens/add_business_page.dart';
+import 'package:eatnywhere/screens/select_menu_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -63,94 +64,6 @@ class _HomePageState extends State<HomePage> {
     referenceDatabase.once().then((DataSnapshot snapshot) {
        _mapVal = snapshot.value;
     });
-
-    /**
-        return Scaffold(
-        appBar: AppBar(
-
-        actions: <Widget>[
-        CircleAvatar(
-        backgroundImage: NetworkImage(user!.photoURL!),
-        radius: 20,
-        ),
-
-        IconButton(
-        icon: Icon(
-        Icons.logout,
-        color: Colors.white,
-        ),
-        onPressed: () async {
-        FirebaseService service = new FirebaseService();
-        await service.signOutFromGoogle();
-        Navigator.pushReplacementNamed(
-        context, Constants.signInNavigate);
-        },
-        )
-
-        ],
-
-        ),
-        body: Center(
-        child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-        Text(user!.email!),
-        Text(user!.displayName!),
-        CircleAvatar(
-        backgroundImage: NetworkImage(user!.photoURL!),
-        radius: 20,
-        )
-        ],
-        )));
-     **/
-
-    /**return Column(
-      children: [
-        Column(
-        children: [
-            Container(
-              child: Padding(
-                  padding: EdgeInsets.all(0),
-              child: AppBar(
-                backgroundColor: Constants.kDarkBlueColor,
-              title: Row(
-                children: [
-                    Container(
-                    child: CircleAvatar(
-                    backgroundImage: NetworkImage(user!.photoURL!),
-                    radius: 20,
-                    ),
-                 ),
-                    // Spacer(flex: 100,),
-                    SizedBox(width: 10,),
-                    Container(
-                      child: Text(user!.displayName!),
-                    ),
-                    Spacer(flex: 100,),
-                    IconButton(
-                        icon: Icon(
-                        Icons.logout,
-                        color: Colors.white,
-                    ),
-                        onPressed: () async {
-                        FirebaseService service = new FirebaseService();
-                        await service.signOutFromGoogle();
-                        Navigator.pushReplacementNamed(
-                        context, Constants.signInNavigate);
-                    },
-                    ),
-                  ],
-                 ),
-              ),
-            ),
-           ),
-
-        ],
-    ),
-     HomePageBody()
-    ],
-    );
-    */
 
     return Scaffold(
       backgroundColor: Constants.cPrimaryColor,
@@ -219,6 +132,11 @@ class _HomePageState extends State<HomePage> {
                           _indexOfStores = index;
                           return new InkWell(
                             onTap: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectMenuPage('${_mapVal.keys.toList()[index]}')));
+                            print('${_mapVal.keys.toList()[index]}');
                             },
                             child: SizedBox(
                               child: Container(

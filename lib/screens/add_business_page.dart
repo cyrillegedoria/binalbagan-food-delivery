@@ -166,16 +166,6 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AddMenuPage('${snapshot.key}')));
-
-                            // referenceDatabase.child('StoresList').child('${snapshot.key}').update({"Menu":"Burger"});
-
-                            /*referenceDatabase
-                          .child('StoresList')
-                          .child('${snapshot.key}')
-                          .child("MenuList")
-                          .update({'Fries':"50"})
-                          .asStream();
-                      */
                           },
 
                           child: new ListTile(
