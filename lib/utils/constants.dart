@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 class Constants {
   //colors
   static const cPrimaryColor = Color(0xFFc7ceea);
-  static const cMint = Color(0xEEb5ead7);
-  static const cLightGreen = Color(0xAAe2f0cb);
+  static const cMint = Color(0xFFb5ead7);
+  static const cLightGreen = Color(0xFFe2f0cb);
   static const cLightOrange = Color(0xFFffdac1);
   static const cFontPink = Color(0xCCffb7b2);
   static const cPink = Color(0xCCff9aa2);
