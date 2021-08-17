@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
           Container(
            child: CircleAvatar(
              backgroundImage: NetworkImage(user!.photoURL!),
-              radius: 20,
+              radius: 15,
             ),
            ),
           // Spacer(flex: 100,),
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                },
                icon: Icon(
                  Icons.add_business,
-                 size: 35,
+                 size: 30,
                )
            ),
            Spacer (flex: 1),
@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(
               Icons.logout,
               color: Constants.cPink,
-                size: 35,
+                size: 30,
               ),
               onPressed: () async {
               FirebaseService service = new FirebaseService();
@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     Container(
                                       alignment: Alignment.centerLeft,
-                                      child: Text("San Pedro, Binalbagan",
+                                      child: Text('${_mapVal.values.toList()[_indexOfStores]['StoreAddress']}',
                                         style: TextStyle(
                                           color: Constants.cPink,
                                           fontWeight: FontWeight.bold,

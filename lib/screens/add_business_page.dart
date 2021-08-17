@@ -22,7 +22,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
   User? user = FirebaseAuth.instance.currentUser;
   final referenceDatabase = FirebaseDatabase.instance.reference();
   final storeNameTf = TextEditingController();
-
+  final addressTf = TextEditingController();
 
 
   @override
@@ -52,7 +52,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                 icon: Icon(
                     Icons.home,
                     color: Constants.cPink,
-                    size: 35,
+                    size: 30,
                 )
             ),
             Spacer (flex: 1),
@@ -84,10 +84,42 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                               borderRadius: BorderRadius.circular(16),
                             ),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Constants.cPink),
+                              borderSide: BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(16),
                             ),
                             hintText: "Store Name",
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                            )
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 10,),
+
+                  SizedBox(
+                    child: Container(
+                      width: size.width*.8,
+                      child: TextField(
+                        controller:  addressTf ,
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding:
+                            EdgeInsets.all(16),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Constants.cPink),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            hintText: "Address",
                             hintStyle: TextStyle(
                               color: Colors.grey,
                               fontWeight: FontWeight.bold,
@@ -107,7 +139,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                       height: size.height*.05,
                       child: TextButton(
                         onPressed: (){
-                          if (storeNameTf.text=="")
+                          if (storeNameTf.text=="" || addressTf.text=="")
                           {
                             Fluttertoast.showToast(msg: "Please fill the form.",
                               toastLength: Toast.LENGTH_LONG,
@@ -118,14 +150,17 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                             storesRef
                                 .child('StoresList')
                                 .push()
-                                .set({'StoreName':storeNameTf.text})
+                                .set({'StoreName':storeNameTf.text, 'StoreAddress':addressTf.text})
                                 .asStream();
                             Fluttertoast.showToast(msg: "Success!",
                               toastLength: Toast.LENGTH_LONG,
                               gravity: ToastGravity.TOP,
                             );
+
+                            storeNameTf.clear();
+                            addressTf.clear();
                           }
-                          storeNameTf.clear();
+
                         },
                         child: Text(
                           'Save',

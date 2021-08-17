@@ -83,34 +83,38 @@ class _AddMenuPage extends State <AddMenuPage>{
                       icon: Icon(
                         Icons.home,
                         color: Constants.cPink,
-                        size: 35,
+                        size: 30,
                       )
                   ),
                   Spacer (flex: 1),
                 ],
               ),
               bottom: TabBar(
-                indicatorColor: Constants.cLightGreen,
-                indicatorWeight: 5.0,
+                indicatorColor: Constants.cPink,
+                indicatorWeight: 3.0,
                 labelColor: Constants.cPink,
-                labelPadding: EdgeInsets.only(top: 10.0),
+                labelPadding: EdgeInsets.only(top:1, bottom:1),
                 unselectedLabelColor: Colors.grey,
+                labelStyle: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                unselectedLabelStyle: TextStyle(
+                  fontSize: 14,
+                  //fontWeight: FontWeight.bold,
+                ),
                 tabs: [
                   Tab(
                     text: 'Main',
                     icon: Icon(
                       Icons.restaurant_menu,
-                      color: Constants.cPink,
                     ),
                     iconMargin: EdgeInsets.only(bottom: 10.0),
                   ),
-                  //child: Image.asset('images/android.png'),
-
                   Tab(
                     text: 'Beverages',
                     icon: Icon(
                       Icons.emoji_food_beverage_outlined,
-                      color: Constants.cPink,
                     ),
                     iconMargin: EdgeInsets.only(bottom: 10.0),
                   ),
@@ -118,7 +122,6 @@ class _AddMenuPage extends State <AddMenuPage>{
                     text: 'Others',
                     icon: Icon(
                       Icons.post_add_outlined,
-                      color: Constants.cPink,
                     ),
                     iconMargin: EdgeInsets.only(bottom: 10.0),
                   ),
