@@ -17,7 +17,14 @@ class WelcomePage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset("assets/images/eatnywhere-logo.png"),
+
+                Container(
+                  width: 160,
+                  height: 200,
+                  child: FittedBox(
+                    child: Image.asset("assets/images/eatnywhere-logo.png"),
+                  ),
+                ),
                 RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(children: <TextSpan>[
@@ -37,11 +44,11 @@ class WelcomePage extends StatelessWidget {
                       TextSpan(
                           text: Constants.textIntroDesc2,
                           style: TextStyle(
-                              color: Constants.cLightOrange,
+                              color: Constants.cPink,
                               fontWeight: FontWeight.bold,
                               fontSize: 40.0)),
                     ])),
-                SizedBox(height: size.height * 0.04),
+                SizedBox(height: size.height * 0.1),
                 Text(
                   Constants.textSmallSignUp,
                   style: TextStyle(
@@ -49,36 +56,12 @@ class WelcomePage extends StatelessWidget {
                       fontSize: 16
                   ),
                 ),
-                SizedBox(height: size.height * 0.01),
-            /*    SizedBox(
-                  height: size.height *.06,
-                  width: size.width * 0.6,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      result == null
-                          ? Navigator.pushNamed(
-                              context, Constants.signInNavigate)
-                          : Navigator.pushReplacementNamed(
-                              context, Constants.homeNavigate);
-                    },
-                    child: Text(Constants.textStart),
-                    style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                            Constants.cFontPink),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Colors.white),
-                        side: MaterialStateProperty.all<BorderSide>(
-                            BorderSide.none)),
-                  ),
-                ),
-                */
-
+                SizedBox(height: size.height * 0.02),
                 GoogleSignIn(),
-
-
               ],
             ),
           ),
-        ));
+        )
+    );
   }
 }

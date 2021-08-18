@@ -26,8 +26,8 @@ class Constants {
 
   //text
   static const title = "Eatnywhere";
-  static const textIntro = "Order your favorite\n";
-  static const textIntroDesc1 = "Food anywhere in\n";
+  static const textIntro = "Eat your favorite\n";
+  static const textIntroDesc1 = "food anywhere in\n";
   static const textIntroDesc2 = "BINALBAGAN";
   static const textSmallSignUp = "Register with your Google account.";
   static const textSignIn = "Sign In";
