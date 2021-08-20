@@ -5,10 +5,11 @@ import 'package:eatnywhere/utils/constants.dart';
 class CustomCard extends StatefulWidget {
   String itemName;
   String itemDescription;
+  String itemPrice;
   Icon trailingIconOne;
   Icon trailingIconTwo;
 
-  CustomCard({required this.itemName, required this.itemDescription, required this.trailingIconOne, required this.trailingIconTwo});
+  CustomCard({required this.itemName, required this.itemDescription, required this.itemPrice, required this.trailingIconOne, required this.trailingIconTwo});
 
   @override
   _CustomCardState createState() => _CustomCardState();
@@ -22,7 +23,7 @@ class _CustomCardState extends State<CustomCard>{
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+
     return new Card(
         child: new Row(
           children: <Widget> [
@@ -47,7 +48,7 @@ class _CustomCardState extends State<CustomCard>{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     new Container (
-                        child: new Text(widget.itemName,
+                        child: new Text('${widget.itemName}: ${widget.itemPrice}',
                           style: TextStyle(  fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Constants.cPink

@@ -40,11 +40,9 @@ class _MenuList extends State<ExtrasList> with AutomaticKeepAliveClientMixin{
                         DataSnapshot snapshot,
                         Animation<double> animation,
                         int index){
-                      return  new CustomCard(itemName: '${snapshot.key}'
-                          ' : '
-                          '${snapshot.value}',
-
-                        itemDescription: "The right kind of buns.",
+                      return  new CustomCard(itemName: '${snapshot.value['Name']}',
+                        itemPrice: snapshot.value['Price'],
+                        itemDescription: "${snapshot.value['Description']}",
                         trailingIconOne: new Icon(Icons.remove, color: Colors.blueAccent,),
                         trailingIconTwo: new Icon(Icons.add, color: Colors.blueAccent,),
                       );

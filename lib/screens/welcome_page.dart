@@ -19,8 +19,8 @@ class WelcomePage extends StatelessWidget {
               children: [
 
                 Container(
-                  width: 160,
-                  height: 200,
+                  width: 200,
+                  height: 250,
                   child: FittedBox(
                     child: Image.asset("assets/images/eatnywhere-logo.png"),
                   ),

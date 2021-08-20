@@ -4,6 +4,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:eatnywhere/utils/constants.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AddMenuPage extends StatefulWidget{
 
@@ -141,7 +142,7 @@ class _AddMenuPage extends State <AddMenuPage>{
             body: TabBarView(
               children: [
                 //Tab 0, Main
-                SafeArea(
+                  SafeArea(
                   child: SingleChildScrollView(
                     child: Container(
                         child: Column(
@@ -247,17 +248,30 @@ class _AddMenuPage extends State <AddMenuPage>{
                             SizedBox(
                               child: Container(
                                 width: size.width*.5,
-                               //height: size.height*.05,
+                                //height: size.height*.05,
                                 child: TextButton(
                                   onPressed: (){
-                                    referenceDatabase
-                                        .child('${widget.storeId}')
-                                        .child('MenuList')
-                                        .update({menuName.text:menuPrice.text})
-                                        .asStream();
 
-                                    menuName.clear();
-                                    menuPrice.clear();
+                                    if (menuName.text=="" || menuPrice.text=="" || menuDescription.text=="")
+                                    {
+                                      Fluttertoast.showToast(msg: "Please fill the form.",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.TOP,
+                                      );
+                                    }
+                                    else{
+                                      referenceDatabase
+                                          .child('${widget.storeId}')
+                                          .child('MenuList')
+                                          .child('${menuName.text}')
+                                          .update({'Name':menuName.text,'Description':menuDescription.text,'Price':menuPrice.text})
+                                          .asStream();
+
+                                      menuDescription.clear();
+                                      menuName.clear();
+                                      menuPrice.clear();
+                                    }
+
                                   },
                                   child: Text(
                                     'Add Menu',
@@ -278,6 +292,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                 ),
                               ),
                             ),
+
                             SizedBox(height: 10,),
 
                             FirebaseAnimatedList(
@@ -289,30 +304,58 @@ class _AddMenuPage extends State <AddMenuPage>{
                                     Animation<double> animation,
                                     int index)
                                 {
-                                  return  new ElevatedButton(
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                    ),
+                                  return  Card(
+                                    child: Row(
+                                      children:<Widget> [
 
-                                    onPressed:() {},
-
-                                    child: new ListTile(
-                                      tileColor: Colors.transparent,
-                                      dense: true,
-                                      visualDensity: VisualDensity(horizontal: 0, vertical: -2),
-                                      minVerticalPadding:12,
-                                      title: new Text(
-                                        '${snapshot.key}'
-                                            ' : '
-                                            '${snapshot.value}',
-                                        style: TextStyle(  fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Constants.cPink
+                                        new Container(
+                                          width: 100,
+                                          height: 80,
+                                          child: FittedBox(
+                                            fit:BoxFit.fill,
+                                            child: Image.asset("assets/images/pizza.png"),
+                                          ),
                                         ),
-                                      ),
-                                      trailing: IconButton(icon: Icon(Icons.delete),
-                                        onPressed: () => referenceDatabase.child('${widget.storeId}').child('MenuList').child('${snapshot.key}').remove(),
-                                      ),
+
+                                        Container(  //Divider
+                                          height: 50.0,
+                                          width: 1.0,
+                                          color: Colors.black54,
+                                          margin: const EdgeInsets.only(left:0, right: 10.0),
+                                        ),
+                                        new Column(
+                                          //crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            new Column (
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                new Container (
+                                                    child: new Text('${snapshot.value['Name']}'' : ''${snapshot.value['Price']}',
+                                                      style: TextStyle(  fontSize: 20,
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Constants.cPink
+                                                      ),
+                                                    )
+                                                ),
+                                                new Container(height: 5.0,),
+                                                new Text('${snapshot.value['Description']}',
+                                                  style: TextStyle(  fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Constants.cPink,
+                                                  ),
+                                                ),
+                                                //  new Divider(height: 15.0,color: Colors.red,),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        new Spacer(flex: 1),
+                                        new IconButton(
+                                          icon: Icon(Icons.delete, color: Colors.grey,),
+                                          onPressed: () => referenceDatabase.child('${widget.storeId}').child('MenuList').child('${snapshot.key}').remove(),
+                                        ),
+
+                                      ],
                                     ),
                                   );
                                 }
@@ -357,13 +400,13 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         hintStyle: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 16.0,
+                                          fontSize: 16,
                                         )
                                     ),
                                   ),
                                 )
                             ),
-                            SizedBox(height: 10,),
+                            SizedBox(height: 8,),
                             SizedBox(
                                 child: Container(
                                   width: size.width*.7,
@@ -389,7 +432,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         hintStyle: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 16.0,
+                                          fontSize: 16,
                                         )
                                     ),
                                   ),
@@ -431,17 +474,29 @@ class _AddMenuPage extends State <AddMenuPage>{
                             SizedBox(
                               child: Container(
                                 width: size.width*.5,
+                                //height: size.height*.05,
                                 child: TextButton(
                                   onPressed: (){
 
-                                    referenceDatabase
-                                        .child('${widget.storeId}')
-                                        .child('BeverageList')
-                                        .update({beverageName.text:beveragePrice.text})
-                                        .asStream();
+                                    if (beverageName.text=="" || beveragePrice.text=="" || beverageDescription.text=="")
+                                    {
+                                      Fluttertoast.showToast(msg: "Please fill the form.",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.TOP,
+                                      );
+                                    }
+                                    else{
+                                      referenceDatabase
+                                          .child('${widget.storeId}')
+                                          .child('BeverageList')
+                                          .child('${beverageName.text}')
+                                          .update({'Name':beverageName.text,'Description':beverageDescription.text,'Price':beveragePrice.text})
+                                          .asStream();
 
-                                    beverageName.clear();
-                                    beveragePrice.clear();
+                                      beverageDescription.clear();
+                                      beverageName.clear();
+                                      beveragePrice.clear();
+                                    }
 
                                   },
                                   child: Text(
@@ -463,7 +518,9 @@ class _AddMenuPage extends State <AddMenuPage>{
                                 ),
                               ),
                             ),
+
                             SizedBox(height: 10,),
+
                             FirebaseAnimatedList(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
@@ -473,30 +530,58 @@ class _AddMenuPage extends State <AddMenuPage>{
                                     Animation<double> animation,
                                     int index)
                                 {
-                                  return  new ElevatedButton(
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                    ),
+                                  return  Card(
+                                    child: Row(
+                                      children:<Widget> [
 
-                                    onPressed:() {},
-
-                                    child: new ListTile(
-                                      tileColor: Colors.transparent,
-                                      dense: true,
-                                      visualDensity: VisualDensity(horizontal: 0, vertical: -2),
-                                      minVerticalPadding:12,
-                                      title: new Text(
-                                        '${snapshot.key}'
-                                            ' : '
-                                            '${snapshot.value}',
-                                        style: TextStyle(  fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Constants.cPink
+                                        new Container(
+                                          width: 100,
+                                          height: 80,
+                                          child: FittedBox(
+                                            fit:BoxFit.fill,
+                                            child: Image.asset("assets/images/pizza.png"),
+                                          ),
                                         ),
-                                      ),
-                                      trailing: IconButton(icon: Icon(Icons.delete),
-                                        onPressed: () => referenceDatabase.child('${widget.storeId}').child('BeverageList').child('${snapshot.key}').remove(),
-                                      ),
+
+                                        Container(  //Divider
+                                          height: 50.0,
+                                          width: 1.0,
+                                          color: Colors.black54,
+                                          margin: const EdgeInsets.only(left:0, right: 10.0),
+                                        ),
+                                        new Column(
+                                          //crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            new Column (
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                new Container (
+                                                    child: new Text('${snapshot.value['Name']}'' : ''${snapshot.value['Price']}',
+                                                      style: TextStyle(  fontSize: 20,
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Constants.cPink
+                                                      ),
+                                                    )
+                                                ),
+                                                new Container(height: 5.0,),
+                                                new Text('${snapshot.value['Description']}',
+                                                  style: TextStyle(  fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Constants.cPink,
+                                                  ),
+                                                ),
+                                                //  new Divider(height: 15.0,color: Colors.red,),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        new Spacer(flex: 1),
+                                        new IconButton(
+                                          icon: Icon(Icons.delete, color: Colors.grey,),
+                                          onPressed: () => referenceDatabase.child('${widget.storeId}').child('BeverageList').child('${snapshot.key}').remove(),
+                                        ),
+
+                                      ],
                                     ),
                                   );
                                 }
@@ -537,17 +622,17 @@ class _AddMenuPage extends State <AddMenuPage>{
                                           borderSide: BorderSide(color: Colors.white),
                                           borderRadius: BorderRadius.circular(16),
                                         ),
-                                        hintText: "Menu Name",
+                                        hintText: "Extra Name",
                                         hintStyle: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 16.0,
+                                          fontSize: 16,
                                         )
                                     ),
                                   ),
                                 )
                             ),
-                            SizedBox(height: 10,),
+                            SizedBox(height: 8,),
                             SizedBox(
                                 child: Container(
                                   width: size.width*.7,
@@ -573,7 +658,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         hintStyle: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 16.0,
+                                          fontSize: 16,
                                         )
                                     ),
                                   ),
@@ -619,14 +704,25 @@ class _AddMenuPage extends State <AddMenuPage>{
                                 child: TextButton(
                                   onPressed: (){
 
-                                    referenceDatabase
-                                        .child('${widget.storeId}')
-                                        .child('ExtrasList')
-                                        .update({extraName.text:extraPrice.text})
-                                        .asStream();
+                                    if (extraName.text=="" || extraPrice.text=="" || extraDescription.text=="")
+                                    {
+                                      Fluttertoast.showToast(msg: "Please fill the form.",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.TOP,
+                                      );
+                                    }
+                                    else{
+                                      referenceDatabase
+                                          .child('${widget.storeId}')
+                                          .child('ExtrasList')
+                                          .child('${extraName.text}')
+                                          .update({'Name':extraName.text,'Description':extraDescription.text,'Price':extraPrice.text})
+                                          .asStream();
 
-                                    extraName.clear();
-                                    extraPrice.clear();
+                                      extraDescription.clear();
+                                      extraName.clear();
+                                      extraPrice.clear();
+                                    }
 
                                   },
                                   child: Text(
@@ -648,7 +744,9 @@ class _AddMenuPage extends State <AddMenuPage>{
                                 ),
                               ),
                             ),
+
                             SizedBox(height: 10,),
+
                             FirebaseAnimatedList(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
@@ -658,30 +756,58 @@ class _AddMenuPage extends State <AddMenuPage>{
                                     Animation<double> animation,
                                     int index)
                                 {
-                                  return  new ElevatedButton(
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                    ),
+                                  return  Card(
+                                    child: Row(
+                                      children:<Widget> [
 
-                                    onPressed:() {},
-
-                                    child: new ListTile(
-                                      tileColor: Colors.transparent,
-                                      dense: true,
-                                      visualDensity: VisualDensity(horizontal: 0, vertical: -2),
-                                      minVerticalPadding:12,
-                                      title: new Text(
-                                        '${snapshot.key}'
-                                            ' : '
-                                            '${snapshot.value}',
-                                        style: TextStyle(  fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Constants.cPink
+                                        new Container(
+                                          width: 100,
+                                          height: 80,
+                                          child: FittedBox(
+                                            fit:BoxFit.fill,
+                                            child: Image.asset("assets/images/pizza.png"),
+                                          ),
                                         ),
-                                      ),
-                                      trailing: IconButton(icon: Icon(Icons.delete),
-                                        onPressed: () => referenceDatabase.child('${widget.storeId}').child('ExtrasList').child('${snapshot.key}').remove(),
-                                      ),
+
+                                        Container(  //Divider
+                                          height: 50.0,
+                                          width: 1.0,
+                                          color: Colors.black54,
+                                          margin: const EdgeInsets.only(left:0, right: 10.0),
+                                        ),
+                                        new Column(
+                                          //crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            new Column (
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                new Container (
+                                                    child: new Text('${snapshot.value['Name']}'' : ''${snapshot.value['Price']}',
+                                                      style: TextStyle(  fontSize: 20,
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Constants.cPink
+                                                      ),
+                                                    )
+                                                ),
+                                                new Container(height: 5.0,),
+                                                new Text('${snapshot.value['Description']}',
+                                                  style: TextStyle(  fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Constants.cPink,
+                                                  ),
+                                                ),
+                                                //  new Divider(height: 15.0,color: Colors.red,),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        new Spacer(flex: 1),
+                                        new IconButton(
+                                          icon: Icon(Icons.delete, color: Colors.grey,),
+                                          onPressed: () => referenceDatabase.child('${widget.storeId}').child('ExtrasList').child('${snapshot.key}').remove(),
+                                        ),
+
+                                      ],
                                     ),
                                   );
                                 }
