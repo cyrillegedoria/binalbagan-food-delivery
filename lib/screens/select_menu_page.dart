@@ -1,10 +1,14 @@
+import 'package:eatnywhere/custom%20widgets/beverage_list.dart';
+import 'package:eatnywhere/custom%20widgets/extras_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:eatnywhere/utils/constants.dart';
-import 'package:eatnywhere/custom widgets/custom_card.dart';
+import 'package:eatnywhere/custom widgets/menu_list.dart';
+import 'package:eatnywhere/custom widgets/beverage_list.dart';
+import 'package:eatnywhere/custom widgets/extras_list.dart';
+
 
 class SelectMenuPage extends StatefulWidget{
 
@@ -118,101 +122,11 @@ class _SelectMenuPage extends State <SelectMenuPage> {
             backgroundColor: Constants.cPrimaryColor,
             body: TabBarView(
               children: [
-                //Tab 0, Main
-                SafeArea(
-                  child: SingleChildScrollView(
-                    child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(height: 10,),
-                            FirebaseAnimatedList(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                query: referenceDatabase.child('${widget.storeId}').child('MenuList'),
-                                itemBuilder: (BuildContext context,
-                                    DataSnapshot snapshot,
-                                    Animation<double> animation,
-                                    int index){
-                                      return  new CustomCard(itemName: '${snapshot.key}'
-                                                ' : '
-                                                '${snapshot.value}',
+                MenuList(storeId: widget.storeId,),
 
-                                          itemDescription: "The right kind of buns.",
-                                          trailingIconOne: new Icon(Icons.remove, color: Colors.blueAccent,),
-                                          trailingIconTwo: new Icon(Icons.add, color: Colors.blueAccent,),
-                                      );
-                                    }
-                            ),
-                          ],
-                        )
-                    ),
-                  ),
-                ),
-                //end Tab 0, Main
+                BeverageList(storeId: widget.storeId),
 
-                //Tab 1, Beverages
-                SafeArea(
-                  child: SingleChildScrollView(
-                    child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(height: 10,),
-                            FirebaseAnimatedList(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                query: referenceDatabase.child('${widget.storeId}').child('BeverageList'),
-                                itemBuilder: (BuildContext context,
-                                    DataSnapshot snapshot,
-                                    Animation<double> animation,
-                                    int index){
-                                      return  new CustomCard(itemName: '${snapshot.key}'
-                                          ' : '
-                                          '${snapshot.value}',
-
-                                        itemDescription: "The best in town!",
-                                        trailingIconOne: new Icon(Icons.remove, color: Colors.blueAccent,),
-                                        trailingIconTwo: new Icon(Icons.add, color: Colors.blueAccent,),
-                                      );
-                                  }
-                            ),
-                          ],
-                        )
-                    ),
-                  ),
-                ),
-                //end Tab 1, Beverages
-
-                //Tab 2, Others/Extras
-                SafeArea(
-                  child: SingleChildScrollView(
-                    child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(height: 10,),
-                            FirebaseAnimatedList(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                query: referenceDatabase.child('${widget.storeId}').child('ExtrasList'),
-                                itemBuilder: (BuildContext context,
-                                    DataSnapshot snapshot,
-                                    Animation<double> animation,
-                                    int index){
-                                      return  new CustomCard(itemName: '${snapshot.key}'
-                                          ' : '
-                                          '${snapshot.value}',
-
-                                        itemDescription: "The best in town!",
-                                        trailingIconOne: new Icon(Icons.remove, color: Colors.blueAccent,),
-                                        trailingIconTwo: new Icon(Icons.add, color: Colors.blueAccent,),
-                                      );
-                                  }
-                            ),
-                          ],
-                        )
-                    ),
-                  ),
-                ),
-                //end Tab 2, Others/Extras
+                ExtrasList(storeId: widget.storeId)
               ],
             )
         )
