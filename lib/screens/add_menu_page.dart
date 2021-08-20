@@ -24,6 +24,15 @@ class _AddMenuPage extends State <AddMenuPage>{
 
   final menuName = TextEditingController();
   final menuPrice = TextEditingController();
+  final menuDescription = TextEditingController();
+
+  final beverageName = TextEditingController();
+  final beveragePrice = TextEditingController();
+  final beverageDescription = TextEditingController();
+
+  final extraName = TextEditingController();
+  final extraPrice = TextEditingController();
+  final extraDescription = TextEditingController();
 
   late Map<dynamic, dynamic> _mapVal;
   late String storeName="";
@@ -141,15 +150,17 @@ class _AddMenuPage extends State <AddMenuPage>{
                             SizedBox(height: 10,),
                             SizedBox(
                                 child: Container(
-                                  width: size.width*.8,
+                                  width: size.width*.7,
+                                  height: size.height*0.045,
                                   child: TextField(
                                     controller:  menuName ,
                                     textAlign: TextAlign.center,
+                                    textAlignVertical: TextAlignVertical.center,
                                     decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(16),
+                                        EdgeInsets.all(12),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -162,24 +173,26 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         hintStyle: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 18.0,
+                                          fontSize: 16,
                                         )
                                     ),
                                   ),
                                 )
                             ),
-                            SizedBox(height: 10,),
+                            SizedBox(height: 8,),
                             SizedBox(
                                 child: Container(
-                                  width: size.width*.8,
+                                  width: size.width*.7,
+                                  height: size.height*0.045,
                                   child: TextField(
                                     controller:  menuPrice ,
                                     textAlign: TextAlign.center,
+                                    textAlignVertical: TextAlignVertical.center,
                                     decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(16),
+                                        EdgeInsets.all(12),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -192,7 +205,39 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         hintStyle: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 18.0,
+                                          fontSize: 16,
+                                        )
+                                    ),
+                                  ),
+                                )
+                            ),
+                            SizedBox(height: 8,),
+                            SizedBox(
+                                child: Container(
+                                  width: size.width*.7,
+                                  height: size.height*0.045,
+                                  child: TextField(
+                                    controller:  menuDescription ,
+                                    textAlign: TextAlign.center,
+                                    textAlignVertical: TextAlignVertical.center,
+                                    decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        contentPadding:
+                                        EdgeInsets.all(12),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Constants.cPink),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        hintText: "Description",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
                                         )
                                     ),
                                   ),
@@ -205,7 +250,6 @@ class _AddMenuPage extends State <AddMenuPage>{
                                //height: size.height*.05,
                                 child: TextButton(
                                   onPressed: (){
-
                                     referenceDatabase
                                         .child('${widget.storeId}')
                                         .child('MenuList')
@@ -214,7 +258,6 @@ class _AddMenuPage extends State <AddMenuPage>{
 
                                     menuName.clear();
                                     menuPrice.clear();
-
                                   },
                                   child: Text(
                                     'Add Menu',
@@ -236,6 +279,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                               ),
                             ),
                             SizedBox(height: 10,),
+
                             FirebaseAnimatedList(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
@@ -245,9 +289,6 @@ class _AddMenuPage extends State <AddMenuPage>{
                                     Animation<double> animation,
                                     int index)
                                 {
-
-
-
                                   return  new ElevatedButton(
                                     style: ButtonStyle(
                                       backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
@@ -276,8 +317,6 @@ class _AddMenuPage extends State <AddMenuPage>{
                                   );
                                 }
                             ),
-
-
                           ],
                         )
                     ),
@@ -295,15 +334,17 @@ class _AddMenuPage extends State <AddMenuPage>{
                             SizedBox(height: 10,),
                             SizedBox(
                                 child: Container(
-                                  width: size.width*.8,
+                                  width: size.width*.7,
+                                  height: size.height*0.045,
                                   child: TextField(
-                                    controller:  menuName ,
+                                    controller:  beverageName ,
                                     textAlign: TextAlign.center,
+                                    textAlignVertical: TextAlignVertical.center,
                                     decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(16),
+                                        EdgeInsets.all(12),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -312,11 +353,11 @@ class _AddMenuPage extends State <AddMenuPage>{
                                           borderSide: BorderSide(color: Colors.white),
                                           borderRadius: BorderRadius.circular(16),
                                         ),
-                                        hintText: "Menu Name",
+                                        hintText: "Beverage Name",
                                         hintStyle: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 18.0,
+                                          fontSize: 16.0,
                                         )
                                     ),
                                   ),
@@ -325,15 +366,17 @@ class _AddMenuPage extends State <AddMenuPage>{
                             SizedBox(height: 10,),
                             SizedBox(
                                 child: Container(
-                                  width: size.width*.8,
+                                  width: size.width*.7,
+                                  height: size.height*0.045,
                                   child: TextField(
-                                    controller:  menuPrice ,
+                                    controller:  beveragePrice ,
                                     textAlign: TextAlign.center,
+                                    textAlignVertical: TextAlignVertical.center,
                                     decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(16),
+                                        EdgeInsets.all(12),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -346,7 +389,39 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         hintStyle: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 18.0,
+                                          fontSize: 16.0,
+                                        )
+                                    ),
+                                  ),
+                                )
+                            ),
+                            SizedBox(height: 8,),
+                            SizedBox(
+                                child: Container(
+                                  width: size.width*.7,
+                                  height: size.height*0.045,
+                                  child: TextField(
+                                    controller:  beverageDescription ,
+                                    textAlign: TextAlign.center,
+                                    textAlignVertical: TextAlignVertical.center,
+                                    decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        contentPadding:
+                                        EdgeInsets.all(12),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Constants.cPink),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        hintText: "Description",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
                                         )
                                     ),
                                   ),
@@ -356,18 +431,17 @@ class _AddMenuPage extends State <AddMenuPage>{
                             SizedBox(
                               child: Container(
                                 width: size.width*.5,
-                                //height: size.height*.05,
                                 child: TextButton(
                                   onPressed: (){
 
                                     referenceDatabase
                                         .child('${widget.storeId}')
                                         .child('BeverageList')
-                                        .update({menuName.text:menuPrice.text})
+                                        .update({beverageName.text:beveragePrice.text})
                                         .asStream();
 
-                                    menuName.clear();
-                                    menuPrice.clear();
+                                    beverageName.clear();
+                                    beveragePrice.clear();
 
                                   },
                                   child: Text(
@@ -399,9 +473,6 @@ class _AddMenuPage extends State <AddMenuPage>{
                                     Animation<double> animation,
                                     int index)
                                 {
-
-
-
                                   return  new ElevatedButton(
                                     style: ButtonStyle(
                                       backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
@@ -430,8 +501,6 @@ class _AddMenuPage extends State <AddMenuPage>{
                                   );
                                 }
                             ),
-
-
                           ],
                         )
                     ),
@@ -449,15 +518,17 @@ class _AddMenuPage extends State <AddMenuPage>{
                             SizedBox(height: 10,),
                             SizedBox(
                                 child: Container(
-                                  width: size.width*.8,
+                                  width: size.width*.7,
+                                  height: size.height*0.045,
                                   child: TextField(
-                                    controller:  menuName ,
+                                    controller:  extraName ,
                                     textAlign: TextAlign.center,
+                                    textAlignVertical: TextAlignVertical.center,
                                     decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(16),
+                                        EdgeInsets.all(12),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -470,7 +541,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         hintStyle: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 18.0,
+                                          fontSize: 16.0,
                                         )
                                     ),
                                   ),
@@ -479,15 +550,17 @@ class _AddMenuPage extends State <AddMenuPage>{
                             SizedBox(height: 10,),
                             SizedBox(
                                 child: Container(
-                                  width: size.width*.8,
+                                  width: size.width*.7,
+                                  height: size.height*0.045,
                                   child: TextField(
-                                    controller:  menuPrice ,
+                                    controller:  extraPrice ,
                                     textAlign: TextAlign.center,
+                                    textAlignVertical: TextAlignVertical.center,
                                     decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(16),
+                                        EdgeInsets.all(12),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -500,7 +573,39 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         hintStyle: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 18.0,
+                                          fontSize: 16.0,
+                                        )
+                                    ),
+                                  ),
+                                )
+                            ),
+                            SizedBox(height: 8,),
+                            SizedBox(
+                                child: Container(
+                                  width: size.width*.7,
+                                  height: size.height*0.045,
+                                  child: TextField(
+                                    controller:  extraDescription ,
+                                    textAlign: TextAlign.center,
+                                    textAlignVertical: TextAlignVertical.center,
+                                    decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        contentPadding:
+                                        EdgeInsets.all(12),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Constants.cPink),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        hintText: "Description",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
                                         )
                                     ),
                                   ),
@@ -517,11 +622,11 @@ class _AddMenuPage extends State <AddMenuPage>{
                                     referenceDatabase
                                         .child('${widget.storeId}')
                                         .child('ExtrasList')
-                                        .update({menuName.text:menuPrice.text})
+                                        .update({extraName.text:extraPrice.text})
                                         .asStream();
 
-                                    menuName.clear();
-                                    menuPrice.clear();
+                                    extraName.clear();
+                                    extraPrice.clear();
 
                                   },
                                   child: Text(
@@ -553,9 +658,6 @@ class _AddMenuPage extends State <AddMenuPage>{
                                     Animation<double> animation,
                                     int index)
                                 {
-
-
-
                                   return  new ElevatedButton(
                                     style: ButtonStyle(
                                       backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
@@ -584,8 +686,6 @@ class _AddMenuPage extends State <AddMenuPage>{
                                   );
                                 }
                             ),
-
-
                           ],
                         )
                     ),
@@ -595,7 +695,6 @@ class _AddMenuPage extends State <AddMenuPage>{
 
               ],
             )
-
 
         )
     );
