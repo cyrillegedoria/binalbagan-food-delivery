@@ -5,7 +5,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:eatnywhere/services/firebase_service.dart';
 import 'package:eatnywhere/utils/constants.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -14,27 +13,18 @@ class HomePage extends StatefulWidget {
 
   @override
   _HomePageState createState() => _HomePageState();
-
-
 }
 
+
 class _HomePageState extends State<HomePage> {
+
   User? user = FirebaseAuth.instance.currentUser;
   final referenceDatabase = FirebaseDatabase.instance.reference().child('StoresList');
-
-
- /* void printDB (){
-    referenceDatabase.once().then((DataSnapshot snapshot){
-    Map<dynamic, dynamic> mapVal = snapshot.value;
-      //print ('Data: ${mapVal.values.toList()[8]['Stores']['StoreName']}');
-     // print (referenceDatabase.);
-
-   });
-  }*/
-
   int _storeCount = 0;
   late int _indexOfStores =0;
   late Map<dynamic, dynamic> _mapVal;
+  final searchTf = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -44,25 +34,24 @@ class _HomePageState extends State<HomePage> {
                 (int i) => setState((){_storeCount=i;})
         );
       }
-
   }
 
   Future<int> returnIndex () async => referenceDatabase.once().then((snapshot){
     Map<dynamic, dynamic> mapVal;
     mapVal = snapshot.value;
-    //print ('Data: ${mapVal.values.toList()[8]['Stores']['StoreName']}');
-    //print('value is:${mapVal.length}');
     _storeCount = mapVal.length;
     _mapVal = snapshot.value;
     return _storeCount;
   });
 
+
   @override
   Widget build(BuildContext context) {
 
+    Size size = MediaQuery.of(context).size;
     final referenceDatabase = FirebaseDatabase.instance.reference().child('StoresList');
     referenceDatabase.once().then((DataSnapshot snapshot) {
-       _mapVal = snapshot.value;
+      _mapVal = snapshot.value;
     });
 
     return Scaffold(
@@ -85,13 +74,10 @@ class _HomePageState extends State<HomePage> {
            Spacer(flex: 10,),
            IconButton(
                onPressed: (){
-                // Navigator.push(
-                 //    context, Constants.addBusinessNavigate);
-                 Navigator.push(
-                     context,
-                     MaterialPageRoute(
-                         builder: (context) => AddBusinessPage()));
-               },
+
+                 Navigator.push(context,MaterialPageRoute(builder: (context) => AddBusinessPage()));
+
+                 },
                icon: Icon(
                  Icons.add_business,
                  size: 30,
@@ -119,15 +105,80 @@ class _HomePageState extends State<HomePage> {
           child: Container(
             child: Column(
                 children: <Widget>[
-                  HomePageBody(),
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    //crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 30 ,),
+                      SizedBox(
+                        width: size.width * .8,
+                        child: TextField(
+                          controller: searchTf,
+                          decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              contentPadding:
+                              EdgeInsets.all(20),
+                              //enabledBorder: border,
+                              //focusedBorder: border,
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(22),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(22),
+                              ),
+                              suffixIcon: Padding(
+                                child: FaIcon(
+                                  FontAwesomeIcons.search,
+                                  size: 25,
+                                  color: Constants.cFontPink,
+                                ),
+                                padding: EdgeInsets.only(top: 10, left: 10),
+                              ),
+                              hintText: "Search food & stores",
+                              hintStyle: TextStyle(
+                                color: Constants.cFontPink,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                              )
+                          ),
+                          onChanged: (searchTf){
+
+                            print(searchTf);
+                            referenceDatabase.orderByChild('Price').equalTo("35").once(),
+
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(children: <TextSpan>[
+                            TextSpan(
+                                text:"Food Stores in Binalbagan",
+                                style: TextStyle(
+                                  color: Constants.cPink,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.0,
+                                )),
+                          ]
+                          )
+                      ),
+                      SizedBox(height: 20,),
+                    ],
+                  ),
+
                   GridView.count(
-                      //physics: ScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                      //dragStartBehavior: DragStartBehavior.start,
+
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         mainAxisSpacing: 1,
                         crossAxisSpacing: 0,
                         crossAxisCount: 2,
+
                         children: List.generate(_storeCount, (index){
                           _indexOfStores = index;
                           return new InkWell(
@@ -197,68 +248,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }// End _HomePageState
-
-//Restaurants
-class HomePageBody extends StatelessWidget {
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      //crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-       SizedBox(height: 30 ,),
-       SizedBox(
-        width: size.width * .8,
-          child: TextField(
-            decoration: InputDecoration(
-              fillColor: Colors.white,
-              filled: true,
-              contentPadding:
-              EdgeInsets.all(20),
-              //enabledBorder: border,
-              //focusedBorder: border,
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                  borderRadius: BorderRadius.circular(22),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                  borderRadius: BorderRadius.circular(22),
-                ),
-              suffixIcon: Padding(
-                child: FaIcon(
-                    FontAwesomeIcons.search,
-                    size: 25,
-                    color: Constants.cFontPink,
-                  ),
-                padding: EdgeInsets.only(top: 10, left: 10),
-              ),
-              hintText: "Search food & stores",
-                hintStyle: TextStyle(
-                  color: Constants.cFontPink,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
-                )
-            ),
-          ),
-        ),
-       SizedBox(height: 30),
-       RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(children: <TextSpan>[
-              TextSpan(
-                  text:"Food Stores in Binalbagan",
-                  style: TextStyle(
-                    color: Constants.cPink,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0,
-                  )),
-                  ]
-              )
-       ),
-       SizedBox(height: 20,),
-      ],
-    );
-  }
-}// End HomePageBody
