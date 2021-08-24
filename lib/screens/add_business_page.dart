@@ -152,6 +152,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                                 .push()
                                 .set({'StoreName':storeNameTf.text, 'StoreAddress':addressTf.text})
                                 .asStream();
+
                             Fluttertoast.showToast(msg: "Success!",
                               toastLength: Toast.LENGTH_LONG,
                               gravity: ToastGravity.TOP,

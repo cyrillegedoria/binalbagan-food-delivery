@@ -7,10 +7,17 @@ import 'package:eatnywhere/services/firebase_service.dart';
 import 'package:eatnywhere/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:eatnywhere/custom widgets/custom_list.dart';
+import 'package:eatnywhere/services/sqflite_search_query.dart';
+import 'package:sqflite/sqflite.dart';
+import 'dart:async';
+import 'package:flutter/widgets.dart';
+import 'package:path/path.dart';
+
+
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -20,21 +27,37 @@ class _HomePageState extends State<HomePage> {
 
   User? user = FirebaseAuth.instance.currentUser;
   final referenceDatabase = FirebaseDatabase.instance.reference().child('StoresList');
+  List<Map<dynamic, dynamic>> lists = [];// added for search
   int _storeCount = 0;
   late int _indexOfStores =0;
   late Map<dynamic, dynamic> _mapVal;
   final searchTf = TextEditingController();
 
+
   @override
   void initState() {
     super.initState();
+
     if  (_storeCount == 0 )
       {
         returnIndex().then(
                 (int i) => setState((){_storeCount=i;})
         );
       }
+    searchTf.addListener(_onSearchChanged);
   }
+
+  @override
+  void dispose(){
+    searchTf.removeListener(_onSearchChanged);
+    searchTf.dispose();
+    super.dispose();
+  }
+
+  _onSearchChanged(){
+    setState(() {});
+  }
+
 
   Future<int> returnIndex () async => referenceDatabase.once().then((snapshot){
     Map<dynamic, dynamic> mapVal;
@@ -103,12 +126,15 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
+            alignment: Alignment.center,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
 
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    //crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 30 ,),
                       SizedBox(
@@ -145,12 +171,7 @@ class _HomePageState extends State<HomePage> {
                                 fontSize: 16.0,
                               )
                           ),
-                          onChanged: (searchTf){
 
-                            print(searchTf);
-                            referenceDatabase.orderByChild('Price').equalTo("35").once(),
-
-                          },
                         ),
                       ),
                       SizedBox(height: 30),
@@ -171,74 +192,42 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
 
-                  GridView.count(
+                  FutureBuilder(
 
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        mainAxisSpacing: 1,
-                        crossAxisSpacing: 0,
-                        crossAxisCount: 2,
+                      future: searchTf.text==""? referenceDatabase.orderByChild("StoreName").startAt("").once() : referenceDatabase.orderByChild("StoreName").startAt(searchTf.text.toUpperCase()).endAt(searchTf.text).once(),
 
-                        children: List.generate(_storeCount, (index){
-                          _indexOfStores = index;
-                          return new InkWell(
-                            onTap: (){
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SelectMenuPage('${_mapVal.keys.toList()[index]}')));
-                            print('${_mapVal.keys.toList()[index]}');
-                            },
-                            child: SizedBox(
-                              child: Container(
-                                margin: EdgeInsets.all(10),
-                                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Constants.cLightGreen,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0)),
-                                ),
-                                child:  Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget> [
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text('${_mapVal.values.toList()[_indexOfStores]['StoreName']}',
-                                        style: TextStyle(
-                                          color: Constants.cPink,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.0,
-                                        ),
-                                      ),
+                      builder: (context, AsyncSnapshot<DataSnapshot> snapshot){
+
+                          try{
+                            lists.clear();
+                            Map<dynamic, dynamic> values = snapshot.data!.value;
+                            values.forEach((key, values) {
+                              lists.add(values);
+                              //print("This is from List ${values.}");
+                            });
+
+                            return new ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: lists.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Card(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(lists[index]["StoreName"]),
+                                        Text(lists[index]["StoreAddress"]),
+                                      ],
                                     ),
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text('${_mapVal.values.toList()[_indexOfStores]['StoreAddress']}',
-                                        style: TextStyle(
-                                          color: Constants.cPink,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12.0,
-                                        ),
-                                      ),
-                                    ),
-                                    Spacer(flex: 1,),
-                                    Container(
-                                      child: FittedBox(
-                                        fit:BoxFit.fill,
-                                        child: Image.asset("assets/images/pizza.png"),
-                                      ),
-                                    ),
+                                  );
 
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        })
-                    ),
+                                });
 
+                          }
+                          catch(e){
+                             return CircularProgressIndicator();
+                          }
+                      }
+                  )
                 ],
                 )
             ),
@@ -247,4 +236,4 @@ class _HomePageState extends State<HomePage> {
 
     );
   }
-}// End _HomePageState
+}
