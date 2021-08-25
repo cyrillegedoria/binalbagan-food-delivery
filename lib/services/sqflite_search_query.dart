@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import  'package:eatnywhere/screens/home_page.dart';
 
-Future <void> CcgSearch() async {
-  WidgetsFlutterBinding.ensureInitialized();
+
+Future <void> CgDbHelper() async {
+  //WidgetsFlutterBinding.ensureInitialized();
 
 
   List<Map<dynamic, dynamic>> lists = [];
@@ -15,16 +17,16 @@ Future <void> CcgSearch() async {
   //print("This... ${lists.toString()}");
 
   final database = openDatabase(
-    join(await getDatabasesPath(), 'search_db.db'),
+    join(await getDatabasesPath(), 'search_db_1.db'),
     onCreate: (db, version) {
       // Run the CREATE TABLE statement on the database.
       return db.execute(
-        'CREATE TABLE search(id TEXT PRIMARY KEY, storeName TEXT, storeAddress TEXT)',
+        'CREATE TABLE search(id TEXT PRIMARY KEY, storeName TEXT, storeAddress TEXT, storeDbMap TEXT)',
       );
     },
     // Set the version. This executes the onCreate function and provides a
     // path to perform database upgrades and downgrades.
-    version: 1,
+    version: 2,
   );
 
 
@@ -44,12 +46,12 @@ Future <void> CcgSearch() async {
   }
 
 
-  //Method to retrieve data from Store database
-  Future<List<Store>> store() async {
+  //Method to retrieve data from search_db_1 database
+  Future<List<Store>> getStore() async {
     // Get a reference to the database.
     final db = await database;
 
-    // Query the table for all The Dogs.
+    // Query the table for all Stores.
     final List<Map<String, dynamic>> maps = await db.query('search');
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
@@ -58,6 +60,7 @@ Future <void> CcgSearch() async {
         id: maps[i]['id'],
         storeName: maps[i]['storeName'],
         storeAddress: maps[i]['storeAddress'],
+        storeDbMap: maps[i]['storeDbMap']
       );
     });
   }
@@ -99,12 +102,11 @@ Future <void> CcgSearch() async {
     Database db = await database;
     List<String> columnsToSelect = ['id','storeName','storeAddress'];
     String whereString = 'name = ?';
-    String searchCriteria = "Y";
+    String searchCriteria = "ketchup";
     //List<dynamic> whereArguments = [searchCriteria];
-    List<Map> result = await db.rawQuery("SELECT * FROM search WHERE storeName LIKE '%${searchCriteria}%' OR storeAddress LIKE '%${searchCriteria}%'");
+    List<Map> result = await db.rawQuery("SELECT * FROM search WHERE storeDbMap LIKE '%${searchCriteria}%'");
     // print the results
     result.forEach((row) => print(row));
-    // {_id: 1, name: Bob, age: 23}
 
   }
 
@@ -115,8 +117,9 @@ Future <void> CcgSearch() async {
 
   }
 
-
+//Retrieve Stores from firebase and transfer to local db
   referenceDatabase.once().then((DataSnapshot snapshot) {
+    _queryDelete();
     Map<dynamic, dynamic> values = snapshot.value;
     values.forEach((key, values) async {
       lists.add(values);
@@ -126,20 +129,20 @@ Future <void> CcgSearch() async {
           id: '${key.toString()}',
           storeName: '${values["StoreName"].toString()}',
           storeAddress: '${values["StoreAddress"].toString()}',
+          storeDbMap: '${values.toString()}'
       );
-
       await insertStore (_store);
-
+      //print('Trying to print firebase map -- ${values.toString()}');
     });
   });
 
 
 
-  print(await store());
+  //print(await getStore());
  // await deleteDog(1);
   //_queryDelete();
-
   //_query();
+
 }
 
 
@@ -148,11 +151,13 @@ class Store {
   final String id;
   final String storeName;
   final String storeAddress;
+  final String storeDbMap;
 
   Store({
     required this.id,
     required this.storeName,
     required this.storeAddress,
+    required this.storeDbMap
   });
 
   // Convert a Dog into a Map. The keys must correspond to the names of the
@@ -162,6 +167,7 @@ class Store {
       'id': id,
       'storeName': storeName,
       'storeAddress': storeAddress,
+      'storeDbMap': storeDbMap
     };
   }
 
@@ -169,6 +175,6 @@ class Store {
   // each dog when using the print statement.
   @override
   String toString() {
-    return 'Store{id: $id, storeName: $storeName, storeAddress: $storeAddress}';
+    return 'Store{id: $id, storeName: $storeName, storeAddress: $storeAddress, storeDbMap: $storeDbMap}';
   }
 }
