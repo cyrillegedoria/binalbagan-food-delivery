@@ -1,30 +1,32 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-
-void CcgSearch() async {
-
+Future <void> CcgSearch() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //List<Map<dynamic, dynamic>> lists = [];
-  //final referenceDatabase = FirebaseDatabase.instance.reference().child('StoresList');
+
+  List<Map<dynamic, dynamic>> lists = [];
+  final referenceDatabase = FirebaseDatabase.instance.reference().child('StoresList');
+
+  //print("This... ${lists.toString()}");
 
   final database = openDatabase(
-
-    join(await getDatabasesPath(), 'search_database.db'),
+    join(await getDatabasesPath(), 'search_db.db'),
     onCreate: (db, version) {
       // Run the CREATE TABLE statement on the database.
       return db.execute(
-        'CREATE TABLE search(id INTEGER PRIMARY KEY, storeName TEXT, storeAddress TEXT)',
+        'CREATE TABLE search(id TEXT PRIMARY KEY, storeName TEXT, storeAddress TEXT)',
       );
     },
     // Set the version. This executes the onCreate function and provides a
     // path to perform database upgrades and downgrades.
     version: 1,
   );
+
 
   //Method to insert data on Store database
   Future<void> insertStore(Store store) async {
@@ -60,6 +62,22 @@ void CcgSearch() async {
     });
   }
 
+//DELETE
+  Future<void> deleteDog(int id) async {
+    // Get a reference to the database.
+    final db = await database;
+
+    // Remove the Dog from the database.
+    await db.delete(
+      'search',
+      // Use a `where` clause to delete a specific dog.
+      where: 'id = ?',
+      // Pass the Dog's id as a whereArg to prevent SQL injection.
+      whereArgs: [id],
+    );
+  }
+  
+
 //Method to update database
   Future<void> updateStore(Store store) async {
     // Get a reference to the database.
@@ -76,7 +94,6 @@ void CcgSearch() async {
     );
   }
 
-
 //CCG Search Query
   _query () async {
     Database db = await database;
@@ -92,43 +109,43 @@ void CcgSearch() async {
   }
 
 
+  _queryDelete () async {
+    Database db = await database;
+    db.delete("search");
+
+  }
 
 
+  referenceDatabase.once().then((DataSnapshot snapshot) {
+    Map<dynamic, dynamic> values = snapshot.value;
+    values.forEach((key, values) async {
+      lists.add(values);
+      //print('This is from QUERY --- ${values["StoreName"]} - ${values["StoreAddress"]} - ${key}');
+      //print("${key}");
+      var _store = Store(
+          id: '${key.toString()}',
+          storeName: '${values["StoreName"].toString()}',
+          storeAddress: '${values["StoreAddress"].toString()}',
+      );
 
+      await insertStore (_store);
 
-  var store0 = Store(
-    id: 0,
-    storeName: 'Rainbrew',
-    storeAddress: 'San Pedro',
-  );
-
-  var store1 = Store(
-    id: 1,
-    storeName: 'Kitty Cafe',
-    storeAddress: 'San Teodoro',
-  );
-
-  var store2 = Store(
-    id: 2,
-    storeName: 'Cyrille',
-    storeAddress: 'Paglaum, Village 1',
-  );
-
-
-  await insertStore(store0);
-  await insertStore(store1);
-  await insertStore(store2);
+    });
+  });
 
 
 
   print(await store());
+ // await deleteDog(1);
+  //_queryDelete();
+
   //_query();
 }
 
 
 
 class Store {
-  final int id;
+  final String id;
   final String storeName;
   final String storeAddress;
 

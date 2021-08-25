@@ -1,5 +1,4 @@
 import 'package:eatnywhere/screens/add_business_page.dart';
-import 'package:eatnywhere/screens/select_menu_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,16 +6,15 @@ import 'package:eatnywhere/services/firebase_service.dart';
 import 'package:eatnywhere/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:eatnywhere/custom widgets/custom_list.dart';
 import 'package:eatnywhere/services/sqflite_search_query.dart';
-import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'package:flutter/widgets.dart';
-import 'package:path/path.dart';
+
 
 
 
 class HomePage extends StatefulWidget {
+
   HomePage({Key? key}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
@@ -34,9 +32,13 @@ class _HomePageState extends State<HomePage> {
   final searchTf = TextEditingController();
 
 
+
+
   @override
   void initState() {
     super.initState();
+
+    CcgSearch(); //Call sqflite_search_query to populate local database.
 
     if  (_storeCount == 0 )
       {
@@ -45,6 +47,7 @@ class _HomePageState extends State<HomePage> {
         );
       }
     searchTf.addListener(_onSearchChanged);
+
   }
 
   @override
@@ -76,6 +79,8 @@ class _HomePageState extends State<HomePage> {
     referenceDatabase.once().then((DataSnapshot snapshot) {
       _mapVal = snapshot.value;
     });
+
+
 
     return Scaffold(
       backgroundColor: Constants.cPrimaryColor,
@@ -205,11 +210,11 @@ class _HomePageState extends State<HomePage> {
                               lists.add(values);
                               //print("This is from List ${values.}");
                             });
-
                             return new ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: lists.length,
                                 itemBuilder: (BuildContext context, int index) {
+                                  //CcgSearch(index, lists[index]["StoreName"], lists[index]["StoreAddress"]);
                                   return Card(
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,7 +224,6 @@ class _HomePageState extends State<HomePage> {
                                       ],
                                     ),
                                   );
-
                                 });
 
                           }
