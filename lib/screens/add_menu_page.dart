@@ -161,7 +161,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(12),
+                                        EdgeInsets.all(15),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -193,7 +193,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(12),
+                                        EdgeInsets.all(15),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -225,7 +225,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(12),
+                                        EdgeInsets.all(15),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -387,7 +387,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(12),
+                                        EdgeInsets.all(15),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -419,7 +419,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(12),
+                                        EdgeInsets.all(15),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -451,7 +451,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(12),
+                                        EdgeInsets.all(15),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -613,7 +613,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(12),
+                                        EdgeInsets.all(15),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -645,7 +645,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(12),
+                                        EdgeInsets.all(15),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),
@@ -677,7 +677,7 @@ class _AddMenuPage extends State <AddMenuPage>{
                                         filled: true,
                                         fillColor: Colors.white,
                                         contentPadding:
-                                        EdgeInsets.all(12),
+                                        EdgeInsets.all(15),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: BorderSide(color: Constants.cPink),
                                           borderRadius: BorderRadius.circular(16),

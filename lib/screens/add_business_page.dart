@@ -43,7 +43,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
             Container(
               child: Text('Add Store'),
             ),
-            Spacer(flex: 100,),
+            Spacer(flex: 1,),
             IconButton(
                 onPressed: (){
                       Navigator.pushReplacementNamed(
@@ -52,10 +52,10 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                 icon: Icon(
                     Icons.home,
                     color: Constants.cPink,
-                    size: 30,
+                    size:   30,
                 )
             ),
-            Spacer (flex: 1),
+
           ],
         ),
       ),
@@ -70,15 +70,17 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                   SizedBox(height: 10,),
                   SizedBox(
                     child: Container(
-                      width: size.width*.8,
+                      width: size.width*.7,
+                      height: size.height*0.045,
                       child: TextField(
                         controller:  storeNameTf ,
                         textAlign: TextAlign.center,
+                        textAlignVertical: TextAlignVertical.center,
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
                             contentPadding:
-                            EdgeInsets.all(16),
+                            EdgeInsets.all(15),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Constants.cPink),
                               borderRadius: BorderRadius.circular(16),
@@ -91,7 +93,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                             hintStyle: TextStyle(
                               color: Colors.grey,
                               fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
+                              fontSize: 16.0,
                             )
                         ),
                       ),
@@ -102,15 +104,17 @@ class _AddBusinessPage extends State <AddBusinessPage>{
 
                   SizedBox(
                     child: Container(
-                      width: size.width*.8,
+                      width: size.width*.7,
+                      height: size.height*0.045,
                       child: TextField(
                         controller:  addressTf ,
                         textAlign: TextAlign.center,
+                        textAlignVertical: TextAlignVertical.center,
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
                             contentPadding:
-                            EdgeInsets.all(16),
+                            EdgeInsets.all(15),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Constants.cPink),
                               borderRadius: BorderRadius.circular(16),
@@ -123,7 +127,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                             hintStyle: TextStyle(
                               color: Colors.grey,
                               fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
+                              fontSize: 16.0,
                             )
                         ),
                       ),
@@ -134,9 +138,8 @@ class _AddBusinessPage extends State <AddBusinessPage>{
 
                   SizedBox(
                     child: Container(
-
                       width: size.width*.5,
-                      height: size.height*.05,
+                      //height: size.height*.05,
                       child: TextButton(
                         onPressed: (){
                           if (storeNameTf.text=="" || addressTf.text=="")

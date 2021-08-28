@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:eatnywhere/services/sqflite_search_query.dart';
 import 'dart:async';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -62,6 +63,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Constants.cPrimaryColor,
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Constants.cPrimaryColor,
         title: Row(
          children: [
@@ -73,15 +75,13 @@ class _HomePageState extends State<HomePage> {
            ),
           // Spacer(flex: 100,),
            SizedBox(width: 10,),
-           Container(
-            child: Text(user!.displayName!),
-           ),
+          // Container(
+          //  child: Text(user!.displayName!),
+          // ),
            Spacer(flex: 10,),
            IconButton(
                onPressed: (){
-
                  Navigator.push(context,MaterialPageRoute(builder: (context) => AddBusinessPage()));
-
                  },
                icon: Icon(
                  Icons.add_business,
@@ -107,167 +107,174 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Container(
-            alignment: Alignment.center,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-
-                  Column(
+          child: Column(
+            children:<Widget> [
+              Container(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 30 ,),
-                      SizedBox(
-                        width: size.width * .8,
-                        child: Container(
-                            child: TextField(
-                              controller: searchTf,
-                              decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  filled: true,
-                                  contentPadding:
-                                  EdgeInsets.all(20),
-                                  //enabledBorder: border,
-                                  //focusedBorder: border,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(22),
+                    children: <Widget>[
+                      Column(
+                        children: [
+                          SizedBox(height: 10,),
+                          SizedBox(
+                            width: size.width * .8,
+                            child: Container(
+                                child: TextField(
+                                  controller: searchTf,
+                                  decoration: InputDecoration(
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      contentPadding:
+                                      EdgeInsets.all(15),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.white),
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.white),
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      prefixIcon: Icon(Icons.search_sharp, color: Colors.grey,),
+                                      hintText: "Search food & stores",
+                                      hintStyle: TextStyle(
+                                        color: Constants.cFontPink,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14.0,
+                                      )
                                   ),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(22),
-                                  ),
-                                  suffixIcon: Padding(
-                                    child: FaIcon(
-                                      FontAwesomeIcons.search,
-                                      size: 25,
-                                      color: Constants.cFontPink,
-                                    ),
-                                    padding: EdgeInsets.only(top: 10, left: 10),
-                                  ),
-                                  hintText: "Search food & stores",
-                                  hintStyle: TextStyle(
-                                    color: Constants.cFontPink,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                  )
-                              ),
-                            )
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Container(
-                        child: Text("Food Stores in Binalbagan",
-                          style: TextStyle(color: Constants.cPink,fontWeight: FontWeight.bold,fontSize: 24,),
-                        ),
+                                )
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Container(
+                            child: Text("Food Stores in Binalbagan",
+                              style: TextStyle(color: Constants.cPink,fontWeight: FontWeight.bold,fontSize: 20,),
+                            ),
+                          ),
+
+                          SizedBox(height: 6,),
+                        ],
                       ),
 
-                      SizedBox(height: 3,),
-                    ],
-                  ),
+                      FutureBuilder<List<Store>>(
 
-                  FutureBuilder<List<Store>>(
+                        future: searchDb.getStore(searchTf.text),
+                        builder: (context,AsyncSnapshot<List<Store>> snapshot){
 
-                    future: searchDb.getStore(searchTf.text),
-                    builder: (context,AsyncSnapshot<List<Store>> snapshot){
-                      if(!snapshot.hasData){
-                        // print('ERROR xxxxx No Data!');
-                        return CircularProgressIndicator();
-                      }
-                      //print('This is from snapshot.data ---- ${snapshot.data}');
-                      return new ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (BuildContext context, int index) {
-
-                            return new InkWell(
-                              onTap: (){
-
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SelectMenuPage('${snapshot.data![index].id}')));
-
-                              },
-                              child: new Container(
-                                child: new Card(
-                                  child: Row(
-
-                                    children:<Widget> [
-                                      new Container(
-                                        width: 60,
-                                        height: 80,
-                                        margin: const EdgeInsets.only(left:15, right: 15.0),
-                                        child: CircleAvatar(
-                                          backgroundColor: Constants.cMint,
-                                          child: new Text("${snapshot.data![index].storeName.toString()[0]}${snapshot.data![index].storeName.toString()[1]}",style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold,color: Colors.white),),
-                                        ),
-                                      ),
-                                      new Container(  //Divider
-                                        height: 60.0,
-                                        width: .5,
-                                        color: Colors.black54,
-                                        margin: const EdgeInsets.only(left:0, right: 10.0),
-                                      ),
-                                      new Column(
-                                        //crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          new Column (
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                          if(!snapshot.hasData){
+                            searchTf.clear();
+                            return CircularProgressIndicator(color: Constants.cLightGreen,);
+                          }
+                          else {
+                            return new ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return new InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SelectMenuPage(
+                                                        '${snapshot.data![index]
+                                                            .id}')));
+                                      },
+                                      child: new Container(
+                                        height: 110,
+                                        child: new Card(
+                                          elevation: 2,
+                                          child: Row(
                                             children: <Widget>[
-                                              new Container (
-                                                  child: new Text('${snapshot.data![index].storeName}',
-                                                    style: TextStyle(  fontSize: 20,
+                                              new Container(
+                                                width: 60,
+                                                height: 80,
+                                                margin: const EdgeInsets.only(
+                                                    left: 15, right: 15.0),
+                                                child: CircleAvatar(
+                                                  backgroundColor: Constants.cMint,
+                                                  child: new Text(
+                                                    "${snapshot.data![index]
+                                                        .storeName
+                                                        .toString()[0]}"
+                                                        "${snapshot
+                                                        .data![index].storeName
+                                                        .toString()[1]}",
+                                                    style: TextStyle(fontSize: 26,
                                                         fontWeight: FontWeight.bold,
-                                                        color: Constants.cPink
-                                                    ),
-                                                  )
-                                              ),
-                                              new Container(height: 1.0,),
-                                              new Text('${snapshot.data![index].storeAddress}',
-                                                style: TextStyle(  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Constants.cPink,
+                                                        color: Colors.white),),
                                                 ),
                                               ),
-                                              //  new Divider(height: 15.0,color: Colors.red,),
+                                              new Container( //Divider
+                                                height: 35.0,
+                                                width: .5,
+                                                color: Colors.black54,
+                                                margin: const EdgeInsets.only(
+                                                    left: 0, right: 10.0),
+                                              ),
+                                              new Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: <Widget>[
+                                                  new Container (
+                                                      child: new Text(
+                                                        '${snapshot.data![index].storeName}',
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight: FontWeight.bold,
+                                                            color: Constants.cPink
+                                                        ),
+                                                      )
+                                                  ),
+                                                  new Container(height: 1.5,),
+                                                  new Container(
+                                                    child: new Text(
+                                                      '${snapshot.data![index].storeAddress}',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Constants.cPink,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              new Spacer(flex: 1,),
+                                              new Container( //Divider
+                                                height: 60.0,
+                                                width: .5,
+                                                color: Colors.black54,
+                                                margin: const EdgeInsets.only(
+                                                    left: 0, right: 10.0),
+                                              ),
+                                              new Container(
+                                                width: 130,
+                                                height: 72,
+                                                child: FittedBox(
+                                                  child: Image.network(
+                                                      'https://scontent.fceb1-2.fna.fbcdn.net/v/t39.30808-6/236991651_804507973568079_6434103538071546863_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_eui2=AeHbOmdIvS-1sZYaJ_DPznmuxNeiLDwV6oDE16IsPBXqgNJMUCNUyv55C3R0Dlo8BBQ_bCNUc87kH5CkWVNGYKRx&_nc_ohc=X4ZeEwnSHx8AX9QNGdn&_nc_ht=scontent.fceb1-2.fna&oh=25c5bd6456425e447a611f5cf2a77ab8&oe=612AAB8F'),
+                                                ),
+                                              )
+
                                             ],
-                                          )
-                                        ],
-                                      ),
-                                      new Spacer(flex: 1,),
-                                      new Container(  //Divider
-                                        height: 35.0,
-                                        width: .5,
-                                        color: Colors.black54,
-                                        margin: const EdgeInsets.only(left:0, right: 10.0),
-                                      ),
-                                      new Container(
-                                        width: 130,
-                                        height: 72,
-                                        child: FittedBox(
-                                          child: Image.network('https://scontent.fceb1-2.fna.fbcdn.net/v/t39.30808-6/236991651_804507973568079_6434103538071546863_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_eui2=AeHbOmdIvS-1sZYaJ_DPznmuxNeiLDwV6oDE16IsPBXqgNJMUCNUyv55C3R0Dlo8BBQ_bCNUc87kH5CkWVNGYKRx&_nc_ohc=X4ZeEwnSHx8AX9QNGdn&_nc_ht=scontent.fceb1-2.fna&oh=25c5bd6456425e447a611f5cf2a77ab8&oe=612AAB8F'),
+                                          ),
                                         ),
+
                                       )
-
-                                    ],
-                                  ),
-                                ),
-
-                              )
+                                  );
+                                }
                             );
                           }
-                      );
+                        },
+                      )
 
-                    },
+                    ],
                   )
-
-                ],
-                )
-            ),
+              ),
+            ],
+          )
           ),
         ),
 

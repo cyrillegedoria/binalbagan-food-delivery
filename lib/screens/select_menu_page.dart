@@ -123,9 +123,7 @@ class _SelectMenuPage extends State <SelectMenuPage> {
             body: TabBarView(
               children: [
                 MenuList(storeId: widget.storeId,),
-
                 BeverageList(storeId: widget.storeId),
-
                 ExtrasList(storeId: widget.storeId)
               ],
             )
