@@ -10,7 +10,6 @@ import  'package:eatnywhere/screens/home_page.dart';
 Future <void> CgDbHelper() async {
   //WidgetsFlutterBinding.ensureInitialized();
 
-
   List<Map<dynamic, dynamic>> lists = [];
   final referenceDatabase = FirebaseDatabase.instance.reference().child('StoresList');
 

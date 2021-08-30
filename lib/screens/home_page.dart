@@ -5,8 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:eatnywhere/services/firebase_service.dart';
 import 'package:eatnywhere/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:eatnywhere/services/sqflite_search_query.dart';
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,29 +13,22 @@ import 'package:path/path.dart';
 
 
 
-
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
-
 }
-
 
 class _HomePageState extends State<HomePage> {
 
   User? user = FirebaseAuth.instance.currentUser;
   final searchTf = TextEditingController();
 
-
   @override
   void initState() {
     WidgetsFlutterBinding.ensureInitialized();
-    CgDbHelper(); //Call sqflite_search_query to populate local database.
-    //SearchDb().getStore("");
     super.initState();
-
     searchTf.addListener(_onSearchChanged);
   }
 
@@ -52,13 +43,10 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     SearchDb searchDb = SearchDb();
-
-
 
     return Scaffold(
       backgroundColor: Constants.cPrimaryColor,
@@ -66,6 +54,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         backgroundColor: Constants.cPrimaryColor,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
          children: [
           Container(
            child: CircleAvatar(
@@ -73,41 +62,61 @@ class _HomePageState extends State<HomePage> {
               radius: 15,
             ),
            ),
-          // Spacer(flex: 100,),
-           SizedBox(width: 10,),
+           Container(width: 5,),
           // Container(
           //  child: Text(user!.displayName!),
           // ),
-           Spacer(flex: 10,),
-           IconButton(
-               onPressed: (){
-                 Navigator.push(context,MaterialPageRoute(builder: (context) => AddBusinessPage()));
-                 },
-               icon: Icon(
-                 Icons.add_business,
-                 size: 30,
-               )
-           ),
-           Spacer (flex: 1),
-           IconButton(
-              icon: Icon(
-              Icons.logout,
-              color: Constants.cPink,
-                size: 30,
-              ),
-              onPressed: () async {
-              FirebaseService service = new FirebaseService();
-              await service.signOutFromGoogle();
-              Navigator.pushReplacementNamed(
-              context, Constants.welcomeNavigate);
-                },
+           user!.email == "georginasniper@gmail.com"?
+           Container(
+             width: 30,
+             height: 30,
+             padding: EdgeInsets.all(0),
+             decoration: BoxDecoration(
+                 color: Colors.white,
+                 shape: BoxShape.circle
              ),
+             child: IconButton(
+                 onPressed: (){
+                   Navigator.push(context,MaterialPageRoute(builder: (context) => AddBusinessPage()));
+                 },
+                 icon: Icon(
+                   Icons.add_business,
+                   color: Constants.cPink,
+                   size: 16,
+                 )
+             ),
+           ): Container(),
+           user!.email == "georginasniper@gmail.com"?Container(width: 5,): Container(),
+           Container(
+             width: 30,
+             height: 30,
+             padding: EdgeInsets.all(0),
+             decoration: BoxDecoration(
+                 color: Colors.white,
+                 shape: BoxShape.circle
+             ),
+             child: IconButton(
+               icon: Icon(
+                 Icons.logout,
+                 color: Constants.cPink,
+                 size: 16,
+               ),
+               onPressed: () async {
+                 FirebaseService service = new FirebaseService();
+                 await service.signOutFromGoogle();
+                 Navigator.pushReplacementNamed(
+                     context, Constants.welcomeNavigate);
+               },
+             ),
+           )
           ],
         ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children:<Widget> [
               Container(
                   child: Column(
@@ -116,6 +125,37 @@ class _HomePageState extends State<HomePage> {
                     children: <Widget>[
                       Column(
                         children: [
+
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                            alignment: Alignment.centerLeft,
+                            child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text("Hi ${user!.displayName},",
+                                style: GoogleFonts.signika(color: Constants.cPink,fontSize: 20,fontWeight: FontWeight.w100),
+                              ),
+                            )
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                            alignment: Alignment.centerLeft,
+                            child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text("Grab your",
+                                style: GoogleFonts.signika(color: Constants.cPink,fontSize: 40,fontWeight: FontWeight.w500),
+                              ),
+                            )
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                            alignment: Alignment.centerLeft,
+                            child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text("delicious meal.",
+                                style: GoogleFonts.signika(color: Constants.cPink,fontSize: 55,fontWeight: FontWeight.w600),
+                              ),
+                            )
+                          ),
                           SizedBox(height: 10,),
                           SizedBox(
                             width: size.width * .8,
@@ -136,27 +176,16 @@ class _HomePageState extends State<HomePage> {
                                         borderRadius: BorderRadius.circular(25),
                                       ),
                                       prefixIcon: Icon(Icons.search_sharp, color: Colors.grey,),
-                                      hintText: "Search food & stores",
-                                      hintStyle: TextStyle(
-                                        color: Constants.cFontPink,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14.0,
-                                      )
+                                      hintText: "Search for food or stores  ",
+                                      hintStyle: GoogleFonts.signika(color: Constants.cPink,fontSize: 26,fontWeight: FontWeight.w100),
                                   ),
                                 )
                             ),
                           ),
                           SizedBox(height: 20),
-                          Container(
-                            child: Text("Food Stores in Binalbagan",
-                              style: TextStyle(color: Constants.cPink,fontWeight: FontWeight.bold,fontSize: 20,),
-                            ),
-                          ),
 
-                          SizedBox(height: 6,),
                         ],
                       ),
-
                       FutureBuilder<List<Store>>(
 
                         future: searchDb.getStore(searchTf.text),
@@ -167,105 +196,66 @@ class _HomePageState extends State<HomePage> {
                             return CircularProgressIndicator(color: Constants.cLightGreen,);
                           }
                           else {
-                            return new ListView.builder(
+                              return GridView.count(
                                 physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return new InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SelectMenuPage(
-                                                        '${snapshot.data![index]
-                                                            .id}')));
-                                      },
-                                      child: new Container(
-                                        height: 110,
-                                        child: new Card(
-                                          elevation: 2,
-                                          child: Row(
-                                            children: <Widget>[
-                                              new Container(
-                                                width: 60,
-                                                height: 80,
-                                                margin: const EdgeInsets.only(
-                                                    left: 15, right: 15.0),
-                                                child: CircleAvatar(
-                                                  backgroundColor: Constants.cMint,
-                                                  child: new Text(
-                                                    "${snapshot.data![index]
-                                                        .storeName
-                                                        .toString()[0]}"
-                                                        "${snapshot
-                                                        .data![index].storeName
-                                                        .toString()[1]}",
-                                                    style: TextStyle(fontSize: 26,
-                                                        fontWeight: FontWeight.bold,
-                                                        color: Colors.white),),
-                                                ),
-                                              ),
-                                              new Container( //Divider
-                                                height: 35.0,
-                                                width: .5,
-                                                color: Colors.black54,
-                                                margin: const EdgeInsets.only(
-                                                    left: 0, right: 10.0),
-                                              ),
-                                              new Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  new Container (
-                                                      child: new Text(
-                                                        '${snapshot.data![index].storeName}',
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            fontWeight: FontWeight.bold,
-                                                            color: Constants.cPink
-                                                        ),
-                                                      )
-                                                  ),
-                                                  new Container(height: 1.5,),
-                                                  new Container(
-                                                    child: new Text(
-                                                      '${snapshot.data![index].storeAddress}',
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight: FontWeight.bold,
-                                                        color: Constants.cPink,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              new Spacer(flex: 1,),
-                                              new Container( //Divider
-                                                height: 60.0,
-                                                width: .5,
-                                                color: Colors.black54,
-                                                margin: const EdgeInsets.only(
-                                                    left: 0, right: 10.0),
-                                              ),
-                                              new Container(
-                                                width: 130,
-                                                height: 72,
-                                                child: FittedBox(
-                                                  child: Image.network(
-                                                      'https://scontent.fceb1-2.fna.fbcdn.net/v/t39.30808-6/236991651_804507973568079_6434103538071546863_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_eui2=AeHbOmdIvS-1sZYaJ_DPznmuxNeiLDwV6oDE16IsPBXqgNJMUCNUyv55C3R0Dlo8BBQ_bCNUc87kH5CkWVNGYKRx&_nc_ohc=X4ZeEwnSHx8AX9QNGdn&_nc_ht=scontent.fceb1-2.fna&oh=25c5bd6456425e447a611f5cf2a77ab8&oe=612AAB8F'),
-                                                ),
-                                              )
+                                  shrinkWrap: true,
+                                  mainAxisSpacing: 1,
+                                  crossAxisCount: 2,
+                                  children: List.generate(snapshot.data!.length, (index){
 
+                                    return InkWell(
+                                      onTap: (){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SelectMenuPage(
+                                                      '${snapshot.data![index]
+                                                          .id}')));
+                                      },
+                                      child: SizedBox(
+                                        child: Container(
+                                          margin: EdgeInsets.all(10),
+                                          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            color: Constants.cLightGreen,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0)),
+                                          ),
+                                          child:  Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: <Widget> [
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text('${snapshot.data![index].storeName}',
+                                                  style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.bold),
+                                                ),
+                                              ),
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text("${snapshot.data![index].storeAddress}",
+                                                  style: GoogleFonts.signika(color: Constants.cPink,fontSize: 12,fontWeight: FontWeight.w300),
+                                                ),
+                                              ),
+                                              Spacer(flex: 1,),
+                                              Container(
+                                                child: FittedBox(
+                                                  fit:BoxFit.fill,
+                                                  child: Image.asset("assets/images/pizza.png"),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
+                                      ),
+                                    );
 
-                                      )
-                                  );
-                                }
-                            );
+                                  },
+                                 )
+                                );
+
                           }
                         },
                       )
