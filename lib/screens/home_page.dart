@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    WidgetsFlutterBinding.ensureInitialized();
+    //WidgetsFlutterBinding.ensureInitialized();
     super.initState();
     searchTf.addListener(_onSearchChanged);
   }
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   _onSearchChanged(){
-    setState(() {});
+   // setState(() {searchTf.text;});
   }
 
   @override
@@ -50,68 +50,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: Constants.cPrimaryColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Constants.cPrimaryColor,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-         children: [
-          Container(
-           child: CircleAvatar(
-             backgroundImage: NetworkImage(user!.photoURL!),
-              radius: 15,
-            ),
-           ),
-           Container(width: 5,),
-          // Container(
-          //  child: Text(user!.displayName!),
-          // ),
-           user!.email == "georginasniper@gmail.com"?
-           Container(
-             width: 30,
-             height: 30,
-             padding: EdgeInsets.all(0),
-             decoration: BoxDecoration(
-                 color: Colors.white,
-                 shape: BoxShape.circle
-             ),
-             child: IconButton(
-                 onPressed: (){
-                   Navigator.push(context,MaterialPageRoute(builder: (context) => AddBusinessPage()));
-                 },
-                 icon: Icon(
-                   Icons.add_business,
-                   color: Constants.cPink,
-                   size: 16,
-                 )
-             ),
-           ): Container(),
-           user!.email == "georginasniper@gmail.com"?Container(width: 5,): Container(),
-           Container(
-             width: 30,
-             height: 30,
-             padding: EdgeInsets.all(0),
-             decoration: BoxDecoration(
-                 color: Colors.white,
-                 shape: BoxShape.circle
-             ),
-             child: IconButton(
-               icon: Icon(
-                 Icons.logout,
-                 color: Constants.cPink,
-                 size: 16,
-               ),
-               onPressed: () async {
-                 FirebaseService service = new FirebaseService();
-                 await service.signOutFromGoogle();
-                 Navigator.pushReplacementNamed(
-                     context, Constants.welcomeNavigate);
-               },
-             ),
-           )
-          ],
-        ),
-      ),
+
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -126,16 +65,77 @@ class _HomePageState extends State<HomePage> {
                       Column(
                         children: [
 
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                            alignment: Alignment.centerLeft,
-                            child: FittedBox(
-                              fit: BoxFit.fitWidth,
-                              child: Text("Hi ${user!.displayName},",
-                                style: GoogleFonts.signika(color: Constants.cPink,fontSize: 20,fontWeight: FontWeight.w100),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                                  alignment: Alignment.centerLeft,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Text("Hi ${user!.displayName},",
+                                      style: GoogleFonts.signika(color: Constants.cPink,fontSize: 20,fontWeight: FontWeight.w200),
+                                    ),
+                                  )
                               ),
-                            )
+                              Spacer(flex: 1,),
+                              Container(
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(user!.photoURL!),
+                                  radius: 15,
+                                ),
+                              ),
+                              Container(width: 5,),
+                              // Container(
+                              //  child: Text(user!.displayName!),
+                              // ),
+                              user!.email == "georginasniper@gmail.com"?
+                              Container(
+                                width: 30,
+                                height: 30,
+                                padding: EdgeInsets.all(0),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle
+                                ),
+                                child: IconButton(
+                                    onPressed: (){
+                                      Navigator.push(context,MaterialPageRoute(builder: (context) => AddBusinessPage()));
+                                    },
+                                    icon: Icon(
+                                      Icons.add_business,
+                                      color: Constants.cPink,
+                                      size: 16,
+                                    )
+                                ),
+                              ): Container(),
+                              user!.email == "georginasniper@gmail.com"?Container(width: 5,): Container(),
+                              Container(
+                                width: 30,
+                                height: 30,
+                                padding: EdgeInsets.all(0),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle
+                                ),
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.logout,
+                                    color: Constants.cPink,
+                                    size: 16,
+                                  ),
+                                  onPressed: () async {
+                                    FirebaseService service = new FirebaseService();
+                                    await service.signOutFromGoogle();
+                                    Navigator.pushReplacementNamed(
+                                        context, Constants.welcomeNavigate);
+                                  },
+                                ),
+                              ),
+                              Container(padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),)
+                            ],
                           ),
+
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                             alignment: Alignment.centerLeft,
@@ -240,12 +240,7 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               ),
                                               Spacer(flex: 1,),
-                                              Container(
-                                                child: FittedBox(
-                                                  fit:BoxFit.fill,
-                                                  child: Image.asset("assets/images/pizza.png"),
-                                                ),
-                                              ),
+
                                             ],
                                           ),
                                         ),
