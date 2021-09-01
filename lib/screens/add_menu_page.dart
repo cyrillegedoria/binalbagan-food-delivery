@@ -60,17 +60,13 @@ class _AddMenuPage extends State <AddMenuPage>{
 
   Future<String> returnRef () async => referenceDatabase.child('${widget.storeId}').once().then((snapshot){
     _mapVal = snapshot.value;
-    //storeName = _mapVal.values.toList()[1];
     storeName = _mapVal['StoreName'];
-    //print('StoreName: ${storeName}');
-   // print('MapVal: ${_mapVal['MenuList']}');
     return storeName;
   });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
 
     // TODO: implement build
     return DefaultTabController(

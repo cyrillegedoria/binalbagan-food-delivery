@@ -3,19 +3,19 @@ import 'package:flutter/services.dart';
 
 class Constants {
   //colors
-  static const cPrimaryColor = Color(0xFFc7ceea);
-  static const cMint = Color(0xFFb5ead7);
-  static const cLightGreen = Color(0xFFe2f0cb);
-  static const cLightOrange = Color(0xFFffdac1);
-  static const cFontPink = Color(0xCCffb7b2);
-  static const cPink = Color(0xCCff9aa2);
+ // static const cPrimaryColor = Color(0xFFc7ceea);
+  //static const cMint = Color(0xFFb5ead7);
+  //static const cLightGreen = Color(0xFFe2f0cb);
+  //static const cLightOrange = Color(0xFFffdac1);
+  //static const cFontPink = Color(0xCCffb7b2);
+  //static const cPink = Color(0xCCff9aa2);
 
-  //static const cPrimaryColor = Color(0xFF20639b);
-  //static const cMint = Color(0xFF3caea3);
-  //static const cLightGreen = Color(0xFFf6d55c);
-  //static const cLightOrange = Color(0xFFed553b);
-  //static const cFontPink = Color(0xFF173f5f);
- // static const cPink = Color(0xFFff9aa2);
+  static const cPrimaryColor = Color(0xFFedf0f1);
+  static const cMint = Color(0xFF22afcd);
+  static const cLightGreen = Color(0xFFffcfb4);
+  static const cLightOrange = Color(0xFFfba74f);
+  static const cFontPink = Color(0xFFd5e978);
+  static const cPink = Color(0xFFcb3a20);
 
   //static const cPrimaryColor = Color(0xFFeaac8b);
   //static const cMint = Color(0xFFb56576);

@@ -1,5 +1,6 @@
 import 'package:eatnywhere/screens/add_business_page.dart';
 import 'package:eatnywhere/screens/select_menu_page.dart';
+import 'package:eatnywhere/services/sqflite_search_query.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:eatnywhere/services/firebase_service.dart';
@@ -29,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     //WidgetsFlutterBinding.ensureInitialized();
     super.initState();
+    CgDbHelper();
     searchTf.addListener(_onSearchChanged);
   }
 
@@ -40,7 +42,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   _onSearchChanged(){
-   // setState(() {searchTf.text;});
+   setState(() {searchTf.text;});
   }
 
   @override
@@ -215,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                                       },
                                       child: SizedBox(
                                         child: Container(
-                                          margin: EdgeInsets.all(10),
+                                          margin: EdgeInsets.all(8),
                                           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
@@ -224,13 +226,13 @@ class _HomePageState extends State<HomePage> {
                                                 Radius.circular(10.0)),
                                           ),
                                           child:  Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: <Widget> [
                                               Container(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text('${snapshot.data![index].storeName}',
-                                                  style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.bold),
+                                                  style: GoogleFonts.signika(color: Constants.cPink,fontSize: 20,fontWeight: FontWeight.bold),
                                                 ),
                                               ),
                                               Container(
@@ -239,7 +241,21 @@ class _HomePageState extends State<HomePage> {
                                                   style: GoogleFonts.signika(color: Constants.cPink,fontSize: 12,fontWeight: FontWeight.w300),
                                                 ),
                                               ),
-                                              Spacer(flex: 1,),
+                                              Container(height: 20,),
+                                              Container(
+                                                  width: 115,
+                                                  height: 115,
+                                                  padding: EdgeInsets.all(0),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      shape: BoxShape.circle,
+
+                                                  ),
+                                                  child:CircleAvatar(
+                                                    backgroundImage: NetworkImage('${snapshot.data![index].storePpUrl.toString()}',),
+                                                    backgroundColor: Colors.white,
+                                                  )
+                                              )
 
                                             ],
                                           ),
@@ -278,10 +294,10 @@ class SearchDb {
  Future<List<Store>> getStore(String searchCriteria) async {
 
    final database = openDatabase(
-     join(await getDatabasesPath(), 'search_db_1.db'),
+     join(await getDatabasesPath(), 'search_db_2.db'),
      onCreate: (db, version) {
        return db.execute(
-         'CREATE TABLE search(id TEXT PRIMARY KEY, storeName TEXT, storeAddress TEXT, storeDbMap TEXT)',
+         'CREATE TABLE search(id TEXT PRIMARY KEY, storeName TEXT, storeAddress TEXT, storePpUrl TEXT, storeDbMap TEXT)',
        );
      },
      version: 2,
@@ -295,6 +311,7 @@ class SearchDb {
          id: maps[i]['id'],
          storeName: maps[i]['storeName'],
          storeAddress: maps[i]['storeAddress'],
+         storePpUrl: maps[i]['storePpUrl'],
          storeDbMap: maps[i]['storeDbMap']
      );
    });
@@ -314,10 +331,13 @@ class Store {
   final String storeName;
   final String storeAddress;
   final String storeDbMap;
+  final String storePpUrl;
+
   Store({
     required this.id,
     required this.storeName,
     required this.storeAddress,
+    required this.storePpUrl,
     required this.storeDbMap
   });
   Map<String, dynamic> toMap() {
@@ -325,11 +345,12 @@ class Store {
       'id': id,
       'storeName': storeName,
       'storeAddress': storeAddress,
+      'storePpUrl': storePpUrl,
       'storeDbMap': storeDbMap
     };
   }
   @override
   String toString() {
-    return 'Store{id: $id, storeName: $storeName, storeAddress: $storeAddress, storeDbMap: $storeDbMap}';
+    return 'Store{id: $id, storeName: $storeName, storeAddress: $storeAddress, storeDbMap: $storeDbMap, storePpUrl: $storePpUrl}';
   }
 }

@@ -1,5 +1,6 @@
 import 'package:eatnywhere/custom%20widgets/beverage_list.dart';
 import 'package:eatnywhere/custom%20widgets/extras_list.dart';
+import 'package:eatnywhere/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'package:eatnywhere/utils/constants.dart';
 import 'package:eatnywhere/custom widgets/menu_list.dart';
 import 'package:eatnywhere/custom widgets/beverage_list.dart';
 import 'package:eatnywhere/custom widgets/extras_list.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 class SelectMenuPage extends StatefulWidget{
@@ -52,84 +54,73 @@ class _SelectMenuPage extends State <SelectMenuPage> {
   });
 
   @override
-  Widget build(BuildContext context) {
-    //Size size = MediaQuery.of(context).size;
-    // TODO: implement build
-    return DefaultTabController(
-        length: 3,
-        initialIndex: 0,
-        child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Constants.cPrimaryColor,
-              title: Row(
+  Widget build(BuildContext context) => Scaffold(
+        body: DefaultTabController(
+          length: 3,
+          child: NestedScrollView(
+            headerSliverBuilder: (context, value){
+              return [
+                SliverAppBar(
+                    backgroundColor: Constants.cPrimaryColor,
+                    stretch: true,
+                    pinned: true,
+                    expandedHeight: 400,
+                    flexibleSpace: FlexibleSpaceBar(
+                      title: Text('${storeName.toUpperCase()}', style: GoogleFonts.signika(color: Constants.cPink,fontSize: 26,fontWeight: FontWeight.w600),),
+                      centerTitle: true,
+                      titlePadding: EdgeInsets.only(bottom: 100),
+                      stretchModes: [
+                        StretchMode.zoomBackground,
+                        StretchMode.blurBackground,
+                        StretchMode.fadeTitle,
+                      ],
+                      background: Image.network("${_mapVal['StorePhoto']}",
+                                  fit: BoxFit.cover,),
+                    ),
+                    bottom: TabBar(
+                      indicatorColor: Constants.cPink,
+                      indicatorWeight: 3.0,
+                      labelColor: Constants.cPink,
+                      labelPadding: EdgeInsets.only(top:1, bottom: 1),
+                      unselectedLabelColor: Colors.grey,
+                      labelStyle:GoogleFonts.signika(color: Constants.cPink,fontSize: 20,fontWeight: FontWeight.w300),
+                      unselectedLabelStyle:GoogleFonts.signika(color: Constants.cPink,fontSize: 16,fontWeight: FontWeight.w100),
+                      tabs: [
+                        Tab(
+                          text: 'Main',
+                          icon: Icon(
+                            Icons.restaurant_menu,
+                          ),
+                          iconMargin: EdgeInsets.only(bottom: 10.0),
+                        ),
+                        Tab(
+                          text: 'Beverages',
+                          icon: Icon(
+                            Icons.emoji_food_beverage_outlined,
+                          ),
+                          iconMargin: EdgeInsets.only(bottom: 10.0),
+                        ),
+                        Tab(
+                          text: 'Others',
+                          icon: Icon(
+                            Icons.post_add_outlined,
+                          ),
+                          iconMargin: EdgeInsets.only(bottom: 10.0),
+                        ),
+                      ],
+                    )
+                ),
+              ];
+            },
+              body: TabBarView(
                 children: [
-                  Container(
-                    child: Text('Select Menu - ${storeName.toUpperCase()}'),
-                  ),
-                  Spacer(flex: 100,),
-                  IconButton(
-                      onPressed: (){
-                        Navigator.pushReplacementNamed(
-                            context, Constants.homeNavigate);
-                      },
-                      icon: Icon(
-                        Icons.home,
-                        color: Constants.cPink,
-                        size: 30,
-                      )
-                  ),
-                  Spacer (flex: 1),
+                  MenuList(storeId: widget.storeId,),
+                  BeverageList(storeId: widget.storeId),
+                  ExtrasList(storeId: widget.storeId)
                 ],
               ),
-              bottom: TabBar(
-                indicatorColor: Constants.cPink,
-                indicatorWeight: 3.0,
-                labelColor: Constants.cPink,
-                labelPadding: EdgeInsets.only(top:1, bottom: 1),
-                unselectedLabelColor: Colors.grey,
-                labelStyle: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                ),
-                unselectedLabelStyle: TextStyle(
-                  fontSize: 14,
-                ),
-                tabs: [
-                  Tab(
-                    text: 'Main',
-                    icon: Icon(
-                      Icons.restaurant_menu,
-                    ),
-                    iconMargin: EdgeInsets.only(bottom: 10.0),
-                  ),
-                  Tab(
-                    text: 'Beverages',
-                    icon: Icon(
-                      Icons.emoji_food_beverage_outlined,
-                    ),
-                    iconMargin: EdgeInsets.only(bottom: 10.0),
-                  ),
-                  Tab(
-                    text: 'Others',
-                    icon: Icon(
-                      Icons.post_add_outlined,
-                    ),
-                    iconMargin: EdgeInsets.only(bottom: 10.0),
-                  ),
-                ],
-              ),
-            ),
-            backgroundColor: Constants.cPrimaryColor,
-            body: TabBarView(
-              children: [
-                MenuList(storeId: widget.storeId,),
-                BeverageList(storeId: widget.storeId),
-                ExtrasList(storeId: widget.storeId)
-              ],
-            )
+          ),
         )
-    );
-  }
-
+      );
 }
 

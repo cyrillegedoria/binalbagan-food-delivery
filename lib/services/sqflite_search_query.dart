@@ -16,11 +16,11 @@ Future <void> CgDbHelper() async {
   //print("This... ${lists.toString()}");
 
   final database = openDatabase(
-    join(await getDatabasesPath(), 'search_db_1.db'),
+    join(await getDatabasesPath(), 'search_db_2.db'),
     onCreate: (db, version) {
       // Run the CREATE TABLE statement on the database.
       return db.execute(
-        'CREATE TABLE search(id TEXT PRIMARY KEY, storeName TEXT, storeAddress TEXT, storeDbMap TEXT)',
+        'CREATE TABLE search(id TEXT PRIMARY KEY, storeName TEXT, storeAddress TEXT, storeDbMap TEXT, storePpUrl TEXT)',
       );
     },
     // Set the version. This executes the onCreate function and provides a
@@ -59,6 +59,7 @@ Future <void> CgDbHelper() async {
         id: maps[i]['id'],
         storeName: maps[i]['storeName'],
         storeAddress: maps[i]['storeAddress'],
+        storePpUrl: maps[i]['storePpUrl'],
         storeDbMap: maps[i]['storeDbMap']
       );
     });
@@ -128,7 +129,9 @@ Future <void> CgDbHelper() async {
           id: '${key.toString()}',
           storeName: '${values["StoreName"].toString()}',
           storeAddress: '${values["StoreAddress"].toString()}',
-          storeDbMap: '${values.toString()}'
+          storePpUrl: '${values["StorePhoto"].toString()}',
+          storeDbMap: '${values.toString()}',
+
       );
       await insertStore (_store);
       //print('Trying to print firebase map -- ${values.toString()}');
@@ -151,12 +154,15 @@ class Store {
   final String storeName;
   final String storeAddress;
   final String storeDbMap;
+  final String storePpUrl;
 
   Store({
     required this.id,
     required this.storeName,
     required this.storeAddress,
+    required this.storePpUrl,
     required this.storeDbMap
+
   });
 
   // Convert a Dog into a Map. The keys must correspond to the names of the
@@ -166,6 +172,7 @@ class Store {
       'id': id,
       'storeName': storeName,
       'storeAddress': storeAddress,
+      'storePpUrl': storePpUrl,
       'storeDbMap': storeDbMap
     };
   }
@@ -174,6 +181,6 @@ class Store {
   // each dog when using the print statement.
   @override
   String toString() {
-    return 'Store{id: $id, storeName: $storeName, storeAddress: $storeAddress, storeDbMap: $storeDbMap}';
+    return 'Store{id: $id, storeName: $storeName, storeAddress: $storeAddress, storeDbMap: $storeDbMap, storePpUrl: $storePpUrl}';
   }
 }
