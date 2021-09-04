@@ -63,49 +63,71 @@ class _SelectMenuPage extends State <SelectMenuPage> {
                 SliverAppBar(
                     backgroundColor: Constants.cPrimaryColor,
                     stretch: true,
-                    pinned: true,
-                    expandedHeight: 400,
+                    pinned: false,
+                    expandedHeight: 250,
+                    elevation: 1,
                     flexibleSpace: FlexibleSpaceBar(
-                      title: Text('${storeName.toUpperCase()}', style: GoogleFonts.signika(color: Constants.cPink,fontSize: 26,fontWeight: FontWeight.w600),),
+                      title: Container(
+                        width: 120,
+                        height: 150,
+                        padding: EdgeInsets.all(1),
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage("${_mapVal['StorePhoto']}"),
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
                       centerTitle: true,
-                      titlePadding: EdgeInsets.only(bottom: 100),
+                      titlePadding: EdgeInsets.only(bottom: 30),
                       stretchModes: [
                         StretchMode.zoomBackground,
                         StretchMode.blurBackground,
                         StretchMode.fadeTitle,
                       ],
-                      background: Image.network("${_mapVal['StorePhoto']}",
-                                  fit: BoxFit.cover,),
+                      //background: _mapVal.isEmpty?CircularProgressIndicator():Image.network("${_mapVal['StorePhoto']}",fit: BoxFit.cover,),
                     ),
                     bottom: TabBar(
-                      indicatorColor: Constants.cPink,
-                      indicatorWeight: 3.0,
+                      indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50), // Creates border
+                          color: Constants.cLightGreen),
                       labelColor: Constants.cPink,
-                      labelPadding: EdgeInsets.only(top:1, bottom: 1),
                       unselectedLabelColor: Colors.grey,
-                      labelStyle:GoogleFonts.signika(color: Constants.cPink,fontSize: 20,fontWeight: FontWeight.w300),
-                      unselectedLabelStyle:GoogleFonts.signika(color: Constants.cPink,fontSize: 16,fontWeight: FontWeight.w100),
+                      labelStyle:GoogleFonts.signika(color: Constants.cPink,fontSize: 16,fontWeight: FontWeight.w400),
                       tabs: [
                         Tab(
-                          text: 'Main',
-                          icon: Icon(
-                            Icons.restaurant_menu,
-                          ),
-                          iconMargin: EdgeInsets.only(bottom: 10.0),
+                            icon: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.restaurant_menu,
+                                  size: 15,
+                                ),
+                                Text(" | Menu"),
+                              ],
+                            )
                         ),
                         Tab(
-                          text: 'Beverages',
-                          icon: Icon(
-                            Icons.emoji_food_beverage_outlined,
-                          ),
-                          iconMargin: EdgeInsets.only(bottom: 10.0),
+                            icon: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.emoji_food_beverage,
+                                  size: 15,
+                                ),
+                                Text(" | Beverages"),
+                              ],
+                            )
                         ),
                         Tab(
-                          text: 'Others',
-                          icon: Icon(
-                            Icons.post_add_outlined,
-                          ),
-                          iconMargin: EdgeInsets.only(bottom: 10.0),
+                            icon: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.post_add_sharp,
+                                  size: 15,
+                                ),
+                                Text(" | Extra"),
+                              ],
+                            )
                         ),
                       ],
                     )

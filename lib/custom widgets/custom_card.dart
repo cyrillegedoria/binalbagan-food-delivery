@@ -6,10 +6,11 @@ class CustomCard extends StatefulWidget {
   String itemName;
   String itemDescription;
   String itemPrice;
+  String itemUrl;
   Icon trailingIconOne;
   Icon trailingIconTwo;
 
-  CustomCard({required this.itemName, required this.itemDescription, required this.itemPrice, required this.trailingIconOne, required this.trailingIconTwo});
+  CustomCard({required this.itemName, required this.itemDescription, required this.itemPrice, required this.itemUrl, required this.trailingIconOne, required this.trailingIconTwo});
 
   @override
   _CustomCardState createState() => _CustomCardState();
@@ -29,13 +30,15 @@ class _CustomCardState extends State<CustomCard>{
         child: new Row(
           children: <Widget> [
             new Container(
-              width: 100,
+              width: 64,
               height: 80,
-              child: FittedBox(
-                fit:BoxFit.fill,
-                child: Image.asset("assets/images/pizza.png"),
+              padding: EdgeInsets.all(2),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(widget.itemUrl),
+                backgroundColor: Colors.white,
               ),
             ),
+            new Container(width: 10,),
             new Column(
               //crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -51,12 +54,14 @@ class _CustomCardState extends State<CustomCard>{
                         )
                     ),
                     new Container(height: 5.0,),
-                    new Text(widget.itemDescription,
+                    new Container(
+                    child: new Text(widget.itemDescription,
                       style: TextStyle(  fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Constants.cPink,
                       ),
                     ),
+                    )
                   ],
                 )
               ],

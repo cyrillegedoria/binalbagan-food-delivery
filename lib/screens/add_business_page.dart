@@ -304,7 +304,7 @@ class PickImage {
 
   Future  _onImageButtonPressed(ImageSource source,
       {BuildContext? context}) async {
-    final pickedFile =  await ImagePicker().pickImage(source:source,imageQuality: 40,maxHeight: 600, maxWidth: 600);
+    final pickedFile =  await ImagePicker().pickImage(source:source,imageQuality: 40,maxHeight: 720, maxWidth: 720);
     _image = File(pickedFile!.path);
 
 

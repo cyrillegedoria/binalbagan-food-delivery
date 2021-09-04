@@ -43,6 +43,7 @@ class _MenuList extends State<BeverageList> with AutomaticKeepAliveClientMixin{
                       return  new CustomCard(itemName: '${snapshot.value['Name']}',
                         itemPrice: snapshot.value['Price'],
                         itemDescription: "${snapshot.value['Description']}",
+                        itemUrl: "${snapshot.value['MenuUrl']}",
                         trailingIconOne: new Icon(Icons.remove, color: Colors.blueAccent,),
                         trailingIconTwo: new Icon(Icons.add, color: Colors.blueAccent,),
                       );
