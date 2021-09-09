@@ -31,7 +31,7 @@ class _MenuList extends State<MenuList> with AutomaticKeepAliveClientMixin{
        child: Container(
            child: Column(
              children: <Widget>[
-               SizedBox(height: 10,),
+
                FirebaseAnimatedList(
                    physics: NeverScrollableScrollPhysics(),
                    shrinkWrap: true,
@@ -40,15 +40,61 @@ class _MenuList extends State<MenuList> with AutomaticKeepAliveClientMixin{
                        DataSnapshot snapshot,
                        Animation<double> animation,
                        int index){
-                     return  new CustomCard(itemName: '${snapshot.value['Name']}',
+                     return  new CustomCard(
+                       storeId: widget.storeId,
+                       itemName: '${snapshot.value['Name']}',
                        itemPrice: snapshot.value['Price'],
                        itemDescription: "${snapshot.value['Description']}",
                        itemUrl: "${snapshot.value['MenuUrl']}",
+                       itemQty: 0,
                        trailingIconOne: new Icon(Icons.remove, color: Colors.blueAccent,),
                        trailingIconTwo: new Icon(Icons.add, color: Colors.blueAccent,),
                      );
                    }
                ),
+
+               FirebaseAnimatedList(
+                   physics: NeverScrollableScrollPhysics(),
+                   shrinkWrap: true,
+                   query: referenceDatabase.child('${widget.storeId}').child('BeverageList'),
+                   itemBuilder: (BuildContext context,
+                       DataSnapshot snapshot,
+                       Animation<double> animation,
+                       int index){
+                     return  new CustomCard(
+                       storeId: widget.storeId,
+                       itemName: '${snapshot.value['Name']}',
+                       itemPrice: snapshot.value['Price'],
+                       itemDescription: "${snapshot.value['Description']}",
+                       itemUrl: "${snapshot.value['MenuUrl']}",
+                       itemQty: 0,
+                       trailingIconOne: new Icon(Icons.remove, color: Colors.blueAccent,),
+                       trailingIconTwo: new Icon(Icons.add, color: Colors.blueAccent,),
+                     );
+                   }
+               ),
+
+               FirebaseAnimatedList(
+                   physics: NeverScrollableScrollPhysics(),
+                   shrinkWrap: true,
+                   query: referenceDatabase.child('${widget.storeId}').child('ExtrasList'),
+                   itemBuilder: (BuildContext context,
+                       DataSnapshot snapshot,
+                       Animation<double> animation,
+                       int index){
+                     return  new CustomCard(
+                       storeId: widget.storeId,
+                       itemName: '${snapshot.value['Name']}',
+                       itemPrice: snapshot.value['Price'],
+                       itemDescription: "${snapshot.value['Description']}",
+                       itemUrl: "${snapshot.value['MenuUrl']}",
+                       itemQty: 0,
+                       trailingIconOne: new Icon(Icons.remove, color: Colors.blueAccent,),
+                       trailingIconTwo: new Icon(Icons.add, color: Colors.blueAccent,),
+                     );
+                   }
+               ),
+
              ],
            )
        ),

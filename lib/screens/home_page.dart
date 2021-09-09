@@ -229,6 +229,7 @@ class _HomePageState extends State<HomePage> {
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: <Widget> [
+                                              Spacer(),
                                               Container(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text('${snapshot.data![index].storeName}',
@@ -241,21 +242,25 @@ class _HomePageState extends State<HomePage> {
                                                   style: GoogleFonts.signika(color: Constants.cPink,fontSize: 12,fontWeight: FontWeight.w300),
                                                 ),
                                               ),
-                                              Container(height: 20,),
+                                              Spacer(flex: 1,),
                                               Container(
-                                                  width: 115,
-                                                  height: 115,
+                                                  width: size.width*.3,
+                                                  height: size.height*.15,
                                                   padding: EdgeInsets.all(0),
                                                   decoration: BoxDecoration(
                                                       color: Colors.white,
                                                       shape: BoxShape.circle,
 
                                                   ),
-                                                  child:CircleAvatar(
-                                                    backgroundImage: NetworkImage('${snapshot.data![index].storePpUrl.toString()}',),
-                                                    backgroundColor: Colors.white,
+                                                  child:FittedBox(
+                                                    fit: BoxFit.fitWidth,
+                                                    child: CircleAvatar(
+                                                      backgroundColor: Colors.transparent,
+                                                      backgroundImage: NetworkImage('${snapshot.data![index].storePpUrl.toString()}'),
+                                                    ),
                                                   )
-                                              )
+                                              ),
+                                              Spacer()
 
                                             ],
                                           ),

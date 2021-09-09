@@ -1,16 +1,32 @@
+import 'package:eatnywhere/screens/select_menu_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:eatnywhere/utils/constants.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomCard extends StatefulWidget {
+  String storeId;
   String itemName;
   String itemDescription;
   String itemPrice;
   String itemUrl;
+  int itemQty;
   Icon trailingIconOne;
   Icon trailingIconTwo;
 
-  CustomCard({required this.itemName, required this.itemDescription, required this.itemPrice, required this.itemUrl, required this.trailingIconOne, required this.trailingIconTwo});
+  CustomCard({
+    required this.storeId,
+    required this.itemName,
+    required this.itemDescription,
+    required this.itemPrice,
+    required this.itemUrl,
+    required this.itemQty,
+    required this.trailingIconOne,
+    required this.trailingIconTwo
+  });
 
   @override
   _CustomCardState createState() => _CustomCardState();
@@ -20,7 +36,46 @@ class CustomCard extends StatefulWidget {
 
 class _CustomCardState extends State<CustomCard>{
 
-  late int itemQty=0  ;
+  User? user = FirebaseAuth.instance.currentUser;
+  final referenceDatabase = FirebaseDatabase.instance.reference().child('EatnywhereOrders');
+  late int itemQty=0;
+  final String addToCartBtnTxt = "Add to Cart";
+  final String updateBtnTxt = "Update";
+  String timeStamp = DateTime.now().toString().substring(0,19);
+  String dateToday = DateTime.now().toString().substring(0,10);
+
+  late Map<dynamic, dynamic> _cartVal;
+  late int cartItemCount = 0;
+
+  Future<int> cartCount () async => referenceDatabase.child(dateToday).child(user!.uid).child(widget.storeId).once().then((snapshot){
+    try {
+      _cartVal = snapshot.value;
+      cartItemCount = _cartVal.length;
+      print('length --- $cartItemCount');
+
+      referenceDatabase
+          .child(dateToday)
+          .child(user!.uid)
+          .update({'NoOfItems': cartItemCount})
+          .asStream();
+    }catch(e){
+      referenceDatabase
+          .child(dateToday)
+          .child(user!.uid)
+          .update({'NoOfItems': 0})
+          .asStream();
+    }
+    return cartItemCount;
+  });
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    widget.itemQty==0?itemQty=0:itemQty=widget.itemQty;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +84,7 @@ class _CustomCardState extends State<CustomCard>{
       elevation: 2,
         child: new Row(
           children: <Widget> [
+            new Container(width: 10,),
             new Container(
               width: 64,
               height: 80,
@@ -47,19 +103,13 @@ class _CustomCardState extends State<CustomCard>{
                   children: <Widget>[
                     new Container (
                         child: new Text('${widget.itemName}: ${widget.itemPrice}',
-                          style: TextStyle(  fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Constants.cPink
-                          ),
+                            style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w200)
                         )
                     ),
                     new Container(height: 5.0,),
                     new Container(
                     child: new Text(widget.itemDescription,
-                      style: TextStyle(  fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Constants.cPink,
-                      ),
+                        style: GoogleFonts.signika(color: Constants.cPink,fontSize: 12,fontWeight: FontWeight.w100)
                     ),
                     )
                   ],
@@ -82,10 +132,31 @@ class _CustomCardState extends State<CustomCard>{
                         onPressed: () {
                           //deduct itemQty
                           if(itemQty>=1){
-                            setState(() {itemQty--;});
+                            setState(() {
+                              itemQty--;
+
+                              referenceDatabase
+                                  .child(dateToday)
+                                  .child(user!.uid)
+                                  .child(widget.storeId)
+                                  .child(widget.itemName)
+                                  .update(
+                                  {'Name':widget.itemName,
+                                    'Price':widget.itemPrice,
+                                    'Description':widget.itemDescription,
+                                    'MenuUrl':widget.itemUrl,
+                                    'Qty':itemQty,
+                                    'TimeStamp':timeStamp})
+                                  .asStream();
+
+                              itemQty==0?referenceDatabase.child(dateToday).child('${user!.uid}').child('${widget.storeId}').child('${widget.itemName}').remove():null;
+
+                            });
                           }
                           else if(itemQty==0){
-                            setState(() {itemQty=0;});
+                            setState(() {
+                              itemQty=0;
+                            });
                           }
                         }),
                     new Container(
@@ -102,7 +173,23 @@ class _CustomCardState extends State<CustomCard>{
                         onPressed: () {
                           //add itemQty
                           if(itemQty<10){
-                            setState(() {itemQty++;});
+                            setState(() {itemQty++;
+
+                            referenceDatabase
+                                .child(dateToday)
+                                .child(user!.uid)
+                                .child(widget.storeId)
+                                .child(widget.itemName)
+                                .update(
+                                {'Name':widget.itemName,
+                                  'Price':widget.itemPrice,
+                                  'Description':widget.itemDescription,
+                                  'MenuUrl':widget.itemUrl,
+                                  'Qty':itemQty,
+                                  'TimeStamp':timeStamp})
+                                .asStream();
+
+                            });
                           }
                           else if(itemQty==10){
                             setState(() {itemQty=10;});
@@ -111,14 +198,31 @@ class _CustomCardState extends State<CustomCard>{
                   ],
                 ),
                 TextButton(
-                  onPressed: () {  },
+                  onPressed: () {
+
+                    referenceDatabase
+                        .child(dateToday)
+                        .child(user!.uid)
+                        .child(widget.storeId)
+                        .child(widget.itemName)
+                        .update(
+                        {'Name':widget.itemName,
+                         'Price':widget.itemPrice,
+                         'Description':widget.itemDescription,
+                         'MenuUrl':widget.itemUrl,
+                         'Qty':itemQty,
+                         'TimeStamp':timeStamp})
+                        .asStream();
+
+                    Fluttertoast.showToast(msg: "Item added to cart!",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.SNACKBAR,
+                    );
+                      setState(() {});
+                  },
                   child: Text(
-                    'Add to Cart',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        color: Constants.cPink
-                    ) ,
+                      widget.itemQty==0?addToCartBtnTxt:updateBtnTxt,
+                      style: GoogleFonts.signika(color: Constants.cPink,fontSize: 16,fontWeight: FontWeight.w100)
                   ),
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
@@ -137,3 +241,7 @@ class _CustomCardState extends State<CustomCard>{
   }
 
 }
+
+
+
+

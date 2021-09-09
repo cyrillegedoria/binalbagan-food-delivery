@@ -42,243 +42,246 @@ class _AddMenuItem extends State <AddMenuItem>{
     Size size = MediaQuery.of(context).size;
 
     // TODO: implement build
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Container(
-            child: Column(
-              children: <Widget>[
-                ElevatedButton.icon(
-                  icon: Icon(Icons.post_add,color: Constants.cPink,),
-                  label: Text("Add Item",
-                    style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w400),),
-                  style: ElevatedButton.styleFrom(
-                    primary: Constants.cLightGreen,
-                    onPrimary: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
+    return Scaffold(
+      backgroundColor: Constants.cPrimaryColor.withOpacity(.5),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+              child: Column(
+                children: <Widget>[
+                  ElevatedButton.icon(
+                    icon: Icon(Icons.post_add,color: Constants.cPink,),
+                    label: Text("Add Item",
+                      style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w400),),
+                    style: ElevatedButton.styleFrom(
+                      primary: Constants.cLightGreen,
+                      onPrimary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
                     ),
-                  ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return StatefulBuilder(
-                          builder: (context, setState){
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return StatefulBuilder(
+                            builder: (context, setState){
 
-                            return AlertDialog(
-                              scrollable: true,
-                              title: Text('New Item',
-                                style: GoogleFonts.signika(color: Constants.cPink,fontSize: 22,fontWeight: FontWeight.w400),),
-                              content: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Form(
-                                  child: Column(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        child: Container(
-                                          width: size.width*.3,
-                                          height: size.height*.15,
-                                          decoration: new BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: TextButton(
-                                            style: ElevatedButton.styleFrom(
-                                              shape: CircleBorder(),
-                                              padding: EdgeInsets.all(2),
+                              return AlertDialog(
+                                scrollable: true,
+                                title: Text('New Item',
+                                  style: GoogleFonts.signika(color: Constants.cPink,fontSize: 22,fontWeight: FontWeight.w400),),
+                                content: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Form(
+                                    child: Column(
+                                      children: <Widget>[
+                                        SizedBox(
+                                          child: Container(
+                                            width: size.width*.3,
+                                            height: size.height*.15,
+                                            decoration: new BoxDecoration(
+                                              color: Colors.white,
+                                              shape: BoxShape.circle,
                                             ),
-                                            onPressed: (){
-                                              setState(() {
-                                                widget.isLoading = true;
-                                              });
-                                              PickImage()._onImageButtonPressed(ImageSource.gallery, context: context).then((value) => setState((){itemUrl.text=value;widget.isLoading=false;}));
-                                            },
-                                            child: itemUrl.text.isEmpty?Icon(widget.reference=="MenuList"?Icons.restaurant_menu:widget.reference=="BeverageList"?Icons.emoji_food_beverage:Icons.post_add_sharp, size:100):FittedBox(child: CircleAvatar(backgroundImage: NetworkImage('${itemUrl.text}'),backgroundColor: Colors.white,maxRadius: 60,), fit: BoxFit.fitWidth,),
+                                            child: TextButton(
+                                              style: ElevatedButton.styleFrom(
+                                                shape: CircleBorder(),
+                                                padding: EdgeInsets.all(2),
+                                              ),
+                                              onPressed: (){
+                                                setState(() {
+                                                  widget.isLoading = true;
+                                                });
+                                                PickImage()._onImageButtonPressed(ImageSource.gallery, context: context).then((value) => setState((){itemUrl.text=value;widget.isLoading=false;}));
+                                              },
+                                              child: itemUrl.text.isEmpty?Icon(widget.reference=="MenuList"?Icons.restaurant_menu:widget.reference=="BeverageList"?Icons.emoji_food_beverage:Icons.post_add_sharp, size:100):FittedBox(child: CircleAvatar(backgroundImage: NetworkImage('${itemUrl.text}'),backgroundColor: Colors.white,maxRadius: 60,), fit: BoxFit.fitWidth,),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      TextFormField(
-                                        controller: itemName,
-                                        decoration: InputDecoration(
-                                          labelStyle: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w300),
-                                          labelText: "Item Name",
-                                          filled: true,
-                                          fillColor: Colors.white,
-                                          contentPadding:
-                                          EdgeInsets.all(15),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Constants.cPink),
-                                            borderRadius: BorderRadius.circular(16),
-                                          ),
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(color: Constants.cPink),
-                                            borderRadius: BorderRadius.circular(16),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(height: 10,),
-                                      TextFormField(
-                                        controller: itemPrice,
-                                        keyboardType: TextInputType.numberWithOptions(decimal: true),
-                                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),],
-                                        decoration: InputDecoration(
-                                          labelStyle: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w300),
-                                          labelText: "Price",
-                                          filled: true,
-                                          fillColor: Colors.white,
-                                          contentPadding:
-                                          EdgeInsets.all(15),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Constants.cPink),
-                                            borderRadius: BorderRadius.circular(16),
-                                          ),
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(color: Constants.cPink),
-                                            borderRadius: BorderRadius.circular(16),
+                                        TextFormField(
+                                          controller: itemName,
+                                          decoration: InputDecoration(
+                                            labelStyle: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w300),
+                                            labelText: "Item Name",
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            contentPadding:
+                                            EdgeInsets.all(15),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Constants.cPink),
+                                              borderRadius: BorderRadius.circular(16),
+                                            ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(color: Constants.cPink),
+                                              borderRadius: BorderRadius.circular(16),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Container(height: 10,),
-                                      TextFormField(
-                                        controller: itemDescription,
-                                        maxLength: 40,
-                                        decoration: InputDecoration(
-                                          labelStyle: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w300),
-                                          labelText: "Description",
-                                          filled: true,
-                                          fillColor: Colors.white,
-                                          contentPadding:
-                                          EdgeInsets.all(15),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Constants.cPink),
-                                            borderRadius: BorderRadius.circular(16),
-                                          ),
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(color: Constants.cPink),
-                                            borderRadius: BorderRadius.circular(16),
+                                        Container(height: 10,),
+                                        TextFormField(
+                                          controller: itemPrice,
+                                          keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),],
+                                          decoration: InputDecoration(
+                                            labelStyle: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w300),
+                                            labelText: "Price",
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            contentPadding:
+                                            EdgeInsets.all(15),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Constants.cPink),
+                                              borderRadius: BorderRadius.circular(16),
+                                            ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(color: Constants.cPink),
+                                              borderRadius: BorderRadius.circular(16),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        Container(height: 10,),
+                                        TextFormField(
+                                          controller: itemDescription,
+                                          maxLength: 40,
+                                          decoration: InputDecoration(
+                                            labelStyle: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w300),
+                                            labelText: "Description",
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            contentPadding:
+                                            EdgeInsets.all(15),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(color: Constants.cPink),
+                                              borderRadius: BorderRadius.circular(16),
+                                            ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(color: Constants.cPink),
+                                              borderRadius: BorderRadius.circular(16),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              actions: [
-                                widget.isLoading==false?
-                                TextButton(
-                                    child: Text("Submit",
-                                      style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w400),
-                                    ),
-                                    style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
-                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(16.0),
-                                            )
-                                        )
-                                    ),
-                                    onPressed: () {
-                                      if (itemName.text=="" || itemPrice.text=="" || itemDescription.text=="")
-                                      {
-                                        Fluttertoast.showToast(msg: "Please fill the form.",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.TOP,
-                                        );
-                                      }
-                                      else{
-                                        referenceDatabase
-                                            .child('${widget.storeId}')
-                                            .child(widget.reference)
-                                            .child('${itemName.text}')
-                                            .update({'Name':itemName.text,'Description':itemDescription.text,'Price':itemPrice.text,'MenuUrl':itemUrl.text})
-                                            .asStream();
-
-                                        itemName.clear();
-                                        itemPrice.clear();
-                                        itemDescription.clear();
-                                        itemUrl.clear();
-                                        Navigator.pop(context);
-                                      }
-                                    }
-                                )
-                                    :CircularProgressIndicator(color: Constants.cLightGreen,)
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    );
-                  }, //onPressed
-                ),
-
-                FirebaseAnimatedList(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    query: referenceDatabase.child('${widget.storeId}').child(widget.reference),
-                    itemBuilder: (BuildContext context,
-                        DataSnapshot snapshot,
-                        Animation<double> animation,
-                        int index)
-                    {
-                      return  Card(
-                        child: Row(
-                          children:<Widget> [
-
-                            new Container(
-                              width: 64,
-                              height: 80,
-                              padding: EdgeInsets.all(2),
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage('${snapshot.value['MenuUrl'].toString()}'),
-                                backgroundColor: Colors.white,
-                              ),
-                            ),
-                            new Container(width: 10,),
-                            new Container(  //Divider
-                              height: 50.0,
-                              width: 1.0,
-                              color: Colors.black54,
-                              margin: const EdgeInsets.only(left:0, right: 10.0),
-                            ),
-                            new Column(
-                              //crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                new Column (
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    new Container (
-                                        child: new Text('${snapshot.value['Name']}'' : ''${snapshot.value['Price']}',
-                                          style: TextStyle(  fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Constants.cPink
-                                          ),
-                                        )
-                                    ),
-                                    new Container(height: 5.0,),
-                                    new Text('${snapshot.value['Description']}',
-                                      style: TextStyle(  fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Constants.cPink,
+                                actions: [
+                                  widget.isLoading==false?
+                                  TextButton(
+                                      child: Text("Submit",
+                                        style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w400),
                                       ),
-                                    ),
-                                    //  new Divider(height: 15.0,color: Colors.red,),
-                                  ],
-                                )
-                              ],
-                            ),
-                            new Spacer(flex: 1),
-                            new IconButton(
-                              icon: Icon(Icons.delete, color: Colors.grey,),
-                              onPressed: () => referenceDatabase.child('${widget.storeId}').child('${widget.reference}').child('${snapshot.key}').remove(),
-                            ),
+                                      style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(16.0),
+                                              )
+                                          )
+                                      ),
+                                      onPressed: () {
+                                        if (itemName.text=="" || itemPrice.text=="" || itemDescription.text=="")
+                                        {
+                                          Fluttertoast.showToast(msg: "Please fill the form.",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.TOP,
+                                          );
+                                        }
+                                        else{
+                                          referenceDatabase
+                                              .child('${widget.storeId}')
+                                              .child(widget.reference)
+                                              .child('${itemName.text}')
+                                              .update({'Name':itemName.text,'Description':itemDescription.text,'Price':itemPrice.text,'MenuUrl':itemUrl.text})
+                                              .asStream();
 
-                          ],
-                        ),
+                                          itemName.clear();
+                                          itemPrice.clear();
+                                          itemDescription.clear();
+                                          itemUrl.clear();
+                                          Navigator.pop(context);
+                                        }
+                                      }
+                                  )
+                                      :CircularProgressIndicator(color: Constants.cLightGreen,)
+                                ],
+                              );
+                            },
+                          );
+                        },
                       );
-                    }
-                ),
-              ],
-            )
+                    }, //onPressed
+                  ),
+
+                  FirebaseAnimatedList(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      query: referenceDatabase.child('${widget.storeId}').child(widget.reference),
+                      itemBuilder: (BuildContext context,
+                          DataSnapshot snapshot,
+                          Animation<double> animation,
+                          int index)
+                      {
+                        return  Card(
+                          child: Row(
+                            children:<Widget> [
+
+                              new Container(
+                                width: 64,
+                                height: 80,
+                                padding: EdgeInsets.all(2),
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage('${snapshot.value['MenuUrl'].toString()}'),
+                                  backgroundColor: Colors.white,
+                                ),
+                              ),
+                              new Container(width: 10,),
+                              new Container(  //Divider
+                                height: 50.0,
+                                width: 1.0,
+                                color: Colors.black54,
+                                margin: const EdgeInsets.only(left:0, right: 10.0),
+                              ),
+                              new Column(
+                                //crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  new Column (
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      new Container (
+                                          child: new Text('${snapshot.value['Name']}'' : ''${snapshot.value['Price']}',
+                                            style: TextStyle(  fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Constants.cPink
+                                            ),
+                                          )
+                                      ),
+                                      new Container(height: 5.0,),
+                                      new Text('${snapshot.value['Description']}',
+                                        style: TextStyle(  fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Constants.cPink,
+                                        ),
+                                      ),
+                                      //  new Divider(height: 15.0,color: Colors.red,),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              new Spacer(flex: 1),
+                              new IconButton(
+                                icon: Icon(Icons.delete, color: Colors.grey,),
+                                onPressed: () => referenceDatabase.child('${widget.storeId}').child('${widget.reference}').child('${snapshot.key}').remove(),
+                              ),
+
+                            ],
+                          ),
+                        );
+                      }
+                  ),
+                ],
+              )
+          ),
         ),
       ),
     );

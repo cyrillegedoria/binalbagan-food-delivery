@@ -62,7 +62,7 @@ class _AddMenuPage extends State <AddMenuPage>{
             stretch: true,
             pinned: false,
             expandedHeight: 250,
-            elevation: 1,
+            elevation: 3,
             flexibleSpace: FlexibleSpaceBar(
               title: Container(
                 width: 120,
