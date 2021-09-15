@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:eatnywhere/utils/constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:global_state/gs.dart';
+import 'package:global_state/transition.dart';
 
-class CustomCard extends StatefulWidget {
+class CustomCard extends StatefulWidget with StatefulGS {
   String storeId;
   String itemName;
   String itemDescription;
@@ -47,18 +49,38 @@ class _CustomCardState extends State<CustomCard>{
   late Map<dynamic, dynamic> _cartVal;
   late int cartItemCount = 0;
 
+  late double price=0;
+  late int qty=0;
+  late double totalPayment=0;
+
   Future<int> cartCount () async => referenceDatabase.child(dateToday).child(user!.uid).child(widget.storeId).once().then((snapshot){
     try {
       _cartVal = snapshot.value;
       cartItemCount = _cartVal.length;
-      print('length --- $cartItemCount');
 
+      gs[#totalItems]=cartItemCount;
+
+     // print(_cartVal['Bihon']['Qty']);
+      //print(_cartVal['Bihon']['Price']);
+
+      for (var k in _cartVal.keys) {
+        //print("Key : $k, Qty : ${_cartVal[k]['Qty']}");
+        //print("Key : $k, Price : ${_cartVal[k]['Price']}");
+        totalPayment = totalPayment + (_cartVal[k]['Qty']*double.parse(_cartVal[k]['Price']));
+      }
+
+      gs[#totalPayment] = totalPayment;
+      totalPayment =0;
       referenceDatabase
           .child(dateToday)
           .child(user!.uid)
           .update({'NoOfItems': cartItemCount})
           .asStream();
-    }catch(e){
+    }
+    catch(e){
+      totalPayment =0;
+      gs[#totalPayment] = totalPayment;
+      gs[#totalItems]=0;
       referenceDatabase
           .child(dateToday)
           .child(user!.uid)
@@ -73,8 +95,8 @@ class _CustomCardState extends State<CustomCard>{
     // TODO: implement initState
 
     widget.itemQty==0?itemQty=0:itemQty=widget.itemQty;
-
     super.initState();
+
   }
 
   @override
@@ -151,6 +173,8 @@ class _CustomCardState extends State<CustomCard>{
 
                               itemQty==0?referenceDatabase.child(dateToday).child('${user!.uid}').child('${widget.storeId}').child('${widget.itemName}').remove():null;
 
+                              cartCount();
+
                             });
                           }
                           else if(itemQty==0){
@@ -173,7 +197,8 @@ class _CustomCardState extends State<CustomCard>{
                         onPressed: () {
                           //add itemQty
                           if(itemQty<10){
-                            setState(() {itemQty++;
+                            setState(() {
+                              itemQty++;
 
                             referenceDatabase
                                 .child(dateToday)
@@ -189,6 +214,9 @@ class _CustomCardState extends State<CustomCard>{
                                   'TimeStamp':timeStamp})
                                 .asStream();
 
+                              cartCount();
+
+
                             });
                           }
                           else if(itemQty==10){
@@ -197,7 +225,7 @@ class _CustomCardState extends State<CustomCard>{
                         }),
                   ],
                 ),
-                TextButton(
+               /* TextButton(
                   onPressed: () {
 
                     referenceDatabase
@@ -232,7 +260,7 @@ class _CustomCardState extends State<CustomCard>{
                           )
                       )
                   ),
-                )
+                )*/
               ],
             )
           ],

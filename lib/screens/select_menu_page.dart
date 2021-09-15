@@ -4,15 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:eatnywhere/utils/constants.dart';
 import 'package:eatnywhere/custom widgets/menu_list.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:global_state/gs.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'cart_page.dart';
 
 
-class SelectMenuPage extends StatefulWidget{
+class SelectMenuPage extends StatefulWidget with StatefulGS{
 
   final String storeId;
-
   SelectMenuPage (this.storeId, {Key? key}): super (key: key);
 
   @override
@@ -32,12 +33,19 @@ class _SelectMenuPage extends State <SelectMenuPage> {
   late Map<dynamic, dynamic> _mapVal;
   late String storeName="";
 
-
   String dateToday = DateTime.now().toString().substring(0,10);
+
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+  }
 
   @override
   void initState() {
     // TODO: implement initState
+    gs[#totalItems]=0;
+    gs[#totalPayment]=0;
     super.initState();
     if (storeName==""){
       returnRef().then(
@@ -54,8 +62,9 @@ class _SelectMenuPage extends State <SelectMenuPage> {
 
 
   Future<bool> _willPopCallback() async {
-    cartReferenceDatabase.child(dateToday).child('${user!.uid}').child('${widget.storeId}').remove();
-
+    cartReferenceDatabase.child(dateToday).child('${user!.uid}').remove();
+    gs[#totalItems]=0;
+    gs[#totalPayment]=0;
     print("Cart Cleared");
     return Future.value(true);
   }
@@ -103,9 +112,9 @@ class _SelectMenuPage extends State <SelectMenuPage> {
                     width: 250,height: 40, padding: EdgeInsets.only(top:8),
                     decoration: BoxDecoration(
                      borderRadius: BorderRadius.only(topLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
-                      color: Constants.cFontPink.withOpacity(.8),
+                      color: Constants.cMint.withOpacity(.8),
                     ),
-                  child: Text('${_mapVal['StoreName']}',textAlign: TextAlign.center, style: GoogleFonts.signika(color: Constants.cPink,fontSize: 24,fontWeight: FontWeight.w300)),
+                  child: Text('${_mapVal['StoreName']}',textAlign: TextAlign.center, style: GoogleFonts.signika(color: Colors.white,fontSize: 24,fontWeight: FontWeight.w300)),
                   ),
                   ),
 
@@ -119,14 +128,29 @@ class _SelectMenuPage extends State <SelectMenuPage> {
         ),
         floatingActionButton: ElevatedButton.icon(
           onPressed: (){
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        CartPage(widget.storeId)));
+
+            if(gs[#totalItems]==0){
+              Fluttertoast.showToast(
+                msg: "Your cart is empty.",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.SNACKBAR,
+
+              );
+
+            }
+            else{
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          CartPage(storeId: widget.storeId)));
+
+            }
+
+
           },
           icon: Icon(Icons.shopping_cart_sharp,color: Constants.cPink,),
-          label: Text('View Cart',style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w400),),
+          label: Text('View Cart (${gs[#totalItems]})',style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w400),),
           style: ElevatedButton.styleFrom(
             primary: Constants.cLightGreen,
             onPrimary: Colors.white,

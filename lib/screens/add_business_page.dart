@@ -28,6 +28,8 @@ class AddBusinessPage extends StatefulWidget{
 class _AddBusinessPage extends State <AddBusinessPage>{
   User? user = FirebaseAuth.instance.currentUser;
   final referenceDatabase = FirebaseDatabase.instance.reference();
+  FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+
   final storeNameTf = TextEditingController();
   final addressTf = TextEditingController();
   final storeUrlTf = TextEditingController();
@@ -275,7 +277,14 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                                     Spacer(flex: 1,),
                                     new Container(
                                       child: IconButton(icon: Icon(Icons.delete, color: Colors.grey,),
-                                        onPressed: () => referenceDatabase.child('StoresList').child('${snapshot.key}').remove(),
+                                        onPressed: (){
+                                          referenceDatabase.child('StoresList').child('${snapshot.key}').remove();
+                                          //Reference storageReference = FirebaseStorage.instance.ref(snapshot.value['StorePhoto']);
+                                          //print(snapshot.value['StorePhoto']);
+                                         //storageReference.delete().then((_) => print("Deleted"));
+
+
+                                        }
                                       ),
                                     )
 

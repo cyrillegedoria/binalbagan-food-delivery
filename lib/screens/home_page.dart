@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
 
   User? user = FirebaseAuth.instance.currentUser;
   final searchTf = TextEditingController();
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -45,6 +47,30 @@ class _HomePageState extends State<HomePage> {
    setState(() {searchTf.text;});
   }
 
+  void _onRefresh() async{
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    setState(() {
+      CgDbHelper();
+      searchTf.clear();
+      SearchDb().getStore(searchTf.text);
+    });
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async{
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    if(mounted)
+      setState(() {
+      });
+    _refreshController.loadComplete();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -52,237 +78,249 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: Constants.cPrimaryColor,
-
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children:<Widget> [
-              Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Column(
-                        children: [
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+      appBar: PreferredSize(preferredSize: Size.fromHeight(1), child: AppBar(backgroundColor: Constants.cPrimaryColor, elevation: 0 ,),),
+      body: SmartRefresher(
+        enablePullDown: true,
+        header: WaterDropHeader(waterDropColor: Constants.cLightGreen),
+        physics: BouncingScrollPhysics(),
+        footer: ClassicFooter(
+          loadStyle: LoadStyle.ShowWhenLoading,
+          completeDuration: Duration(milliseconds: 500),
+        ),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+        child: SafeArea(
+          child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children:<Widget> [
+                  Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Column(
                             children: [
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                                      alignment: Alignment.centerLeft,
+                                      child: FittedBox(
+                                        fit: BoxFit.fitWidth,
+                                        child: Text("Hi ${user!.displayName},",
+                                          style: GoogleFonts.signika(color: Constants.cPink,fontSize: 20,fontWeight: FontWeight.w200),
+                                        ),
+                                      )
+                                  ),
+                                  Spacer(flex: 1,),
+                                  Container(
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(user!.photoURL!),
+                                      radius: 15,
+                                    ),
+                                  ),
+                                  Container(width: 5,),
+                                  // Container(
+                                  //  child: Text(user!.displayName!),
+                                  // ),
+                                  user!.email == "georginasniper@gmail.com"?
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    padding: EdgeInsets.all(0),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle
+                                    ),
+                                    child: IconButton(
+                                        onPressed: (){
+                                          Navigator.push(context,MaterialPageRoute(builder: (context) => AddBusinessPage()));
+                                        },
+                                        icon: Icon(
+                                          Icons.add_business,
+                                          color: Constants.cPink,
+                                          size: 16,
+                                        )
+                                    ),
+                                  ): Container(),
+                                  user!.email == "georginasniper@gmail.com"?Container(width: 5,): Container(),
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    padding: EdgeInsets.all(0),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        shape: BoxShape.circle
+                                    ),
+                                    child: IconButton(
+                                      icon: Icon(
+                                        Icons.logout,
+                                        color: Constants.cPink,
+                                        size: 16,
+                                      ),
+                                      onPressed: () async {
+                                        FirebaseService service = new FirebaseService();
+                                        await service.signOutFromGoogle();
+                                        Navigator.pushReplacementNamed(
+                                            context, Constants.welcomeNavigate);
+                                      },
+                                    ),
+                                  ),
+                                  Container(padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),)
+                                ],
+                              ),
+
                               Container(
                                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                                   alignment: Alignment.centerLeft,
                                   child: FittedBox(
                                     fit: BoxFit.fitWidth,
-                                    child: Text("Hi ${user!.displayName},",
-                                      style: GoogleFonts.signika(color: Constants.cPink,fontSize: 20,fontWeight: FontWeight.w200),
+                                    child: Text("Grab your",
+                                      style: GoogleFonts.signika(color: Constants.cPink,fontSize: 40,fontWeight: FontWeight.w500),
                                     ),
                                   )
                               ),
-                              Spacer(flex: 1,),
                               Container(
-                                child: CircleAvatar(
-                                  backgroundImage: NetworkImage(user!.photoURL!),
-                                  radius: 15,
-                                ),
+                                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                                  alignment: Alignment.centerLeft,
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Text("delicious meal.",
+                                      style: GoogleFonts.signika(color: Constants.cPink,fontSize: 55,fontWeight: FontWeight.w600),
+                                    ),
+                                  )
                               ),
-                              Container(width: 5,),
-                              // Container(
-                              //  child: Text(user!.displayName!),
-                              // ),
-                              user!.email == "georginasniper@gmail.com"?
-                              Container(
-                                width: 30,
-                                height: 30,
-                                padding: EdgeInsets.all(0),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle
-                                ),
-                                child: IconButton(
-                                    onPressed: (){
-                                      Navigator.push(context,MaterialPageRoute(builder: (context) => AddBusinessPage()));
-                                    },
-                                    icon: Icon(
-                                      Icons.add_business,
-                                      color: Constants.cPink,
-                                      size: 16,
+                              SizedBox(height: 10,),
+                              SizedBox(
+                                width: size.width * .8,
+                                child: Container(
+                                    child: TextField(
+                                      controller: searchTf,
+                                      decoration: InputDecoration(
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        contentPadding:
+                                        EdgeInsets.all(15),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.circular(25),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white),
+                                          borderRadius: BorderRadius.circular(25),
+                                        ),
+                                        prefixIcon: Icon(Icons.search_sharp, color: Colors.grey,),
+                                        hintText: "Search for food or stores  ",
+                                        hintStyle: GoogleFonts.signika(color: Constants.cPink,fontSize: 26,fontWeight: FontWeight.w100),
+                                      ),
                                     )
                                 ),
-                              ): Container(),
-                              user!.email == "georginasniper@gmail.com"?Container(width: 5,): Container(),
-                              Container(
-                                width: 30,
-                                height: 30,
-                                padding: EdgeInsets.all(0),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle
-                                ),
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.logout,
-                                    color: Constants.cPink,
-                                    size: 16,
-                                  ),
-                                  onPressed: () async {
-                                    FirebaseService service = new FirebaseService();
-                                    await service.signOutFromGoogle();
-                                    Navigator.pushReplacementNamed(
-                                        context, Constants.welcomeNavigate);
-                                  },
-                                ),
                               ),
-                              Container(padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),)
+                              SizedBox(height: 20),
+
                             ],
                           ),
+                          FutureBuilder<List<Store>>(
 
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                            alignment: Alignment.centerLeft,
-                            child: FittedBox(
-                              fit: BoxFit.fitWidth,
-                              child: Text("Grab your",
-                                style: GoogleFonts.signika(color: Constants.cPink,fontSize: 40,fontWeight: FontWeight.w500),
-                              ),
-                            )
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                            alignment: Alignment.centerLeft,
-                            child: FittedBox(
-                              fit: BoxFit.fitWidth,
-                              child: Text("delicious meal.",
-                                style: GoogleFonts.signika(color: Constants.cPink,fontSize: 55,fontWeight: FontWeight.w600),
-                              ),
-                            )
-                          ),
-                          SizedBox(height: 10,),
-                          SizedBox(
-                            width: size.width * .8,
-                            child: Container(
-                                child: TextField(
-                                  controller: searchTf,
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.white,
-                                      filled: true,
-                                      contentPadding:
-                                      EdgeInsets.all(15),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(25),
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white),
-                                        borderRadius: BorderRadius.circular(25),
-                                      ),
-                                      prefixIcon: Icon(Icons.search_sharp, color: Colors.grey,),
-                                      hintText: "Search for food or stores  ",
-                                      hintStyle: GoogleFonts.signika(color: Constants.cPink,fontSize: 26,fontWeight: FontWeight.w100),
-                                  ),
-                                )
-                            ),
-                          ),
-                          SizedBox(height: 20),
+                            future: searchDb.getStore(searchTf.text),
+                            builder: (context,AsyncSnapshot<List<Store>> snapshot){
 
-                        ],
-                      ),
-                      FutureBuilder<List<Store>>(
+                              if(!snapshot.hasData){
+                                searchTf.clear();
+                                return CircularProgressIndicator(color: Constants.cLightGreen,);
+                              }
+                              else {
+                                return GridView.count(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    mainAxisSpacing: 1,
+                                    crossAxisCount: 2,
+                                    children: List.generate(snapshot.data!.length, (index){
 
-                        future: searchDb.getStore(searchTf.text),
-                        builder: (context,AsyncSnapshot<List<Store>> snapshot){
-
-                          if(!snapshot.hasData){
-                            searchTf.clear();
-                            return CircularProgressIndicator(color: Constants.cLightGreen,);
-                          }
-                          else {
-                              return GridView.count(
-                                physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  mainAxisSpacing: 1,
-                                  crossAxisCount: 2,
-                                  children: List.generate(snapshot.data!.length, (index){
-
-                                    return InkWell(
-                                      onTap: (){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SelectMenuPage(
-                                                      '${snapshot.data![index]
-                                                          .id}')));
-                                      },
-                                      child: SizedBox(
-                                        child: Container(
-                                          margin: EdgeInsets.all(8),
-                                          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            color: Constants.cLightGreen,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                          ),
-                                          child:  Column(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: <Widget> [
-                                              Spacer(),
-                                              Container(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text('${snapshot.data![index].storeName}',
-                                                  style: GoogleFonts.signika(color: Constants.cPink,fontSize: 20,fontWeight: FontWeight.bold),
+                                      return InkWell(
+                                        onTap: (){
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SelectMenuPage(
+                                                          '${snapshot.data![index]
+                                                              .id}')));
+                                        },
+                                        child: SizedBox(
+                                          child: Container(
+                                            margin: EdgeInsets.all(8),
+                                            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                              color: Constants.cLightGreen,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10.0)),
+                                            ),
+                                            child:  Column(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget> [
+                                                Spacer(),
+                                                Container(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text('${snapshot.data![index].storeName}',
+                                                    style: GoogleFonts.signika(color: Constants.cPink,fontSize: 20,fontWeight: FontWeight.bold),
+                                                  ),
                                                 ),
-                                              ),
-                                              Container(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text("${snapshot.data![index].storeAddress}",
-                                                  style: GoogleFonts.signika(color: Constants.cPink,fontSize: 12,fontWeight: FontWeight.w300),
+                                                Container(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text("${snapshot.data![index].storeAddress}",
+                                                    style: GoogleFonts.signika(color: Constants.cPink,fontSize: 12,fontWeight: FontWeight.w300),
+                                                  ),
                                                 ),
-                                              ),
-                                              Spacer(flex: 1,),
-                                              Container(
-                                                  width: size.width*.3,
-                                                  height: size.height*.15,
-                                                  padding: EdgeInsets.all(0),
-                                                  decoration: BoxDecoration(
+                                                Spacer(flex: 1,),
+                                                Container(
+                                                    width: size.width*.3,
+                                                    height: size.height*.15,
+                                                    padding: EdgeInsets.all(0),
+                                                    decoration: BoxDecoration(
                                                       color: Colors.white,
                                                       shape: BoxShape.circle,
 
-                                                  ),
-                                                  child:FittedBox(
-                                                    fit: BoxFit.fitWidth,
-                                                    child: CircleAvatar(
-                                                      backgroundColor: Colors.transparent,
-                                                      backgroundImage: NetworkImage('${snapshot.data![index].storePpUrl.toString()}'),
                                                     ),
-                                                  )
-                                              ),
-                                              Spacer()
+                                                    child:FittedBox(
+                                                      fit: BoxFit.fitWidth,
+                                                      child: CircleAvatar(
+                                                        backgroundColor: Colors.transparent,
+                                                        backgroundImage: NetworkImage('${snapshot.data![index].storePpUrl.toString()}'),
+                                                      ),
+                                                    )
+                                                ),
+                                                Spacer()
 
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    );
+                                      );
 
-                                  },
-                                 )
+                                    },
+                                    )
                                 );
 
-                          }
-                        },
-                      )
+                              }
+                            },
+                          )
 
-                    ],
-                  )
-              ),
-            ],
-          )
+                        ],
+                      )
+                  ),
+                ],
+              )
           ),
         ),
+      ),
 
     );
   }

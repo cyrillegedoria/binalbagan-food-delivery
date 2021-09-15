@@ -35,6 +35,8 @@ dependencies:
   google_fonts: ^2.1.0
   firebase_storage: ^10.0.3
   image_picker: ^0.8.3+3
+  global_state: ^1.0.1
+  pull_to_refresh: ^2.0.0
 
 
 dev_dependencies:
