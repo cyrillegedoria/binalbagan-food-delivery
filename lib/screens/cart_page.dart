@@ -121,7 +121,7 @@ class _CartPage extends State <CartPage> {
                         width: 200,height: 35, padding: EdgeInsets.only(top:5),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(topLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
-                          color: Constants.cMint.withOpacity(.8),
+                          color: Constants.cLightBlue.withOpacity(.8),
                         ),
                         child: Text('${_mapVal['StoreName']} | Review Order',textAlign: TextAlign.center, style: GoogleFonts.signika(color: Colors.white,fontSize: 24,fontWeight: FontWeight.w100)),
                       ),
@@ -143,7 +143,7 @@ class _CartPage extends State <CartPage> {
                               child: FittedBox(
                                 fit: BoxFit.fitWidth,
                                 child: Text("${user!.displayName},",
-                                  style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w200),
+                                  style: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w200),
                                 ),
                               )
                           ),
@@ -153,7 +153,7 @@ class _CartPage extends State <CartPage> {
                               child: FittedBox(
                                 fit: BoxFit.fitWidth,
                                 child: Text("Ready to grab your",
-                                  style: GoogleFonts.signika(color: Constants.cPink,fontSize: 30,fontWeight: FontWeight.w500),
+                                  style: GoogleFonts.signika(color: Constants.cRed,fontSize: 30,fontWeight: FontWeight.w500),
                                 ),
                               )
                           ),
@@ -163,7 +163,7 @@ class _CartPage extends State <CartPage> {
                               child: FittedBox(
                                 fit: BoxFit.fitWidth,
                                 child: Text("delicious meal?",
-                                  style: GoogleFonts.signika(color: Constants.cPink,fontSize: 45,fontWeight: FontWeight.w600),
+                                  style: GoogleFonts.signika(color: Constants.cRed,fontSize: 45,fontWeight: FontWeight.w600),
                                 ),
                               )
                           ),
@@ -179,7 +179,7 @@ class _CartPage extends State <CartPage> {
                             child: Icon(Icons.shopping_cart_outlined, size: 150, color: Colors.blueGrey,),
                           ),
                           Container(
-                            child: Text("Your cart is empty.",style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w100),),
+                            child: Text("Your cart is empty.",style: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w100),),
                           )
 
                         ],
@@ -206,10 +206,10 @@ class _CartPage extends State <CartPage> {
                     gs[#totalPayment]=0;
 
                   },
-                  icon: Icon(Icons.cancel_sharp,color: Constants.cPink,),
-                  label: Text('Clear Cart',style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w400),),
+                  icon: Icon(Icons.cancel_sharp,color: Constants.cRed,),
+                  label: Text('Clear Cart',style: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w400),),
                   style: ElevatedButton.styleFrom(
-                    primary: Constants.cLightGreen,
+                    primary: Constants.cLightOrange,
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(32.0),
@@ -228,7 +228,7 @@ class _CartPage extends State <CartPage> {
                       child: Text('Php ${gs[#totalPayment]}', style: GoogleFonts.signika(color: Colors.white,fontSize: 18,fontWeight: FontWeight.w400),),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(topLeft: Radius.circular(32),bottomLeft: Radius.circular(32),topRight: Radius.circular(32)),
-                        color: Constants.cMint.withOpacity(.8),
+                        color: Constants.cLightBlue.withOpacity(.8),
                       ),
                     ),
 
@@ -252,10 +252,10 @@ class _CartPage extends State <CartPage> {
                         }
 
                       },
-                      icon: Icon(Icons.payment,color: Constants.cPink,),
-                      label: Text('Place Order',style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w400),),
+                      icon: Icon(Icons.payment,color: Constants.cRed,),
+                      label: Text('Place Order',style: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w400),),
                       style: ElevatedButton.styleFrom(
-                        primary: Constants.cLightGreen,
+                        primary: Constants.cLightOrange,
                         onPrimary: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(topLeft: Radius.circular(32),bottomLeft: Radius.circular(32),bottomRight: Radius.circular(32)),

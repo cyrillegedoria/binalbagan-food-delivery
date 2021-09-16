@@ -56,7 +56,7 @@ class _GoogleSignInState extends State<GoogleSignIn> {
                   color: Colors.blueAccent, fontWeight: FontWeight.bold, fontSize: 16),
             ),
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
+                backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightOrange),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0),
@@ -68,7 +68,7 @@ class _GoogleSignInState extends State<GoogleSignIn> {
 
       ],
     )
-        : CircularProgressIndicator(color: Constants.cLightGreen,);
+        : CircularProgressIndicator(color: Constants.cLightOrange,);
   }
 
   void showMessage(String message) {

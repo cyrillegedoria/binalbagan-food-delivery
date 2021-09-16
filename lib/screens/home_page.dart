@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
       appBar: PreferredSize(preferredSize: Size.fromHeight(1), child: AppBar(backgroundColor: Constants.cPrimaryColor, elevation: 0 ,),),
       body: SmartRefresher(
         enablePullDown: true,
-        header: WaterDropHeader(waterDropColor: Constants.cLightGreen),
+        header: WaterDropHeader(waterDropColor: Constants.cLightOrange),
         physics: BouncingScrollPhysics(),
         footer: ClassicFooter(
           loadStyle: LoadStyle.ShowWhenLoading,
@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                                       child: FittedBox(
                                         fit: BoxFit.fitWidth,
                                         child: Text("Hi ${user!.displayName},",
-                                          style: GoogleFonts.signika(color: Constants.cPink,fontSize: 20,fontWeight: FontWeight.w200),
+                                          style: GoogleFonts.signika(color: Constants.cRed,fontSize: 20,fontWeight: FontWeight.w200),
                                         ),
                                       )
                                   ),
@@ -143,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                                         },
                                         icon: Icon(
                                           Icons.add_business,
-                                          color: Constants.cPink,
+                                          color: Constants.cRed,
                                           size: 16,
                                         )
                                     ),
@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                                     child: IconButton(
                                       icon: Icon(
                                         Icons.logout,
-                                        color: Constants.cPink,
+                                        color: Constants.cRed,
                                         size: 16,
                                       ),
                                       onPressed: () async {
@@ -180,8 +180,8 @@ class _HomePageState extends State<HomePage> {
                                   alignment: Alignment.centerLeft,
                                   child: FittedBox(
                                     fit: BoxFit.fitWidth,
-                                    child: Text("Grab your",
-                                      style: GoogleFonts.signika(color: Constants.cPink,fontSize: 40,fontWeight: FontWeight.w500),
+                                    child: Text("looking for a",
+                                      style: GoogleFonts.signika(color: Constants.cRed,fontSize: 40,fontWeight: FontWeight.w500),
                                     ),
                                   )
                               ),
@@ -190,8 +190,8 @@ class _HomePageState extends State<HomePage> {
                                   alignment: Alignment.centerLeft,
                                   child: FittedBox(
                                     fit: BoxFit.fitWidth,
-                                    child: Text("delicious meal.",
-                                      style: GoogleFonts.signika(color: Constants.cPink,fontSize: 55,fontWeight: FontWeight.w600),
+                                    child: Text("delicious meal?",
+                                      style: GoogleFonts.signika(color: Constants.cRed,fontSize: 55,fontWeight: FontWeight.w600),
                                     ),
                                   )
                               ),
@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                         prefixIcon: Icon(Icons.search_sharp, color: Colors.grey,),
                                         hintText: "Search for food or stores  ",
-                                        hintStyle: GoogleFonts.signika(color: Constants.cPink,fontSize: 26,fontWeight: FontWeight.w100),
+                                        hintStyle: GoogleFonts.signika(color: Constants.cRed,fontSize: 26,fontWeight: FontWeight.w100),
                                       ),
                                     )
                                 ),
@@ -232,7 +232,7 @@ class _HomePageState extends State<HomePage> {
 
                               if(!snapshot.hasData){
                                 searchTf.clear();
-                                return CircularProgressIndicator(color: Constants.cLightGreen,);
+                                return CircularProgressIndicator(color: Constants.cLightOrange,);
                               }
                               else {
                                 return GridView.count(
@@ -258,7 +258,7 @@ class _HomePageState extends State<HomePage> {
                                             padding: EdgeInsets.symmetric(vertical: 4, horizontal: 7),
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
-                                              color: Constants.cLightGreen,
+                                              color: Constants.cLightOrange,
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10.0)),
                                             ),
@@ -270,13 +270,13 @@ class _HomePageState extends State<HomePage> {
                                                 Container(
                                                   alignment: Alignment.centerLeft,
                                                   child: Text('${snapshot.data![index].storeName}',
-                                                    style: GoogleFonts.signika(color: Constants.cPink,fontSize: 20,fontWeight: FontWeight.bold),
+                                                    style: GoogleFonts.signika(color: Constants.cRed,fontSize: 20,fontWeight: FontWeight.bold),
                                                   ),
                                                 ),
                                                 Container(
                                                   alignment: Alignment.centerLeft,
                                                   child: Text("${snapshot.data![index].storeAddress}",
-                                                    style: GoogleFonts.signika(color: Constants.cPink,fontSize: 12,fontWeight: FontWeight.w300),
+                                                    style: GoogleFonts.signika(color: Constants.cRed,fontSize: 12,fontWeight: FontWeight.w300),
                                                   ),
                                                 ),
                                                 Spacer(flex: 1,),

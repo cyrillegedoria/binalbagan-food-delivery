@@ -90,7 +90,7 @@ class _WelcomePageState extends State<WelcomePage> {
                        TextSpan(
                            text: Constants.textIntroDesc2,
                            style: TextStyle(
-                               color: Constants.cPink,
+                               color: Constants.cRed,
                                fontWeight: FontWeight.bold,
                                fontSize: 40.0)),
                      ])),
@@ -100,7 +100,7 @@ class _WelcomePageState extends State<WelcomePage> {
                    return GoogleSignIn();
                  }()
                  else if(widget.isUserSigned == true)(){
-                   return CircularProgressIndicator(color: Constants.cLightGreen,);
+                   return CircularProgressIndicator(color: Constants.cLightOrange,);
                  }()
 
                ],

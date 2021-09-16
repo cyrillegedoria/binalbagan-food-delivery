@@ -85,10 +85,10 @@ class _AddMenuPage extends State <AddMenuPage>{
             bottom: TabBar(
               indicator: BoxDecoration(
                   borderRadius: BorderRadius.circular(50), // Creates border
-                  color: Constants.cLightGreen),
-              labelColor: Constants.cPink,
+                  color: Constants.cLightOrange),
+              labelColor: Constants.cRed,
               unselectedLabelColor: Colors.grey,
-              labelStyle:GoogleFonts.signika(color: Constants.cPink,fontSize: 16,fontWeight: FontWeight.w400),
+              labelStyle:GoogleFonts.signika(color: Constants.cRed,fontSize: 16,fontWeight: FontWeight.w400),
 
               tabs: [
                 Tab(

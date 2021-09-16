@@ -11,11 +11,11 @@ class Constants {
   //static const cPink = Color(0xCCff9aa2);
 
   static const cPrimaryColor = Color(0xFFedf0f1);
-  static const cMint = Color(0xFF22afcd);
-  static const cLightGreen = Color(0xFFffcfb4);
-  static const cLightOrange = Color(0xFFfba74f);
-  static const cFontPink = Color(0xFFd5e978);
-  static const cPink = Color(0xFFcb3a20);
+  static const cLightBlue = Color(0xFF22afcd);
+  static const cLightOrange = Color(0xFFffcfb4);
+  static const cOrange = Color(0xFFfba74f);
+  static const cLightGreen = Color(0xFFd5e978);
+  static const cRed = Color(0xffcb3420);
 
   //static const cPrimaryColor = Color(0xFFeaac8b);
   //static const cMint = Color(0xFFb56576);

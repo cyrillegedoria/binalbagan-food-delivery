@@ -82,11 +82,11 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                 child: Column(
                   children: <Widget>[
                     ElevatedButton.icon(
-                      icon: Icon(Icons.store_sharp,color: Constants.cPink,),
+                      icon: Icon(Icons.store_sharp,color: Constants.cRed,),
                       label: Text("Add New Store",
-                        style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w400),),
+                        style: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w400),),
                       style: ElevatedButton.styleFrom(
-                        primary: Constants.cLightGreen,
+                        primary: Constants.cLightOrange,
                         onPrimary: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32.0),
@@ -102,7 +102,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                                 return AlertDialog(
                                   scrollable: true,
                                   title: Text('New Store',
-                                    style: GoogleFonts.signika(color: Constants.cPink,fontSize: 22,fontWeight: FontWeight.w400),),
+                                    style: GoogleFonts.signika(color: Constants.cRed,fontSize: 22,fontWeight: FontWeight.w400),),
                                   content: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Form(
@@ -134,18 +134,18 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                                           TextFormField(
                                             controller: storeNameTf,
                                             decoration: InputDecoration(
-                                              labelStyle: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w300),
+                                              labelStyle: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w300),
                                               labelText: "Store Name",
                                               filled: true,
                                               fillColor: Colors.white,
                                               contentPadding:
                                               EdgeInsets.all(15),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Constants.cPink),
+                                                borderSide: BorderSide(color: Constants.cRed),
                                                 borderRadius: BorderRadius.circular(16),
                                               ),
                                               enabledBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(color: Constants.cPink),
+                                                borderSide: BorderSide(color: Constants.cRed),
                                                 borderRadius: BorderRadius.circular(16),
                                               ),
                                             ),
@@ -154,18 +154,18 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                                           TextFormField(
                                             controller: addressTf,
                                             decoration: InputDecoration(
-                                              labelStyle: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w300),
+                                              labelStyle: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w300),
                                               labelText: "Address",
                                               filled: true,
                                               fillColor: Colors.white,
                                               contentPadding:
                                               EdgeInsets.all(15),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Constants.cPink),
+                                                borderSide: BorderSide(color: Constants.cRed),
                                                 borderRadius: BorderRadius.circular(16),
                                               ),
                                               enabledBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(color: Constants.cPink),
+                                                borderSide: BorderSide(color: Constants.cRed),
                                                 borderRadius: BorderRadius.circular(16),
                                               ),
                                             ),
@@ -179,10 +179,10 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                                     widget.isLoading==false?
                                     TextButton(
                                         child: Text("Submit",
-                                          style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w400),
+                                          style: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w400),
                                         ),
                                         style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
+                                            backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightOrange),
                                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                 RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.circular(16.0),
@@ -216,7 +216,7 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                                           }
                                         }
                                     )
-                                        :CircularProgressIndicator(color: Constants.cLightGreen,)
+                                        :CircularProgressIndicator(color: Constants.cLightOrange,)
                                   ],
                                 );
                               },
@@ -263,13 +263,13 @@ class _AddBusinessPage extends State <AddBusinessPage>{
                                         new Container(
                                           alignment: Alignment.centerLeft,
                                           child: Text('${snapshot.value['StoreName'].toString().toUpperCase()}' ,
-                                            style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w500),
+                                            style: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w500),
                                           ),
                                         ),
                                         new Container(
                                           alignment: Alignment.centerLeft,
                                           child: Text('${snapshot.value['StoreAddress'].toString().toUpperCase()}' ,
-                                            style: GoogleFonts.signika(color: Constants.cPink,fontSize: 14,fontWeight: FontWeight.w300),
+                                            style: GoogleFonts.signika(color: Constants.cRed,fontSize: 14,fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                       ],

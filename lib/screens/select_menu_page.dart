@@ -109,12 +109,72 @@ class _SelectMenuPage extends State <SelectMenuPage> {
                     ),
                   bottom: PreferredSize(preferredSize: Size.fromHeight(50),
                   child: Container(
-                    width: 250,height: 40, padding: EdgeInsets.only(top:8),
+                    width: MediaQuery.of(context).size.width*.9,height: 40, padding: EdgeInsets.only(top:8),
                     decoration: BoxDecoration(
-                     borderRadius: BorderRadius.only(topLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
-                      color: Constants.cMint.withOpacity(.8),
+                     borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+                      color: Constants.cLightBlue.withOpacity(.9),
                     ),
-                  child: Text('${_mapVal['StoreName']}',textAlign: TextAlign.center, style: GoogleFonts.signika(color: Colors.white,fontSize: 24,fontWeight: FontWeight.w300)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Spacer(),
+                      Text('${_mapVal['StoreName']}',textAlign: TextAlign.center, style: GoogleFonts.signika(color: Colors.white,fontSize: 24,fontWeight: FontWeight.w500)),
+
+                      Spacer(flex: 3,),
+                      //Ratings
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Text('12am-12pm',textAlign: TextAlign.center, style: GoogleFonts.signika(color: Colors.white,fontSize: 14,fontWeight: FontWeight.w400)),
+
+                            ],
+                          ),
+
+                          Icon(Icons.access_time,color: Colors.white, size: 14,),
+                        ],
+                      ),
+                      SizedBox(width: 5,),
+                      Container(height: 25.0, width: 1, color: Colors.white,),
+                      SizedBox(width: 5,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Text('4.5',textAlign: TextAlign.center, style: GoogleFonts.signika(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w400)),
+                              SizedBox(width:1,),
+                              Icon(Icons.star,color: Colors.yellowAccent, size: 14,),
+                            ],
+                          ),
+                          Text('25 reviews',textAlign: TextAlign.center, style: GoogleFonts.signika(color: Colors.white,fontSize: 10,fontWeight: FontWeight.w100)),
+                        ],
+                      ),
+                      SizedBox(width: 5,),
+                      Container(height: 25.0, width: 1, color: Colors.white,),
+                      SizedBox(width: 5,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Text('37',textAlign: TextAlign.center, style: GoogleFonts.signika(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w400)),
+                              SizedBox(width:1,),
+                              Icon(Icons.favorite,color: Colors.redAccent, size: 14,),
+                            ],
+                          ),
+                          Text('favorites',textAlign: TextAlign.center, style: GoogleFonts.signika(color: Colors.white,fontSize: 10,fontWeight: FontWeight.w100)),
+                        ],
+                      ),
+                      // </>Ratings
+                      Spacer(),
+
+                    ],
+
+                  )
                   ),
                   ),
 
@@ -149,10 +209,10 @@ class _SelectMenuPage extends State <SelectMenuPage> {
 
 
           },
-          icon: Icon(Icons.shopping_cart_sharp,color: Constants.cPink,),
-          label: Text('View Cart (${gs[#totalItems]})',style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w400),),
+          icon: Icon(Icons.shopping_cart_sharp,color: Constants.cRed,),
+          label: Text('View Cart (${gs[#totalItems]})',style: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w400),),
           style: ElevatedButton.styleFrom(
-            primary: Constants.cLightGreen,
+            primary: Constants.cLightOrange,
             onPrimary: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(32.0),

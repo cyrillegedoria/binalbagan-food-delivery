@@ -9,7 +9,7 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     OutlineInputBorder border = OutlineInputBorder(
-        borderSide: BorderSide(color: Constants.cPink, width: 3.0));
+        borderSide: BorderSide(color: Constants.cRed, width: 3.0));
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Constants.cPrimaryColor,
@@ -27,7 +27,7 @@ class SignInPage extends StatelessWidget {
                           TextSpan(
                               text: Constants.textSignInTitle,
                               style: TextStyle(
-                                color: Constants.cFontPink,
+                                color: Constants.cLightGreen,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 30.0,
                               )),
@@ -35,7 +35,7 @@ class SignInPage extends StatelessWidget {
                     SizedBox(height: size.height * 0.01),
                     Text(
                       Constants.textSmallSignIn,
-                      style: TextStyle(color: Constants.cPink),
+                      style: TextStyle(color: Constants.cRed),
                     ),
                     GoogleSignIn(),
                     buildRowDivider(size: size),
@@ -80,7 +80,7 @@ class SignInPage extends StatelessWidget {
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Constants.cPrimaryColor),
                             backgroundColor:
-                                MaterialStateProperty.all<Color>(Constants.cPink),
+                                MaterialStateProperty.all<Color>(Constants.cRed),
                             side: MaterialStateProperty.all<BorderSide>(BorderSide.none)),
                       ),
                     ),
@@ -90,13 +90,13 @@ class SignInPage extends StatelessWidget {
                           TextSpan(
                               text: Constants.textAcc,
                               style: TextStyle(
-                                color: Constants.cFontPink,
+                                color: Constants.cLightGreen,
                               )),
                           TextSpan(
                               text: Constants.textSignUp,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Constants.cFontPink,
+                                color: Constants.cLightGreen,
                               )
                          ),
                        ]
@@ -112,14 +112,14 @@ class SignInPage extends StatelessWidget {
     return SizedBox(
       width: size.width * 0.8,
       child: Row(children: <Widget>[
-        Expanded(child: Divider(color: Constants.cLightOrange)),
+        Expanded(child: Divider(color: Constants.cOrange)),
         Padding(
             padding: EdgeInsets.only(left: 8.0, right: 8.0),
             child: Text(
               "Or",
-              style: TextStyle(color: Constants.cFontPink),
+              style: TextStyle(color: Constants.cLightGreen),
             )),
-        Expanded(child: Divider(color: Constants.cLightOrange)),
+        Expanded(child: Divider(color: Constants.cOrange)),
       ]),
     );
   }
@@ -163,7 +163,7 @@ class _GoogleSignInState extends State<GoogleSignIn> {
         label: Text(
           Constants.textSignInGoogle,
           style: TextStyle(
-              color: Constants.cFontPink, fontWeight: FontWeight.bold, fontSize: 16),
+              color: Constants.cLightGreen, fontWeight: FontWeight.bold, fontSize: 16),
         ),
         style: ButtonStyle(
             backgroundColor:

@@ -125,13 +125,13 @@ class _CustomCardState extends State<CustomCard>{
                   children: <Widget>[
                     new Container (
                         child: new Text('${widget.itemName}: ${widget.itemPrice}',
-                            style: GoogleFonts.signika(color: Constants.cPink,fontSize: 18,fontWeight: FontWeight.w200)
+                            style: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w200)
                         )
                     ),
                     new Container(height: 5.0,),
                     new Container(
                     child: new Text(widget.itemDescription,
-                        style: GoogleFonts.signika(color: Constants.cPink,fontSize: 12,fontWeight: FontWeight.w100)
+                        style: GoogleFonts.signika(color: Constants.cRed,fontSize: 12,fontWeight: FontWeight.w100)
                     ),
                     )
                   ],
@@ -250,7 +250,7 @@ class _CustomCardState extends State<CustomCard>{
                   },
                   child: Text(
                       widget.itemQty==0?addToCartBtnTxt:updateBtnTxt,
-                      style: GoogleFonts.signika(color: Constants.cPink,fontSize: 16,fontWeight: FontWeight.w100)
+                      style: GoogleFonts.signika(color: Constants.cRed,fontSize: 16,fontWeight: FontWeight.w100)
                   ),
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightGreen),
