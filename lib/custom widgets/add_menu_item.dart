@@ -29,11 +29,11 @@ class AddMenuItem extends StatefulWidget{
 
 class _AddMenuItem extends State <AddMenuItem>{
 
-  final itemName = TextEditingController();
-  final itemPrice = TextEditingController();
-  final itemDescription = TextEditingController();
-  final itemUrl = TextEditingController();
-  final referenceDatabase = FirebaseDatabase.instance.reference().child('StoresList');
+  var itemName = TextEditingController();
+  var itemPrice = TextEditingController();
+  var itemDescription = TextEditingController();
+  var itemUrl = TextEditingController();
+  var referenceDatabase = FirebaseDatabase.instance.reference().child('StoresList');
 
 
 
@@ -61,6 +61,12 @@ class _AddMenuItem extends State <AddMenuItem>{
                       ),
                     ),
                     onPressed: () {
+
+                      itemName.clear();
+                      itemPrice.clear();
+                      itemDescription.clear();
+                      itemUrl.clear();
+
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -264,6 +270,173 @@ class _AddMenuItem extends State <AddMenuItem>{
                               ),
                               new Spacer(flex: 1),
                               new IconButton(
+                                icon: Icon(Icons.edit, color: Constants.cRed,),
+                                onPressed: (){
+
+                                  itemName.clear();
+                                  itemPrice.clear();
+                                  itemDescription.clear();
+                                  itemUrl.clear();
+
+                                  itemName.text = snapshot.value['Name'];
+                                  itemPrice.text = snapshot.value['Price'];
+                                  itemDescription.text = snapshot.value['Description'];
+                                  itemUrl.text = snapshot.value['MenuUrl'];
+
+
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return StatefulBuilder(
+                                        builder: (context, setState){
+
+                                          return AlertDialog(
+                                            scrollable: true,
+                                            title: Text('Edit Item',
+                                              style: GoogleFonts.signika(color: Constants.cRed,fontSize: 22,fontWeight: FontWeight.w400),),
+                                            content: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Form(
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      child: Container(
+                                                        width: size.width*.3,
+                                                        height: size.height*.15,
+                                                        decoration: new BoxDecoration(
+                                                          color: Colors.white,
+                                                          shape: BoxShape.circle,
+                                                        ),
+                                                        child: TextButton(
+                                                          style: ElevatedButton.styleFrom(
+                                                            shape: CircleBorder(),
+                                                            padding: EdgeInsets.all(2),
+                                                          ),
+                                                          onPressed: (){
+                                                            setState(() {
+                                                              widget.isLoading = true;
+                                                            });
+                                                            PickImage()._onImageButtonPressed(ImageSource.gallery, context: context).then((value) => setState((){itemUrl.text=value;widget.isLoading=false;}));
+                                                          },
+                                                          child: itemUrl.text.isEmpty?Icon(widget.reference=="MenuList"?Icons.restaurant_menu:widget.reference=="BeverageList"?Icons.emoji_food_beverage:Icons.post_add_sharp, size:100):FittedBox(child: CircleAvatar(backgroundImage: NetworkImage('${itemUrl.text}'),backgroundColor: Colors.white,maxRadius: 60,), fit: BoxFit.fitWidth,),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    TextFormField(
+                                                      controller: itemName,
+                                                      decoration: InputDecoration(
+                                                        labelStyle: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w300),
+                                                        labelText: "Item Name",
+                                                        filled: true,
+                                                        fillColor: Colors.white,
+                                                        contentPadding:
+                                                        EdgeInsets.all(15),
+                                                        focusedBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide(color: Constants.cRed),
+                                                          borderRadius: BorderRadius.circular(16),
+                                                        ),
+                                                        enabledBorder: UnderlineInputBorder(
+                                                          borderSide: BorderSide(color: Constants.cRed),
+                                                          borderRadius: BorderRadius.circular(16),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(height: 10,),
+                                                    TextFormField(
+                                                      controller: itemPrice,
+                                                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),],
+                                                      decoration: InputDecoration(
+                                                        labelStyle: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w300),
+                                                        labelText: "Price",
+                                                        filled: true,
+                                                        fillColor: Colors.white,
+                                                        contentPadding:
+                                                        EdgeInsets.all(15),
+                                                        focusedBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide(color: Constants.cRed),
+                                                          borderRadius: BorderRadius.circular(16),
+                                                        ),
+                                                        enabledBorder: UnderlineInputBorder(
+                                                          borderSide: BorderSide(color: Constants.cRed),
+                                                          borderRadius: BorderRadius.circular(16),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Container(height: 10,),
+                                                    TextFormField(
+                                                      controller: itemDescription,
+                                                      maxLength: 40,
+                                                      decoration: InputDecoration(
+                                                        labelStyle: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w300),
+                                                        labelText: "Description",
+                                                        filled: true,
+                                                        fillColor: Colors.white,
+                                                        contentPadding:
+                                                        EdgeInsets.all(15),
+                                                        focusedBorder: OutlineInputBorder(
+                                                          borderSide: BorderSide(color: Constants.cRed),
+                                                          borderRadius: BorderRadius.circular(16),
+                                                        ),
+                                                        enabledBorder: UnderlineInputBorder(
+                                                          borderSide: BorderSide(color: Constants.cRed),
+                                                          borderRadius: BorderRadius.circular(16),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            actions: [
+                                              widget.isLoading==false?
+                                              TextButton(
+                                                  child: Text("Submit",
+                                                    style: GoogleFonts.signika(color: Constants.cRed,fontSize: 18,fontWeight: FontWeight.w400),
+                                                  ),
+                                                  style: ButtonStyle(
+                                                      backgroundColor: MaterialStateProperty.all<Color>(Constants.cLightOrange),
+                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.circular(16.0),
+                                                          )
+                                                      )
+                                                  ),
+                                                  onPressed: () {
+                                                    if (itemName.text=="" || itemPrice.text=="" || itemDescription.text=="")
+                                                    {
+                                                      Fluttertoast.showToast(msg: "Please fill the form.",
+                                                        toastLength: Toast.LENGTH_LONG,
+                                                        gravity: ToastGravity.TOP,
+                                                      );
+                                                    }
+                                                    else{
+                                                      referenceDatabase
+                                                          .child('${widget.storeId}')
+                                                          .child(widget.reference)
+                                                          .child('${itemName.text}')
+                                                          .update({'Name':itemName.text,'Description':itemDescription.text,'Price':itemPrice.text,'MenuUrl':itemUrl.text})
+                                                          .asStream();
+
+                                                      itemName.clear();
+                                                      itemPrice.clear();
+                                                      itemDescription.clear();
+                                                      itemUrl.clear();
+                                                      Navigator.pop(context);
+                                                    }
+                                                  }
+                                              )
+                                                  :CircularProgressIndicator(color: Constants.cLightOrange,)
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+
+                                },
+                              ),
+                              new IconButton(
                                 icon: Icon(Icons.delete, color: Constants.cRed,),
                                 onPressed: () => referenceDatabase.child('${widget.storeId}').child('${widget.reference}').child('${snapshot.key}').remove(),
                               ),
@@ -281,6 +454,7 @@ class _AddMenuItem extends State <AddMenuItem>{
     );
   }
 }
+
 
 class PickImage {
 

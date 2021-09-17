@@ -32,6 +32,7 @@ class _SelectMenuPage extends State <SelectMenuPage> {
 
   late Map<dynamic, dynamic> _mapVal;
   late String storeName="";
+  late String storeUrl="https://firebasestorage.googleapis.com/v0/b/eat-anywhere-7db46.appspot.com/o/eatnywhere%2Featnywhere%20default%20logo.png?alt=media&token=0777ddb0-72d8-432e-a0cb-f7892550fc39";
 
   String dateToday = DateTime.now().toString().substring(0,10);
 
@@ -44,9 +45,9 @@ class _SelectMenuPage extends State <SelectMenuPage> {
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
     gs[#totalItems]=0;
     gs[#totalPayment]=0;
-    super.initState();
     if (storeName==""){
       returnRef().then(
               (String i) => setState((){storeName=i;})
@@ -57,6 +58,7 @@ class _SelectMenuPage extends State <SelectMenuPage> {
   Future<String> returnRef () async => referenceDatabase.child('${widget.storeId}').once().then((snapshot){
     _mapVal = snapshot.value;
     storeName = _mapVal['StoreName'];
+    storeUrl = _mapVal['StorePhoto'];
     return storeName;
   });
 
@@ -93,7 +95,7 @@ class _SelectMenuPage extends State <SelectMenuPage> {
                         child: FittedBox(
                           fit: BoxFit.contain,
                           child: CircleAvatar(
-                            backgroundImage: NetworkImage("${_mapVal['StorePhoto']}"),
+                            backgroundImage: NetworkImage(storeUrl),
                             backgroundColor: Colors.white,
                           ),
                         )
@@ -119,7 +121,7 @@ class _SelectMenuPage extends State <SelectMenuPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Spacer(),
-                      Text('${_mapVal['StoreName']}',textAlign: TextAlign.center, style: GoogleFonts.signika(color: Colors.white,fontSize: 24,fontWeight: FontWeight.w500)),
+                      Text(storeName,textAlign: TextAlign.center, style: GoogleFonts.signika(color: Colors.white,fontSize: 24,fontWeight: FontWeight.w500)),
 
                       Spacer(flex: 3,),
                       //Ratings

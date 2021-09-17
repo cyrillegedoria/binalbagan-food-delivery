@@ -111,9 +111,9 @@ class _CustomCardState extends State<CustomCard>{
               width: 64,
               height: 80,
               padding: EdgeInsets.all(2),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(widget.itemUrl),
-                backgroundColor: Colors.white,
+              child: FittedBox(
+                child: Image.network(widget.itemUrl),
+                fit: BoxFit.contain,
               ),
             ),
             new Container(width: 10,),
